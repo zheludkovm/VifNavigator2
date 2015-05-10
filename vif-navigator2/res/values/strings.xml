@@ -23,13 +23,13 @@
   <string name="title_format" formatted="false"><![CDATA[От <b> %s <b><br>]]></string>
   <string name="visited_mark" formatted="false"><![CDATA[(<font color=\"#1E581E\"><b>+</b></font>)]]></string>
   <string name="not_visited_mark" formatted="false"><![CDATA[(<font color=\"red\"><b>x</b></font>)]]></string>
-  <string name="not_visited_mark_zero" formatted="false"><![CDATA[(<font color=\"gray\"><b>0</b></font>)]]></string>
+  <string name="not_visited_mark_zero" formatted="false"><![CDATA[(<font color=\"red\"><b>o</b></font>)]]></string>
   <string name="not_visited_count" formatted="false"><![CDATA[<font color=\"red\">+%s</font>]]></string>
   <string name="visited_count_zero" formatted="false"><![CDATA[<font color=\"#1E581E\">+0</font>]]></string>
   <string name="child_count_format" formatted="false"><![CDATA[(%s)]]></string>
 
   <string name="button_reset" formatted="false">Сброс!</string>
-  <string name="button_set_all_visited" formatted="false">Просмотренно</string>
+  <string name="button_set_all_visited" formatted="false">Просмотрено</string>
 
 
 </resources>
