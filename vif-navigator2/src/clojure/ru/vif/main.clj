@@ -18,9 +18,7 @@
             [ru.vif.db-tools :refer :all]
             )
   (:import
-    (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
-    (android.app AlertDialog$Builder)
-    (android.content DialogInterface$OnClickListener)))
+    (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)))
 
 (neko.resource/import-all)
 
@@ -63,11 +61,14 @@
     )
   )
 
-(defn calc-main-sub-tree []
+(defn calc-main-sub-tree
+  "Собирает список веток и сортирует"
+  []
   (sort-tree (calc-sub-tree 0 MAIN_DEPTH))
   )
 
 (defn set-entry-visited!
+  "Помечает запись как просмотренную"
   [this ^Long no]
 
   (swap! tree-data-store model-api/set-entry-visited no)
@@ -75,6 +76,7 @@
   )
 
 (defn set-recursive-visited!
+  "Помечает запись и все ее дочерние узлы как просмотренные"
   [this ^Long no]
   (with-progress this R$string/process_tree R$string/error_process_tree
                  (fn []
@@ -87,7 +89,9 @@
                      )))
   )
 
-(defn check-store-loaded! [this]
+(defn check-store-loaded!
+  "Проверяет были ли загружены записи из базы и если нет, то загружает"
+  [this]
   (let [last-event (:last-event @tree-data-store)]
     (if (= last-event NOT_DEFINED_START_EVENT)
       (reset! tree-data-store (with-progress this R$string/init_tree R$string/error_init_tree #(load-stored-vif-tree this)))
@@ -110,12 +114,17 @@
     )
   )
 
-(defn clean-tree [this]
+(defn clean-tree
+  "Сброс текущих записей и базы"
+  [this]
   (reset! tree-data-store void-tree)
   (delete-all this)
   )
 
-(defn load-tree [this last-event]
+(defn load-tree
+  "Загрузка xml обновления, в случае 201 ошибки, полная перегрузка данных"
+  [this last-event]
+
   (try
     (download-vif-content last-event)
     (catch Exception e
@@ -128,20 +137,7 @@
       ))
   )
 
-(defn show-confirmation-dialog [this positive-func]
-  (safe-for-ui
-    (-> (AlertDialog$Builder. this)
-        (.setMessage "Вы уверены?")
-        (.setCancelable true)
-        (.setPositiveButton "Да" (reify DialogInterface$OnClickListener
-                                   (onClick [_ dialog id]
-                                     (.dismiss dialog)
-                                     (positive-func))))
-        (.setNegativeButton "Нет" (reify DialogInterface$OnClickListener
-                                    (onClick [_ dialog id]
-                                      (.cancel dialog))))
-        .create
-        .show)))
+
 
 (defn full-reload
   "Полная перегрузка всего дерева сообщений"
@@ -274,7 +270,9 @@
     )
   )
 
-(defn refresh-tree-activity [this]
+(defn refresh-tree-activity
+  "Обновить список веток на основной форме"
+  [this]
   (refresh-adapter-data
     (find-view this ::main-list-view)
     root-tree-items-store
@@ -347,7 +345,9 @@
 (defn get-param-no [this]
   (Long. (get-activity-param this PARAM_NO)))
 
-(defn refresh-msg-activity [this]
+(defn refresh-msg-activity
+  "Обновить список веток на форме сообщения"
+  [this]
   (refresh-adapter-data
     (find-view this ::msg-list-view)
     (.state this)

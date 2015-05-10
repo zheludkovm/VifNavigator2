@@ -19,6 +19,8 @@
             )
   (:import
     (ru.vif.model.records vif-display-entry)
+    (android.app AlertDialog$Builder)
+    (android.content DialogInterface$OnClickListener)
     )
   )
 
@@ -130,24 +132,28 @@
   )
 
 (defn calc-post-weight [^vif-display-entry entry]
+  "Расчет веса сообщения для сортировки, используется максимальны номер сообщения их ветки"
   (let [^Boolean is-top-fixed (:is-top-fixed entry)
         ^Long max-child-no (:max-child-no entry)
         ]
     (if is-top-fixed
-      (+ max-child-no 1000000000)
-      max-child-no
+      (- (+ max-child-no 1000000000))
+      (- max-child-no)
       )
     )
   )
 
-(defn sort-tree [tree]
-  (sort #(compare (calc-post-weight %2) (calc-post-weight %1)) tree)
+(defn sort-tree
+  "Отсортировать дерево"
+  [tree]
+  (sort-by #(calc-post-weight %)  tree)
   )
 
 (defn prefs [this]
   (data/get-shared-preferences this "local" :private))
 
 (defn set-shared-pref-value!
+  "Сохраненнить данные приложения"
   [this key value]
 
   (-> this
@@ -158,14 +164,18 @@
       )
   )
 
-(defn get-shared-pref-value [this key default-value]
+(defn get-shared-pref-value
+  "Возвращает сохраненные данные приложения"
+  [this key default-value]
   (-> this
       prefs
       (.getString key default-value)
       )
   )
 
-(defn with-try [func]
+(defn with-try
+  "Обернуть с распечаткой исключения"
+  [func]
   (try
     (func)
     (catch Exception e
@@ -174,3 +184,20 @@
       )
     )
   )
+
+
+(defn show-confirmation-dialog [this positive-func]
+  "Показать диалог Вы уверены ?"
+  (safe-for-ui
+    (-> (AlertDialog$Builder. this)
+        (.setMessage "Вы уверены?")
+        (.setCancelable true)
+        (.setPositiveButton "Да" (reify DialogInterface$OnClickListener
+                                   (onClick [_ dialog id]
+                                     (.dismiss dialog)
+                                     (positive-func))))
+        (.setNegativeButton "Нет" (reify DialogInterface$OnClickListener
+                                    (onClick [_ dialog id]
+                                      (.cancel dialog))))
+        .create
+        .show)))

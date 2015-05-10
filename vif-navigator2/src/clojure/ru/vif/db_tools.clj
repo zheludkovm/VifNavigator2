@@ -55,21 +55,22 @@
   )
 
 (defn delete
+  "Удаляет все записи относящиеся к записи с номером no"
   [^TaggedDatabase tagged-db table-name column value]
 
   (.delete ^SQLiteDatabase (.db tagged-db) (name table-name) (str (name column) "=" value) nil)
   )
 
 (defn delete-all
+  "Полная очистка базы"
   [this]
   (let [tagged-db (get-db this)]
     (.delete ^SQLiteDatabase (.db tagged-db) (name :tree_entries) nil nil)
     )
   )
 
-
-
 (defn store-persistant-data!
+  "Сохраняет записи в базу, удаляет помеченные на удаление"
   [this
    ^vif-tree merged-tree
    ^parse-data new-entries]
@@ -93,6 +94,7 @@
   )
 
 (defn store-visited!
+  "Помечает запись в базе как просмотренную"
   ([this no]
    (let [db (get-db this)]
      (store-visited! this db no)
@@ -104,6 +106,7 @@
   )
 
 (defn store-subtree-visited!
+  "Помечает список записей в базе как просмотренные"
   [this no-seq]
   (log/d "mark subtree visited!")
   (let [db (get-db this)]
@@ -116,6 +119,7 @@
   )
 
 (defn store-all-visited!
+  "Помечает все записи в базе как просмотренные"
   [this]
   (log/d "mark all visited!")
   (let [db (get-db this)]
@@ -125,6 +129,7 @@
 
 
 (defn load-stored-vif-tree
+  "Загрузка записей из базы"
   [this]
   (log/d "Load stored tree!")
   (let [db (get-db this)
