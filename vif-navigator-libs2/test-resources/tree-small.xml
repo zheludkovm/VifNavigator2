@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes"?>
+<root>
+    <lastEvent>1322528</lastEvent>
+    <event no="28AC91" type="add" parent="0">
+        <title>Вышла моя новая книга - о &quot;деле Таврина&quot;</title>
+        <author>Одессит</author>
+        <date>09.02.2015 23:35:14</date>
+        <size>1262</size>
+        <crc>2332670132</crc>
+    </event>
+    <event no="28AC91" type="fix" mode="1" />
+    <event no="28AFA8" type="add" parent="0">
+        <title>Забыл указать эл. адрес</title>
+        <author>Одессит</author>
+        <date>11.02.2015 15:48:25</date>
+        <size>66</size>
+        <crc>3386225178</crc>
+    </event>
+
+    <event no="291044" type="add" parent="0">
+        <title>БТР-3 на полигоне Широкий Лан</title>
+        <author>BP~TOR</author>
+        <date>27.04.2015 10:38:32</date>
+        <size>1206</size>
+        <crc>1676949484</crc>
+    </event>
+    <event no="291566" type="add" parent="291044">
+        <title>Рекламный ролик НГУ</title>
+        <author>BP~TOR</author>
+        <date>30.04.2015 13:24:16</date>
+        <size>187</size>
+        <crc>3866926325</crc>
+    </event>
+    <event no="291565" type="add" parent="291566">
+        <title>М252 на  Яворовском полигоне</title>
+        <author>BP~TOR</author>
+        <date>30.04.2015 13:20:42</date>
+        <size>118</size>
+        <crc>3079268926</crc>
+    </event>
+    <event no="2914AB" type="add" parent="291566">
+        <title>АТЦ располагаает списком иностранных советников в ДНР/ЛНР</title>
+        <author>BP~TOR</author>
+        <date>29.04.2015 23:11:42</date>
+        <size>994</size>
+        <crc>2457194809</crc>
+    </event>
+    <event no="291566" type="del" parent="291044"/>
+    <event no="291044" type="parent" parent="28AC91"/>
+</root>

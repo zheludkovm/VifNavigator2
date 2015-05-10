@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">ВИФ Навигатор</string>
+  <string name="format_bold_black"><![CDATA[<font color=\"#000000\"><b>:%s</b></font>]]></string>
+  <string name="main_title"><![CDATA[<font color=\"#1E581E\"><b>ВИФ2NE</b></font>]]></string>
+
+  <string name="process_loading_message">Загрузка сообщения</string>
+  <string name="error_loading_message">Не удалось скачать сообщение!</string>
+  <string name="process_loading_tree">Загрузка данных</string>
+  <string name="error_loading_tree">Не удалось загрузить данные!</string>
+  <string name="process_tree">Обработка данных</string>
+  <string name="error_process_tree">Не удалось загрузить данные!</string>
+  <string name="init_tree">Инициализация</string>
+  <string name="error_init_tree">Не удалось инициализировать данные!</string>
+
+  <string name="message_format" formatted="false"><![CDATA[
+    %s<br>
+    Дата <b> %s <b><br><br>
+    %s
+    ]]></string>
+
+  <string name="title_format" formatted="false"><![CDATA[От <b> %s <b><br>]]></string>
+  <string name="visited_mark" formatted="false"><![CDATA[(<font color=\"#1E581E\"><b>+</b></font>)]]></string>
+  <string name="not_visited_mark" formatted="false"><![CDATA[(<font color=\"red\"><b>x</b></font>)]]></string>
+  <string name="not_visited_mark_zero" formatted="false"><![CDATA[(<font color=\"gray\"><b>0</b></font>)]]></string>
+  <string name="not_visited_count" formatted="false"><![CDATA[<font color=\"red\">+%s</font>]]></string>
+  <string name="visited_count_zero" formatted="false"><![CDATA[<font color=\"#1E581E\">+0</font>]]></string>
+  <string name="child_count_format" formatted="false"><![CDATA[(%s)]]></string>
+
+  <string name="button_reset" formatted="false">Сброс!</string>
+  <string name="button_set_all_visited" formatted="false">Просмотренно</string>
+
+
+</resources>

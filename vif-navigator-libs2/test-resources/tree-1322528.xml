@@ -1,0 +1,838 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes"?>
+<root>
+    <lastEvent>1322649</lastEvent>
+    <event no="2917A3" type="add" parent="291772">
+        <title>Re: &quot;Томагавком&quot; по...</title>
+        <author>val462004</author>
+        <date>03.05.2015 12:17:23</date>
+        <size>675</size>
+        <crc>1726105594</crc>
+    </event>
+    <event no="2917A4" type="add" parent="29178D">
+        <title>Re: Собственно, так...</title>
+        <author>А.Никольский</author>
+        <date>03.05.2015 12:28:54</date>
+        <size>349</size>
+        <crc>189000322</crc>
+    </event>
+    <event no="2917A5" type="add" parent="2917A1">
+        <title>так и &quot;там&quot; тоже - кинули ящик с вертолёта, и - привет. Но.</title>
+        <author>bedal</author>
+        <date>03.05.2015 12:30:51</date>
+        <size>123</size>
+        <crc>1995022579</crc>
+    </event>
+    <event no="2917A6" type="add" parent="29179A">
+        <title>красивым он от этого не стал</title>
+        <author>bedal</author>
+        <date>03.05.2015 12:33:50</date>
+        <size>82</size>
+        <crc>429717613</crc>
+    </event>
+    <event no="2917A7" type="add" parent="29178C">
+        <title>были какие то опытные работы по запусканию ракет со штыка как с направляющей</title>
+        <author>Сергей Зыков</author>
+        <date>03.05.2015 12:40:43</date>
+        <size>34</size>
+        <crc>2293408842</crc>
+    </event>
+    <event no="2917A8" type="add" parent="29179F">
+        <title>Понятно, что положительно.)) (-)</title>
+        <author>Bronevik</author>
+        <date>03.05.2015 12:43:02</date>
+        <size>0</size>
+        <crc>1526542570</crc>
+    </event>
+    <event no="2917A9" type="add" parent="291798">
+        <title>А &quot;В августе...&quot; без книжки смотреть вообще Нельзя (-)</title>
+        <author>Мазила</author>
+        <date>03.05.2015 12:44:17</date>
+        <size>0</size>
+        <crc>2584157210</crc>
+    </event>
+    <event no="2917AA" type="add" parent="29177D">
+        <title>в 67-м кажется выходило к юбилею Софьи Власьевны.</title>
+        <author>Сергей Зыков</author>
+        <date>03.05.2015 12:46:11</date>
+        <size>129</size>
+        <crc>1145180294</crc>
+    </event>
+    <event no="2917AB" type="add" parent="29173F">
+        <title>вики</title>
+        <author>Сергей Зыков</author>
+        <date>03.05.2015 12:50:51</date>
+        <size>185</size>
+        <crc>1628489698</crc>
+    </event>
+    <event no="2917AC" type="add" parent="2917A7">
+        <title>Спрошу автора - как ответит, отпишусь (-)</title>
+        <author>Манлихер</author>
+        <date>03.05.2015 12:52:45</date>
+        <size>0</size>
+        <crc>488309226</crc>
+    </event>
+    <event no="2917AD" type="add" parent="29177A">
+        <title>Re: Банды в...</title>
+        <author>BallsBuster2</author>
+        <date>03.05.2015 12:54:58</date>
+        <size>712</size>
+        <crc>1528966733</crc>
+    </event>
+    <event no="2917AE" type="add" parent="29168A">
+        <title>Re: Дна не</title>
+        <author>val462004</author>
+        <date>03.05.2015 13:02:32</date>
+        <size>315</size>
+        <crc>2391865243</crc>
+    </event>
+    <event no="2917AF" type="add" parent="291613">
+        <title>Сорри - правильные ссылки на сканы</title>
+        <author>Манлихер</author>
+        <date>03.05.2015 13:02:58</date>
+        <size>1302</size>
+        <crc>873298098</crc>
+    </event>
+    <event no="2917B0" type="add" parent="2917A4">
+        <title>Re: Собственно, так...</title>
+        <author>Carabin</author>
+        <date>03.05.2015 13:03:29</date>
+        <size>1966</size>
+        <crc>2191854300</crc>
+    </event>
+    <event no="2917B1" type="add" parent="2917A5">
+        <title>Re: так и...</title>
+        <author>Carabin</author>
+        <date>03.05.2015 13:04:36</date>
+        <size>216</size>
+        <crc>221572357</crc>
+    </event>
+    <event no="2917B2" type="add" parent="2917A1">
+        <title>Re: Банды в...</title>
+        <author>Carabin</author>
+        <date>03.05.2015 13:10:20</date>
+        <size>1362</size>
+        <crc>460147399</crc>
+    </event>
+    <event no="2917B3" type="add" parent="2917B0">
+        <title>Re: Собственно, так...</title>
+        <author>А.Никольский</author>
+        <date>03.05.2015 13:24:01</date>
+        <size>244</size>
+        <crc>4263025392</crc>
+    </event>
+    <event no="2917B4" type="add" parent="2917B2">
+        <title>Re: Банды в...</title>
+        <author>val462004</author>
+        <date>03.05.2015 13:27:28</date>
+        <size>782</size>
+        <crc>4257523611</crc>
+    </event>
+    <event no="2917B5" type="del" parent="291044"/>
+    <event no="2917B6" type="add" parent="291044">
+        <title>Подрыв бензовоза между Попасной и Артемовском</title>
+        <author>BP~TOR</author>
+        <date>03.05.2015 13:35:32</date>
+        <size>506</size>
+        <crc>1962456660</crc>
+    </event>
+    <event no="2917B7" type="add" parent="291044">
+        <title>Re: БТР-3 на...</title>
+        <author>BP~TOR</author>
+        <date>03.05.2015 13:39:48</date>
+        <size>342</size>
+        <crc>427992598</crc>
+    </event>
+    <event no="2917B8" type="add" parent="291045">
+        <title>Саксоны там же</title>
+        <author>BP~TOR</author>
+        <date>03.05.2015 13:41:28</date>
+        <size>691</size>
+        <crc>1430612298</crc>
+    </event>
+    <event no="2917B9" type="add" parent="2917B3">
+        <title>Re: Собственно, так...</title>
+        <author>Carabin</author>
+        <date>03.05.2015 13:42:58</date>
+        <size>1367</size>
+        <crc>1319831323</crc>
+    </event>
+    <event no="2917BA" type="add" parent="291045">
+        <title>Re: БТР-70 там...</title>
+        <author>BP~TOR</author>
+        <date>03.05.2015 13:43:12</date>
+        <size>924</size>
+        <crc>2703891042</crc>
+    </event>
+    <event no="2917BB" type="add" parent="291778">
+        <title>Спасибо, интересно. Особенно удивила подкалиберная пуля. (-)</title>
+        <author>GiantToad</author>
+        <date>03.05.2015 13:43:15</date>
+        <size>0</size>
+        <crc>2353418017</crc>
+    </event>
+    <event no="2917BC" type="add" parent="291045">
+        <title>Ноны там же</title>
+        <author>BP~TOR</author>
+        <date>03.05.2015 13:43:58</date>
+        <size>340</size>
+        <crc>930239541</crc>
+    </event>
+    <event no="2917BD" type="add" parent="0">
+        <title>Re: [2Виктор Крестинин] Вопрос по ранним Т-64</title>
+        <author>Чобиток Василий</author>
+        <date>03.05.2015 13:46:08</date>
+        <size>1594</size>
+        <crc>2871273453</crc>
+    </event>
+    <event no="2917BE" type="add" parent="2917B4">
+        <title>Re: Банды в...</title>
+        <author>Carabin</author>
+        <date>03.05.2015 13:54:45</date>
+        <size>1357</size>
+        <crc>1783101247</crc>
+    </event>
+    <event no="2917BF" type="add" parent="2915FF">
+        <title>О... СБУ уже вняло советам и усилила контроль - результат на лицо</title>
+        <author>Александр</author>
+        <date>03.05.2015 13:57:10</date>
+        <size>1545</size>
+        <crc>2059938016</crc>
+    </event>
+    <event no="2917C0" type="add" parent="2917B0">
+        <title>Всё  же мне  кажется, что это разные вещи.</title>
+        <author>Пехота</author>
+        <date>03.05.2015 14:08:12</date>
+        <size>329</size>
+        <crc>2534828459</crc>
+    </event>
+    <event no="2917C1" type="add" parent="2917AD">
+        <title>Re: Банды в...</title>
+        <author>Пехота</author>
+        <date>03.05.2015 14:14:06</date>
+        <size>525</size>
+        <crc>3121675808</crc>
+    </event>
+    <event no="2917C2" type="add" parent="0">
+        <title>Помогите узнать от какой техники трак.</title>
+        <author>kapral250</author>
+        <date>03.05.2015 14:20:26</date>
+        <size>883</size>
+        <crc>1613420232</crc>
+    </event>
+    <event no="2917C3" type="add" parent="0">
+        <title>расход снарядов в цусиме</title>
+        <author>Добрый Толстун</author>
+        <date>03.05.2015 14:23:03</date>
+        <size>726</size>
+        <crc>935683527</crc>
+    </event>
+    <event no="2917C4" type="add" parent="2917C3">
+        <title>По слухам, Зиновий Петрович очень не любил...</title>
+        <author>Grozny Vlad</author>
+        <date>03.05.2015 14:30:08</date>
+        <size>223</size>
+        <crc>976156844</crc>
+    </event>
+    <event no="2917C5" type="add" parent="291796">
+        <title>Re: Совершенно неверно</title>
+        <author>nnn</author>
+        <date>03.05.2015 14:38:02</date>
+        <size>324</size>
+        <crc>1613146360</crc>
+    </event>
+    <event no="2917C6" type="add" parent="2917C0">
+        <title>Re: Всё же...</title>
+        <author>Carabin</author>
+        <date>03.05.2015 14:38:24</date>
+        <size>1161</size>
+        <crc>3213114495</crc>
+    </event>
+    <event no="2917C7" type="add" parent="2917C1">
+        <title>Будет нужно - нагнут они их</title>
+        <author>Carabin</author>
+        <date>03.05.2015 15:00:20</date>
+        <size>59</size>
+        <crc>3066594636</crc>
+    </event>
+    <event no="2917C8" type="add" parent="291772">
+        <title>Re: &quot;Томагавком&quot; по...</title>
+        <author>Amur</author>
+        <date>03.05.2015 15:15:30</date>
+        <size>544</size>
+        <crc>2129251274</crc>
+    </event>
+    <event no="2917C9" type="add" parent="0">
+        <title>Как проходила линия фронта 43, 49, 33 А  12-25 апреля 1942 г. в районе (+)</title>
+        <author>Фёдорыч</author>
+        <date>03.05.2015 15:29:40</date>
+        <size>253</size>
+        <crc>1322617618</crc>
+    </event>
+    <event no="2917CA" type="add" parent="291796">
+        <title>мелкий придиразм</title>
+        <author>vavilon</author>
+        <date>03.05.2015 15:34:56</date>
+        <size>134</size>
+        <crc>1319992039</crc>
+    </event>
+    <event no="2917CB" type="add" parent="0">
+        <title>Начало наземеной операции в Йемене?</title>
+        <author>BP~TOR</author>
+        <date>03.05.2015 15:46:06</date>
+        <size>538</size>
+        <crc>2201760531</crc>
+    </event>
+    <event no="2917CC" type="add" parent="2917C3">
+        <title>Просто японцы не выпускали больше снарядов</title>
+        <author>Centurion18</author>
+        <date>03.05.2015 15:47:50</date>
+        <size>100</size>
+        <crc>3898631164</crc>
+    </event>
+    <event no="2917CD" type="add" parent="0">
+        <title>Про ВИО, что ли</title>
+        <author>narrator</author>
+        <date>03.05.2015 16:02:41</date>
+        <size>410</size>
+        <crc>643836644</crc>
+    </event>
+    <event no="2917CE" type="add" parent="291778">
+        <title>Re: Коллекция необычных...</title>
+        <author>Добрый Толстун</author>
+        <date>03.05.2015 16:08:47</date>
+        <size>45</size>
+        <crc>1119223678</crc>
+    </event>
+    <event no="2917CF" type="add" parent="2917A3">
+        <title>Спасибо (-)</title>
+        <author>Carabin</author>
+        <date>03.05.2015 16:26:56</date>
+        <size>0</size>
+        <crc>639639309</crc>
+    </event>
+    <event no="2917D0" type="add" parent="2917C8">
+        <title>Спс (-)</title>
+        <author>Carabin</author>
+        <date>03.05.2015 16:27:24</date>
+        <size>0</size>
+        <crc>439204811</crc>
+    </event>
+    <event no="2917D1" type="add" parent="29178F">
+        <title>Re: ситуация сильно улучшилась на Х %  - образцовая доверчивость  ...</title>
+        <author>Pav.Riga</author>
+        <date>03.05.2015 16:30:17</date>
+        <size>239</size>
+        <crc>1223443367</crc>
+    </event>
+    <event no="2917D2" type="add" parent="2917C7">
+        <title>Re:  -  они (банды) часть их истеблишмента,нагибать не позволят ...</title>
+        <author>Pav.Riga</author>
+        <date>03.05.2015 16:40:25</date>
+        <size>307</size>
+        <crc>129485925</crc>
+    </event>
+    <event no="2917D3" type="add" parent="2917D1">
+        <title>Re: ситуация сильно</title>
+        <author>thodin</author>
+        <date>03.05.2015 16:48:42</date>
+        <size>300</size>
+        <crc>9586584</crc>
+    </event>
+    <event no="2917D4" type="add" parent="0">
+        <title>Мы мирные люди, но наш бронепоезд…</title>
+        <author>13</author>
+        <date>03.05.2015 17:01:43</date>
+        <size>667</size>
+        <crc>1088475882</crc>
+    </event>
+    <event no="2917D5" type="add" parent="2917C9">
+        <title>Re: Как проходила...</title>
+        <author>Пауль</author>
+        <date>03.05.2015 17:13:35</date>
+        <size>441</size>
+        <crc>2266497592</crc>
+    </event>
+    <event no="2917D6" type="add" parent="2917CB">
+        <title>Re: Начало наземеной...</title>
+        <author>ndvahin</author>
+        <date>03.05.2015 17:14:27</date>
+        <size>76</size>
+        <crc>2919251921</crc>
+    </event>
+    <event no="2917D7" type="add" parent="2913C0">
+        <title>Вопрос в том, сколько объема прикрывает пояс, а сколько остается под прикрытием</title>
+        <author>Kimsky</author>
+        <date>03.05.2015 17:27:36</date>
+        <size>27</size>
+        <crc>1329349659</crc>
+    </event>
+    <event no="2917D8" type="add" parent="2917CE">
+        <title>В 70тые была модная тема. Купировалась металлическими листами в БЖ (-)</title>
+        <author>МУРЛО</author>
+        <date>03.05.2015 17:30:20</date>
+        <size>0</size>
+        <crc>1416858764</crc>
+    </event>
+    <event no="2917D9" type="add" parent="2917D4">
+        <title>туда можно салютные пушки поставить</title>
+        <author>Сергей Зыков</author>
+        <date>03.05.2015 17:31:05</date>
+        <size>350</size>
+        <crc>3144550286</crc>
+    </event>
+    <event no="2917DA" type="add" parent="2917C4">
+        <title>наверняка же писарчук ошибся</title>
+        <author>Сергей Зыков</author>
+        <date>03.05.2015 17:35:49</date>
+        <size>45</size>
+        <crc>748342133</crc>
+    </event>
+    <event no="2917DB" type="add" parent="291799">
+        <title>А И-16 чем не угодил? (-)</title>
+        <author>Гегемон</author>
+        <date>03.05.2015 17:39:24</date>
+        <size>0</size>
+        <crc>8085979</crc>
+    </event>
+    <event no="2917DC" type="add" parent="2917D4">
+        <title>Re: Мы мирные...</title>
+        <author>Baren</author>
+        <date>03.05.2015 17:45:07</date>
+        <size>385</size>
+        <crc>4276818858</crc>
+    </event>
+    <event no="2917DD" type="add" parent="2917D3">
+        <title>Re: ситуация сильно-  штатовские агитки не вызывают доверия  даже у их населения</title>
+        <author>Pav.Riga</author>
+        <date>03.05.2015 17:54:33</date>
+        <size>719</size>
+        <crc>1564443973</crc>
+    </event>
+    <event no="2917DE" type="add" parent="29177A">
+        <title>США крайне структурированная страна</title>
+        <author>apple16</author>
+        <date>03.05.2015 17:55:02</date>
+        <size>736</size>
+        <crc>1318083837</crc>
+    </event>
+    <event no="2917DF" type="add" parent="2917D5">
+        <title>Re: Как проходила...</title>
+        <author>Фёдорыч</author>
+        <date>03.05.2015 17:55:49</date>
+        <size>389</size>
+        <crc>549997295</crc>
+    </event>
+    <event no="2917E0" type="add" parent="2917C2">
+        <title>Re: Помогите узнать...</title>
+        <author>Юрий А.</author>
+        <date>03.05.2015 18:06:54</date>
+        <size>639</size>
+        <crc>3773345455</crc>
+    </event>
+    <event no="2917E1" type="add" parent="0">
+        <title>в Эстонии фильм сняли про войну... &quot;1944&quot;</title>
+        <author>Сергей Зыков</author>
+        <date>03.05.2015 18:07:52</date>
+        <size>2798</size>
+        <crc>3471289272</crc>
+    </event>
+    <event no="2917E2" type="add" parent="2917DD">
+        <title>Re: ситуация сильно-...</title>
+        <author>thodin</author>
+        <date>03.05.2015 18:13:52</date>
+        <size>1484</size>
+        <crc>3158943285</crc>
+    </event>
+    <event no="2917E3" type="add" parent="291778">
+        <title>Re:На последней картинке калибр 76 мм?(-)</title>
+        <author>Stein</author>
+        <date>03.05.2015 18:23:23</date>
+        <size>0</size>
+        <crc>1721419690</crc>
+    </event>
+    <event no="2917E4" type="add" parent="2917E3">
+        <title>Недумаю. Охотничьи гильзы, стандартные, двух &quot;размеров&quot; -70 и 76 мм длинной. (-)</title>
+        <author>объект 925</author>
+        <date>03.05.2015 18:26:50</date>
+        <size>0</size>
+        <crc>1720696338</crc>
+    </event>
+    <event no="2917E5" type="add" parent="2917E3">
+        <title>Стандартный винтовоный калибр нато с неправильными циферками (-)</title>
+        <author>Koshak</author>
+        <date>03.05.2015 18:29:28</date>
+        <size>0</size>
+        <crc>3658497159</crc>
+    </event>
+    <event no="2917E6" type="add" parent="2917E5">
+        <title>&quot;патрон для ..ГЛАДКОСТВОЛьНОГО оружия&quot; (-)</title>
+        <author>объект 925</author>
+        <date>03.05.2015 18:32:46</date>
+        <size>0</size>
+        <crc>993172760</crc>
+    </event>
+    <event no="2917E7" type="add" parent="0">
+        <title>Выставка работ ремонтных предприятий, 1943 год</title>
+        <author>Чобиток Василий</author>
+        <date>03.05.2015 18:36:31</date>
+        <size>291</size>
+        <crc>2605037310</crc>
+    </event>
+    <event no="2917E8" type="add" parent="291787">
+        <title>Где такие места?</title>
+        <author>Кострома</author>
+        <date>03.05.2015 18:46:02</date>
+        <size>454</size>
+        <crc>1426110161</crc>
+    </event>
+    <event no="2917E9" type="add" parent="29178D">
+        <title>Это фигня полная</title>
+        <author>Кострома</author>
+        <date>03.05.2015 18:47:07</date>
+        <size>511</size>
+        <crc>3823911263</crc>
+    </event>
+    <event no="2917EA" type="add" parent="2917E6">
+        <title>Я не об этом, я о том, что нам это не первая ошибка, имхо журнал МАКСИМ отметилс (-)</title>
+        <author>Koshak</author>
+        <date>03.05.2015 18:50:09</date>
+        <size>0</size>
+        <crc>3289272943</crc>
+    </event>
+    <event no="2917EB" type="add" parent="2917E4">
+        <title>Ну вообще-то 67, 70 и 75, только под первую сейчас только старые ружья есть. (-)</title>
+        <author>Skwoznyachok</author>
+        <date>03.05.2015 19:05:15</date>
+        <size>0</size>
+        <crc>3702436441</crc>
+    </event>
+    <event no="2917EC" type="add" parent="2917E9">
+        <title>Re: Это фигня...</title>
+        <author>Carabin</author>
+        <date>03.05.2015 19:07:38</date>
+        <size>635</size>
+        <crc>4088197103</crc>
+    </event>
+    <event no="2917ED" type="add" parent="2917EB">
+        <title>75- в России ето 76-мм. (-)</title>
+        <author>объект 925</author>
+        <date>03.05.2015 19:12:20</date>
+        <size>0</size>
+        <crc>3619101495</crc>
+    </event>
+    <event no="2917EE" type="add" parent="2917EC">
+        <title>Я работал в других структурах</title>
+        <author>Кострома</author>
+        <date>03.05.2015 19:13:30</date>
+        <size>761</size>
+        <crc>1201174187</crc>
+    </event>
+    <event no="2917EF" type="add" parent="0">
+        <title>По сроку возвращения &quot;Авроры&quot; вопрос.</title>
+        <author>Мазила</author>
+        <date>03.05.2015 19:14:44</date>
+        <size>333</size>
+        <crc>3738952578</crc>
+    </event>
+    <event no="2917F0" type="add" parent="2917EF">
+        <title>Ре: к 100-ю ВОСР точно сделают. :) (-)</title>
+        <author>объект 925</author>
+        <date>03.05.2015 19:20:29</date>
+        <size>0</size>
+        <crc>155036010</crc>
+    </event>
+    <event no="2917F1" type="add" parent="2917E0">
+        <title>Re: Помогите узнать...</title>
+        <author>kapral250</author>
+        <date>03.05.2015 19:25:48</date>
+        <size>470</size>
+        <crc>1923599470</crc>
+    </event>
+    <event no="2917F2" type="add" parent="2917E4">
+        <title>На картинке гильза без закраины (-)</title>
+        <author>AMX</author>
+        <date>03.05.2015 19:44:27</date>
+        <size>0</size>
+        <crc>385314404</crc>
+    </event>
+    <event no="2917F3" type="add" parent="2917ED">
+        <title>Даже не в России 3&quot; это не 75мм (-)</title>
+        <author>AMX</author>
+        <date>03.05.2015 19:45:30</date>
+        <size>0</size>
+        <crc>1791747</crc>
+    </event>
+    <event no="2917F4" type="add" parent="2917EE">
+        <title>А я вот работаю</title>
+        <author>Carabin</author>
+        <date>03.05.2015 19:55:53</date>
+        <size>946</size>
+        <crc>731488136</crc>
+    </event>
+    <event no="2917F5" type="add" parent="291778">
+        <title>Re: Коллекция необычных...</title>
+        <author>Max Popenker</author>
+        <date>03.05.2015 20:06:29</date>
+        <size>2486</size>
+        <crc>1065678981</crc>
+    </event>
+    <event no="2917F6" type="add" parent="2917C6">
+        <title>Re: Всё же...</title>
+        <author>Ciaran</author>
+        <date>03.05.2015 20:07:23</date>
+        <size>207</size>
+        <crc>3101662839</crc>
+    </event>
+    <event no="2917F7" type="add" parent="2917F2">
+        <title>Так может действительно 76мм ГСП? (-)</title>
+        <author>Иван Уфимцев</author>
+        <date>03.05.2015 20:08:16</date>
+        <size>2</size>
+        <crc>1179387466</crc>
+    </event>
+    <event no="2917F8" type="add" parent="2917F5">
+        <title>Вот ты какая, противозенитная пушка.</title>
+        <author>Иван Уфимцев</author>
+        <date>03.05.2015 20:11:42</date>
+        <size>487</size>
+        <crc>760598972</crc>
+    </event>
+    <event no="2917F9" type="add" parent="2917D6">
+        <title>Дез помощи Старшего Брата, саудиты будут воевать там до второго пришествия. (-)</title>
+        <author>Скиф</author>
+        <date>03.05.2015 20:11:54</date>
+        <size>0</size>
+        <crc>856570035</crc>
+    </event>
+    <event no="2917FA" type="add" parent="29179B">
+        <title>У FW189 есть своя прелесть (+)</title>
+        <author>Роман Алымов</author>
+        <date>03.05.2015 20:19:45</date>
+        <size>175</size>
+        <crc>2782224136</crc>
+    </event>
+    <event no="2917FB" type="add" parent="291294">
+        <title>+Made in Uk.... Смуглянка... лютый кич</title>
+        <author>Сергей Зыков</author>
+        <date>03.05.2015 20:23:08</date>
+        <size>137</size>
+        <crc>1778073133</crc>
+    </event>
+    <event no="2917FC" type="add" parent="2917D4">
+        <title>Козьма Минин</title>
+        <author>i17</author>
+        <date>03.05.2015 20:27:30</date>
+        <size>438</size>
+        <crc>2899274564</crc>
+    </event>
+    <event no="2917FD" type="add" parent="29177A">
+        <title>ну, тут и трава</title>
+        <author>Alpaka</author>
+        <date>03.05.2015 20:41:51</date>
+        <size>90</size>
+        <crc>3392847896</crc>
+    </event>
+    <event no="2917FE" type="add" parent="2915A2">
+        <title>Вот Мая Плесецкая ушла-кто ее заменит?</title>
+        <author>Alpaka</author>
+        <date>03.05.2015 20:47:52</date>
+        <size>8</size>
+        <crc>2035251904</crc>
+    </event>
+    <event no="2917FF" type="add" parent="29167A">
+        <title>за последние 100 лет.</title>
+        <author>Alpaka</author>
+        <date>03.05.2015 20:48:53</date>
+        <size>46</size>
+        <crc>198230378</crc>
+    </event>
+    <event no="291800" type="add" parent="2917E7">
+        <title>Спасибо большое, весьма интересный альбом (+)</title>
+        <author>Роман Алымов</author>
+        <date>03.05.2015 20:49:42</date>
+        <size>106</size>
+        <crc>398143738</crc>
+    </event>
+    <event no="291801" type="add" parent="291786">
+        <title>Re: кстати, был...</title>
+        <author>INeo1940</author>
+        <date>03.05.2015 21:00:09</date>
+        <size>698</size>
+        <crc>1719578188</crc>
+    </event>
+    <event no="291802" type="add" parent="29175E">
+        <title>Это на самом деле &quot;Хорнетом&quot; по голубям</title>
+        <author>HorNet</author>
+        <date>03.05.2015 21:02:48</date>
+        <size>650</size>
+        <crc>3074861769</crc>
+    </event>
+    <event no="291803" type="add" parent="29176A">
+        <title>Re: Тут лучше...</title>
+        <author>INeo1940</author>
+        <date>03.05.2015 21:03:46</date>
+        <size>160</size>
+        <crc>3048753291</crc>
+    </event>
+    <event no="291804" type="add" parent="2917E1">
+        <title>Я не смотрел</title>
+        <author>СОР</author>
+        <date>03.05.2015 21:11:01</date>
+        <size>88</size>
+        <crc>4152964547</crc>
+    </event>
+    <event no="291805" type="add" parent="2917FA">
+        <title>Филин: Угу... (с)</title>
+        <author>Иван Уфимцев</author>
+        <date>03.05.2015 21:13:47</date>
+        <size>430</size>
+        <crc>352927902</crc>
+    </event>
+    <event no="291806" type="add" parent="0">
+        <title>Донбасская пленница или бочка-водовозка снова в бою</title>
+        <author>Сергей Зыков</author>
+        <date>03.05.2015 21:16:44</date>
+        <size>406</size>
+        <crc>3985536906</crc>
+    </event>
+    <event no="291807" type="add" parent="291804">
+        <title>Re: Я не...</title>
+        <author>Сергей Зыков</author>
+        <date>03.05.2015 21:22:22</date>
+        <size>275</size>
+        <crc>3815173700</crc>
+    </event>
+    <event no="291808" type="add" parent="291803">
+        <title>Re: Тут лучше...</title>
+        <author>Гегемон</author>
+        <date>03.05.2015 21:34:29</date>
+        <size>302</size>
+        <crc>515214319</crc>
+    </event>
+    <event no="291809" type="add" parent="2917E2">
+        <title>Re: ситуация - есть  ложь и есть Статистика...</title>
+        <author>Pav.Riga</author>
+        <date>03.05.2015 21:38:06</date>
+        <size>873</size>
+        <crc>1870013509</crc>
+    </event>
+    <event no="29180A" type="add" parent="29176E">
+        <title>Re: Книга История...</title>
+        <author>Пауль</author>
+        <date>03.05.2015 21:45:08</date>
+        <size>1019</size>
+        <crc>350407274</crc>
+    </event>
+    <event no="29180B" type="add" parent="291809">
+        <title>Re: ситуация -</title>
+        <author>thodin</author>
+        <date>03.05.2015 21:51:59</date>
+        <size>432</size>
+        <crc>1290369318</crc>
+    </event>
+    <event no="29180C" type="add" parent="2917FB">
+        <title>Мама! Это - только дихлофосом. (-)</title>
+        <author>инженегр</author>
+        <date>03.05.2015 21:56:42</date>
+        <size>0</size>
+        <crc>2546923355</crc>
+    </event>
+    <event no="29180D" type="add" parent="29180A">
+        <title>Re: Книга История...</title>
+        <author>INeo1940</author>
+        <date>03.05.2015 22:12:47</date>
+        <size>509</size>
+        <crc>910658319</crc>
+    </event>
+    <event no="29180E" type="add" parent="0">
+        <title>Парад на Красной Площади 7 ноября 1931 года</title>
+        <author>INeo1940</author>
+        <date>03.05.2015 22:16:19</date>
+        <size>220</size>
+        <crc>4018250203</crc>
+    </event>
+    <event no="29180F" type="add" parent="2917FC">
+        <title>Re: Козьма Минин</title>
+        <author>Железный дорожник</author>
+        <date>03.05.2015 22:25:33</date>
+        <size>1336</size>
+        <crc>3155345589</crc>
+    </event>
+    <event no="291810" type="add" parent="2917FB">
+        <title>Re:Мля, это сок украинского безмозгия(-)</title>
+        <author>Stein</author>
+        <date>03.05.2015 22:28:46</date>
+        <size>0</size>
+        <crc>3617233015</crc>
+    </event>
+    <event no="291811" type="add" parent="29180F">
+        <title>Понятно, спасибо за внесенную ясность. (-)</title>
+        <author>i17</author>
+        <date>03.05.2015 22:34:04</date>
+        <size>0</size>
+        <crc>4163301530</crc>
+    </event>
+    <event no="291812" type="add" parent="2917FC">
+        <title>Re: Козьма Минин</title>
+        <author>Юрий А.</author>
+        <date>03.05.2015 22:40:00</date>
+        <size>382</size>
+        <crc>180202108</crc>
+    </event>
+    <event no="291813" type="add" parent="2917DE">
+        <title>Re: США крайне...</title>
+        <author>BallsBuster2</author>
+        <date>03.05.2015 22:49:39</date>
+        <size>67</size>
+        <crc>3802785709</crc>
+    </event>
+    <event no="291814" type="add" parent="291812">
+        <title>Re: Козьма Минин</title>
+        <author>Железный дорожник</author>
+        <date>03.05.2015 22:51:01</date>
+        <size>321</size>
+        <crc>2675413786</crc>
+    </event>
+    <event no="291815" type="add" parent="291814">
+        <title>Re: Козьма Минин</title>
+        <author>Юрий А.</author>
+        <date>03.05.2015 22:55:56</date>
+        <size>356</size>
+        <crc>1872555667</crc>
+    </event>
+    <event no="291816" type="add" parent="29180F">
+        <title>Re: Козьма Минин</title>
+        <author>Ларинцев</author>
+        <date>03.05.2015 22:56:46</date>
+        <size>142</size>
+        <crc>455693759</crc>
+    </event>
+    <event no="291817" type="add" parent="291805">
+        <title>Re: Филин: Угу...</title>
+        <author>Zevs</author>
+        <date>03.05.2015 22:59:49</date>
+        <size>442</size>
+        <crc>3883766013</crc>
+    </event>
+    <event no="291818" type="add" parent="291815">
+        <title>Re: Козьма Минин</title>
+        <author>Железный дорожник</author>
+        <date>03.05.2015 23:04:05</date>
+        <size>114</size>
+        <crc>191240117</crc>
+    </event>
+    <event no="291819" type="add" parent="291792">
+        <title>Re: Военная красота...</title>
+        <author>Чобиток Василий</author>
+        <date>03.05.2015 23:22:51</date>
+        <size>245</size>
+        <crc>491456371</crc>
+    </event>
+    <event no="29181A" type="add" parent="29177C">
+        <title>Однажды было смешно. Потом.</title>
+        <author>Одессит</author>
+        <date>03.05.2015 23:31:09</date>
+        <size>834</size>
+        <crc>2916965519</crc>
+    </event>
+</root>
