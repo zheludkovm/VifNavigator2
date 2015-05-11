@@ -88,6 +88,16 @@
     )
   )
 
+(defn launch-root-activity [a launch-activity]
+  "Запуск activity с набором параметров"
+  (let [^Intent intent (Intent. a (resolve launch-activity))]
+    ;(.addFlags intent (bit-or Intent/FLAG_ACTIVITY_CLEAR_TOP Intent/FLAG_ACTIVITY_NEW_TASK)) ;
+    (.addFlags intent (bit-or Intent/FLAG_ACTIVITY_CLEAR_TOP  Intent/FLAG_ACTIVITY_SINGLE_TOP)) ;
+    (.startActivity a intent)
+    (.finish a)
+    )
+  )
+
 
 (defn get-activity-param [activity paramName]
   "получить именованый параметр activity"
@@ -146,7 +156,7 @@
 (defn sort-tree
   "Отсортировать дерево"
   [tree]
-  (sort-by #(calc-post-weight %)  tree)
+  (sort-by #(calc-post-weight %) tree)
   )
 
 (defn prefs [this]

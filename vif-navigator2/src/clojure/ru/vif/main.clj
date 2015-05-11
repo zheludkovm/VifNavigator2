@@ -114,6 +114,10 @@
     )
   )
 
+(defn go-top[^Activity activity]
+  (on-ui (launch-root-activity activity 'ru.vif.TreeActivity))
+  )
+
 (defn clean-tree
   "Сброс текущих записей и базы"
   [this]
@@ -285,6 +289,7 @@
              :key :main
              :on-create
              (fn [^Activity this bundle]
+               (log/d "create tree activity")
                (on-ui
                  (set-content-view! this [:list-view {:id                 ::main-list-view
                                                       :adapter            (make-adapter this root-tree-items-store true)
@@ -370,7 +375,7 @@
                    (.finish this)
                    (on-ui
                      (let [list-view-tree [:list-view {:id                 ::msg-list-view
-                                                       :adapter            (make-adapter this state false)
+                                                       ;:adapter            (make-adapter this state false)
                                                        :backgroundResource R$color/even
                                                        }
                                            ]]
@@ -386,6 +391,7 @@
                                                                                       :movement-method    (LinkMovementMethod.)
                                                                                       }
                                                                           ]))
+                         (.setAdapter list-view (make-adapter this state false))
                          )
 
                        )
@@ -419,7 +425,8 @@
 
              :on-options-item-selected
              (fn [^Activity this item]
-               (.finish this)
+               ;(.finish this)
+               (go-top this)
                )
              :on-resume
              refresh-msg-activity

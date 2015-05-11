@@ -46,7 +46,9 @@ public class SplashActivity extends Activity {
     }
 
     public void proceed() {
-        startActivity(new Intent("ru.vif.MAIN"));
+        Intent intent = new Intent("ru.vif.MAIN");
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
         finish();
     }
 
