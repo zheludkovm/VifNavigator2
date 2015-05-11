@@ -39,6 +39,8 @@
       (println "trimmed-tree.count=" (count trimmed-tree))
       (println "-------")
       (println (vif-tree-child-nodes merged-tree-updated 0))
+      (println "-------")
+      (println (find-first-non-visited-after merged-tree-info 2666408))
       )
 
     ;(let [tree-zero (slurp "test-resources/tree-zero.xml" :encoding "Cp1251")

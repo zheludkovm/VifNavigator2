@@ -99,22 +99,30 @@
     )
   )
 
-(defn show-message
+(defn show-message-by-no
   "Скачивает сообщение (с прогресс баром), разбирает его и запускает в окне просмотра"
-  [^Activity activity ^TextView caption]
+  [^Activity activity ^Long no]
 
   (future
-    (let [no (.getTag caption)
-          msg (with-progress activity R$string/process_loading_message R$string/error_loading_message #(http/download-message no))
-          no-long (Long. no)
-          ]
-      (set-entry-visited! activity no-long)
-      (on-ui (launch-activity activity 'ru.vif.MsgActivity {PARAM_MSG msg PARAM_NO no}))
+    (let [msg (with-progress activity R$string/process_loading_message R$string/error_loading_message #(http/download-message no))]
+      (set-entry-visited! activity no)
+      (on-ui (launch-activity activity 'ru.vif.MsgActivity {PARAM_MSG msg PARAM_NO (str no)}))
       )
     )
   )
 
-(defn go-top[^Activity activity]
+(defn show-message
+  "Скачивает сообщение (с прогресс баром), разбирает его и запускает в окне просмотра"
+  [^Activity activity ^TextView caption]
+
+  (show-message-by-no activity (Long. (.getTag caption)))
+  )
+
+
+
+(defn go-top
+  "перейти в корень"
+  [^Activity activity]
   (on-ui (launch-root-activity activity 'ru.vif.TreeActivity))
   )
 
@@ -283,6 +291,14 @@
     (calc-main-sub-tree))
   )
 
+(defn show-next-nonvisited
+  "Показать следующее непосещенное сообщение"
+  [this no]
+  (if-let [not-visited-no (model-api/find-first-non-visited-after @tree-data-store no)]
+    (show-message-by-no this not-visited-no)
+    )
+  )
+
 
 (defactivity ru.vif.TreeActivity
              ;"Создает корневое activity со списком сообщений"
@@ -360,6 +376,20 @@
     )
   )
 
+(defn show-up-message
+  "Перейти на уровень выше"
+  [^Activity this ^Long no]
+  (let [parent-no (-> @tree-data-store
+                      :all-entries-map
+                      (get no)
+                      :parent)]
+    (if (= 0 parent-no)
+      (go-top this)
+      (show-message-by-no this parent-no)
+      )
+    )
+  )
+
 (defactivity ru.vif.MsgActivity
              ;"Создает activity с текстом cообщения и дочерними собщениями в дереве"
              :key :msg
@@ -408,20 +438,31 @@
 
              :on-create-options-menu
              (fn [this menu]
-               (safe-for-ui
-                 (menu/make-menu
-                   menu [[:item {
-                                 :title          R$string/button_set_all_visited
-                                 :show-as-action :never
-                                 :on-click       (fn [_]
-                                                   (future
-                                                     (set-recursive-visited! this (get-param-no this))
-                                                     (refresh-msg-activity this)
+               (let [has-not-visited (model-api/has-non-visited @tree-data-store (get-param-no this))]
+                 (safe-for-ui
+                   (menu/make-menu
+                     menu [[:item {
+                                   :icon           R$drawable/up2
+                                   :show-as-action :always
+                                   :on-click       (fn [_] (show-up-message this (get-param-no this)))}]
+                           [:item {
+                                   :icon           (if has-not-visited R$drawable/nonvisited R$drawable/nonvisited_disabled)
+                                   :show-as-action :always
+                                   :enabled        has-not-visited
+                                   :on-click       (fn [_] (show-next-nonvisited this (get-param-no this)))}]
+                           [:item {
+                                   :title          R$string/button_set_all_visited
+                                   :show-as-action :never
+                                   :on-click       (fn [_]
+                                                     (future
+                                                       (set-recursive-visited! this (get-param-no this))
+                                                       (refresh-msg-activity this)
+                                                       )
                                                      )
-                                                   )
-                                 }
-                          ]
-                         ])))
+                                   }
+                            ]
+                           ])))
+               )
 
              :on-options-item-selected
              (fn [^Activity this item]

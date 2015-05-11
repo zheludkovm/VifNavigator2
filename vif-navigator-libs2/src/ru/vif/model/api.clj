@@ -9,6 +9,8 @@
            (ru.vif.model.records vif-xml-entry parse-data vif-tree)
            ))
 
+(def ROOT 0)
+
 (defn parse-xml-entries
   "Разбирает xml и возврщает sequence записей vif-xml"
   [^String xml]
@@ -44,4 +46,12 @@
   "sequence по всем узлам дерева"
   [^vif-tree vif-tree, ^Long no]
   (model-tools/vif-tree-child-nodes vif-tree no)
+  )
+
+(defn find-first-non-visited-after [^vif-tree vif-tree, ^Long after]
+  (model-tools/find-first-non-visited-after vif-tree ROOT after)
+  )
+
+(defn has-non-visited [^vif-tree vif-tree, ^Long root]
+  (some? (model-tools/find-first-non-visited-after vif-tree root root))
   )
