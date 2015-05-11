@@ -28,7 +28,13 @@
   ^{:private true}
   [no]
 
-  #(conj (seq %) no)
+  ;#(conj (sorted-set %) no)
+  (fn [v]
+    (if (nil? v)
+      (sorted-set no)
+      (conj v no)
+      )
+    )
   )
 
 (defn make-zipper
@@ -38,7 +44,7 @@
   (zip/zipper
     (fn [_] true)
     (fn [^Long no]
-      (not-empty (get parent-to-child-no-map no))
+      (not-empty (seq (get parent-to-child-no-map no)))
       )
     nil
     root-no
@@ -94,7 +100,7 @@
              entries-to-delete
              )
 
-      :del (let [child-delete-entries (doall (tree-child-nodes parent-to-child-no-map no))]
+      :del (let [child-delete-entries (tree-child-nodes parent-to-child-no-map no)]
              ;(println "child-delete-entries" child-delete-entries)
              (vif-tree.
                last-event

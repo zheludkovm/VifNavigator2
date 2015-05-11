@@ -134,12 +134,14 @@
   (log/d "Load stored tree!")
   (let [db (get-db this)
         last-event (tools/get-shared-pref-value this tools/LAST_EVENT tools/NOT_DEFINED_START_EVENT)
-        entries (tools/with-try #(db/query-seq db :tree_entries {}))
-        converted-entries (map #(convert-entry % keyword) entries)
-        sorted-entries (sort-by #(get % "id") converted-entries)
-        merged-tree-store (model-api/merge-trees void-tree (parse-data. last-event sorted-entries))
+        merged-tree-store (->> (tools/with-try #(db/query-seq db :tree_entries {}))
+                               (map #(convert-entry % keyword))
+                               (sort-by :id)
+                               (parse-data. last-event)
+                               (model-api/merge-trees void-tree)
+                               )
         ]
-    (log/d "loaded-tree" parse-xml-entries)
+    ;(log/d " merged-tree-store" merged-tree-store)
     merged-tree-store
     )
 
