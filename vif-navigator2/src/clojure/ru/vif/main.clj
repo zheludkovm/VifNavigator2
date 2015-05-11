@@ -442,7 +442,7 @@
                  (safe-for-ui
                    (menu/make-menu
                      menu [[:item {
-                                   :icon           R$drawable/up2
+                                   :icon           R$drawable/up
                                    :show-as-action :always
                                    :on-click       (fn [_] (show-up-message this (get-param-no this)))}]
                            [:item {
