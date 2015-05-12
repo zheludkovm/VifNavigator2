@@ -31,5 +31,7 @@
   <string name="button_reset" formatted="false">Сброс!</string>
   <string name="button_set_all_visited" formatted="false">Просмотрено</string>
 
+  <string name="settings_depth" formatted="false">Глубина дерева</string>
+  <string name="settings_default_depth" formatted="false">5</string>
 
 </resources>

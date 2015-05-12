@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+            android:key="settings_depth"
+            android:title="@string/settings_depth"
+            android:dialogTitle="@string/settings_depth"
+            android:entries="@array/depthList"
+            android:entryValues="@array/depthList"
+            android:defaultValue="@string/settings_default_depth" />
+</PreferenceScreen>
