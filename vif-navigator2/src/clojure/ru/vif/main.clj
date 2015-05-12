@@ -34,10 +34,12 @@
 (import android.widget.TextView)
 (import android.widget.ListView)
 
+
 (def EXPAND_DEPTH 5)
 (def MAIN_DEPTH 1)
 (def PARAM_NO "no")
 (def PARAM_MSG "msg")
+(def SETTINGS_DEPTH "settings_depth")
 
 
 
@@ -300,6 +302,7 @@
   )
 
 
+
 (defactivity ru.vif.TreeActivity
              ;"Создает корневое activity со списком сообщений"
              :key :main
@@ -350,6 +353,14 @@
                                                    )
                                  }
                           ]
+                         [:item {
+                                 :title          R$string/button_settings
+                                 :show-as-action :never
+                                 :on-click       (fn [_]
+                                                   (launch-activity this 'ru.vif.SettingsActivity {})
+                                                   )
+                                 }
+                          ]
                          ]
                    )
                  )
@@ -372,7 +383,7 @@
   (refresh-adapter-data
     (find-view this ::msg-list-view)
     (.state this)
-    (calc-sub-tree (get-param-no this) EXPAND_DEPTH)
+    (calc-sub-tree (get-param-no this) (get-stored-propery-long this SETTINGS_DEPTH EXPAND_DEPTH))
     )
   )
 

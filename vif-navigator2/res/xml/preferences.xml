@@ -3,8 +3,26 @@
     <ListPreference
             android:key="settings_depth"
             android:title="@string/settings_depth"
-            android:dialogTitle="@string/settings_depth"
+            android:dialogTitle="@string/settings_depth_title"
             android:entries="@array/depthList"
             android:entryValues="@array/depthList"
-            android:defaultValue="@string/settings_default_depth" />
+            android:defaultValue="@string/settings_default_depth"/>
+
+    <CheckBoxPreference
+            android:key="is_registered"
+            android:summary="@string/settings_is_registered_summary"
+            android:title="@string/settings_is_registered_title"
+            android:defaultValue="false"/>
+    <EditTextPreference
+            android:key="login"
+            android:dependency="is_registered"
+            android:summary="@string/settings_login_summary"
+            android:title="@string/settings_login_title"/>
+    <EditTextPreference
+            android:key="password"
+            android:dependency="is_registered"
+            android:summary="@string/settings_password_summary"
+            android:title="@string/settings_password_title"
+            android:inputType="textPassword"
+    />
 </PreferenceScreen>

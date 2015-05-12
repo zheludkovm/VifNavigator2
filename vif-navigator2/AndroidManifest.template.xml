@@ -30,6 +30,13 @@
                 <category android:name='android.intent.category.DEFAULT'/>
             </intent-filter>
         </activity>
+        <activity android:name=".SettingsActivity"
+                  android:theme="@android:style/Theme.Holo">
+            <intent-filter>
+                <action android:name='ru.vif.SETTINGS'/>
+                <category android:name='android.intent.category.DEFAULT'/>
+            </intent-filter>
+        </activity>
     </application>
 
     {{#debug-build}}

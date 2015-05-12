@@ -20,7 +20,7 @@
   (:import
     (ru.vif.model.records vif-display-entry)
     (android.app AlertDialog$Builder)
-    (android.content DialogInterface$OnClickListener)
+    (android.content DialogInterface$OnClickListener SharedPreferences)
     )
   )
 
@@ -35,6 +35,8 @@
 (import android.graphics.drawable.ColorDrawable)
 (import android.app.Activity)
 (import android.content.Context)
+(import ru.vif.R)
+(import android.preference.PreferenceManager)
 
 (def NOT_DEFINED_START_EVENT "-1")
 
@@ -92,7 +94,7 @@
   "Запуск activity с набором параметров"
   (let [^Intent intent (Intent. a (resolve launch-activity))]
     ;(.addFlags intent (bit-or Intent/FLAG_ACTIVITY_CLEAR_TOP Intent/FLAG_ACTIVITY_NEW_TASK)) ;
-    (.addFlags intent (bit-or Intent/FLAG_ACTIVITY_CLEAR_TOP  Intent/FLAG_ACTIVITY_SINGLE_TOP)) ;
+    (.addFlags intent (bit-or Intent/FLAG_ACTIVITY_CLEAR_TOP Intent/FLAG_ACTIVITY_SINGLE_TOP)) ;
     (.startActivity a intent)
     (.finish a)
     )
@@ -183,6 +185,18 @@
       )
   )
 
+(defn get-shared-preferencies [this]
+  (PreferenceManager/getDefaultSharedPreferences this)
+  )
+
+(defn get-stored-propery-long [this name default]
+  (Long. (.getString (get-shared-preferencies this) name (str default)))
+  )
+
+(defn get-stored-propery-string [this name default]
+  (.getString (get-shared-preferencies this) name default)
+  )
+
 (defn with-try
   "Обернуть с распечаткой исключения"
   [func]
@@ -211,3 +225,13 @@
                                       (.cancel dialog))))
         .create
         .show)))
+
+(defactivity ru.vif.SettingsActivity
+             :key :settings
+             :extends android.preference.PreferenceActivity
+             :on-create
+             (fn [this bundle]
+               (.addPreferencesFromResource this ru.vif.R$xml/preferences) ;
+               )
+             )
+
