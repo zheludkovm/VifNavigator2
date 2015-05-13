@@ -32,16 +32,13 @@
   <string name="button_set_all_visited" formatted="false">Просмотрено</string>
   <string name="button_settings" formatted="false">Настройки</string>
 
+  <string name="settings_title" formatted="false">Настройки</string>
   <string name="settings_depth" formatted="false">Глубина дерева</string>
   <string name="settings_depth_title" formatted="false">Глубина дерева в сообщении</string>
   <string name="settings_default_depth" formatted="false">5</string>
-
   <string name="settings_is_registered_summary" formatted="false">Есть ли регистрация на форуме</string>
   <string name="settings_is_registered_title" formatted="false">Участник форума</string>
-  <string name="settings_login_summary" formatted="false">Логин в форуме</string>
   <string name="settings_login_title" formatted="false">Логин</string>
-  <string name="settings_password_summary" formatted="false">Пароль в форуме</string>
   <string name="settings_password_title" formatted="false">Пароль</string>
-
 
 </resources>

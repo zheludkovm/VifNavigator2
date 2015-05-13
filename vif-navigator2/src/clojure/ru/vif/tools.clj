@@ -231,6 +231,7 @@
              :extends android.preference.PreferenceActivity
              :on-create
              (fn [this bundle]
+               (.setTitle this  ru.vif.R$string/settings_title)
                (.addPreferencesFromResource this ru.vif.R$xml/preferences) ;
                )
              )
