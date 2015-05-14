@@ -193,6 +193,10 @@
   (Long. (.getString (get-shared-preferencies this) name (str default)))
   )
 
+(defn get-stored-propery-boolean [this name default]
+  (.getBoolean (get-shared-preferencies this) name default)
+  )
+
 (defn get-stored-propery-string [this name default]
   (.getString (get-shared-preferencies this) name default)
   )

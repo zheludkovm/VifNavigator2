@@ -33,6 +33,7 @@
 (import android.app.Activity)
 (import android.widget.TextView)
 (import android.widget.ListView)
+(import ru.vif.http_client.auth-info)
 
 
 (def EXPAND_DEPTH 5)
@@ -40,6 +41,9 @@
 (def PARAM_NO "no")
 (def PARAM_MSG "msg")
 (def SETTINGS_DEPTH "settings_depth")
+(def IS_REGISTERED "is_registered")
+(def LOGIN "login")
+(def PASSWORD "password")
 
 
 
@@ -48,9 +52,6 @@
 
 (def root-tree-items-store
   (atom []))
-
-
-
 
 
 (defn calc-sub-tree
@@ -75,6 +76,17 @@
 
   (swap! tree-data-store model-api/set-entry-visited no)
   (store-visited! this no)
+  )
+
+(defn create-auth-info [this]
+  (let [auth-info (auth-info.
+                    (get-stored-propery-boolean this IS_REGISTERED false)
+                    (get-stored-propery-string this LOGIN nil)
+                    (get-stored-propery-string this PASSWORD nil)
+                    )]
+    (log/d auth-info)
+    auth-info
+    )
   )
 
 (defn set-recursive-visited!
@@ -106,7 +118,7 @@
   [^Activity activity ^Long no]
 
   (future
-    (let [msg (with-progress activity R$string/process_loading_message R$string/error_loading_message #(http/download-message no))]
+    (let [msg (with-progress activity R$string/process_loading_message R$string/error_loading_message #(http/download-message no (create-auth-info activity)))]
       (set-entry-visited! activity no)
       (on-ui (launch-activity activity 'ru.vif.MsgActivity {PARAM_MSG msg PARAM_NO (str no)}))
       )
@@ -135,21 +147,23 @@
   (delete-all this)
   )
 
+
+
 (defn load-tree
   "Загрузка xml обновления, в случае 201 ошибки, полная перегрузка данных"
   [this last-event]
 
-  (try
-    (download-vif-content last-event)
-    (catch Exception e
-      (if (= (.getMessage e) FORCE_LOAD_STATUS)
-        (doall
-          (clean-tree this)
-          (download-vif-content NOT_DEFINED_START_EVENT))
-        (throw e)
-        )
-      ))
-  )
+  (let [auth (create-auth-info this)]
+    (try
+      (download-vif-content last-event auth)
+      (catch Exception e
+        (if (= (.getMessage e) FORCE_LOAD_STATUS)
+          (doall
+            (clean-tree this)
+            (download-vif-content NOT_DEFINED_START_EVENT auth))
+          (throw e)
+          )
+        ))))
 
 
 
