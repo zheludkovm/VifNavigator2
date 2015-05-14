@@ -25,7 +25,8 @@
 
     ;merge
     (let [
-          tree-small (slurp "test-resources/tree-small.xml" :encoding "Cp1251")
+          ;tree-small (slurp "test-resources/tree-small.xml" :encoding "Cp1251")
+          tree-small (slurp (clojure.java.io/resource "tree-small.xml")  :encoding "Cp1251")
           tree-small-entries (parse-xml-entries tree-small)
           void-tree (vif-tree. "-1" {} {} #{})
           merged-tree-info (merge-trees void-tree tree-small-entries)

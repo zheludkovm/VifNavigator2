@@ -5,11 +5,11 @@
             :dependencies [[org.clojure/clojure "1.6.0"]
                            [net.sf.kxml/kxml2 "2.3.0" :use-resources true]
                            ]
-            :profiles {:default [:dev]
-                       :dev { :dependencies [
-
-                                              ]}
-                       :uberjar {:aot :all}
+            :profiles {:default  [:dev]
+                       :dev      {:dependencies   []
+                                  :resource-paths ["test-resources"]
+                                  }
+                       :uberjar  {:aot :all}
                        :provided {:dependencies [
                                                  [net.sf.kxml/kxml2 "2.3.0" :use-resources true]
                                                  ]}}
