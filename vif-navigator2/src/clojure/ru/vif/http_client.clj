@@ -33,6 +33,12 @@
 
 (defrecord auth-info [^Boolean use-auth ^String login ^String password])
 
+(def no-auth (auth-info. false nil nil))
+
+(defn make-str-auth-info [^auth-info auth-info]
+  (str (:use-auth auth-info) (:login auth-info) (:password auth-info))
+  )
+
 
 (defn init-http-params []
   (let [httpParams (BasicHttpParams.)]
@@ -44,14 +50,21 @@
 
 (def ^:private ^DefaultHttpClient get-http-client
   "Memoized function that returns an instance of HTTP client when called."
-  (memoize (fn []
-             (let [client (DefaultHttpClient. (init-http-params))]
-               ;; Don't follow redirectsR
-               (.setRedirectHandler
-                 client (reify RedirectHandler
-                          (getLocationURI [this response context] nil)
-                          (isRedirectRequested [this response context] false)))
-               client))))
+  (fn []
+    (let [client (DefaultHttpClient. (init-http-params))]
+      ;; Don't follow redirectsR
+      (.setRedirectHandler
+        client (reify RedirectHandler
+                 (getLocationURI [this response context] nil)
+                 (isRedirectRequested [this response context] false)))
+      client)))
+
+(def connection
+  (atom {:http-client   nil
+         :auth-info-str nil
+         })
+  )
+
 
 (defn create-get-header [^String url ^auth-info auth]
   (let [^HttpGet request (HttpGet. url)]
@@ -67,8 +80,11 @@
 
 (defn http-get
   "Sends a synchronous GET request."
-  ([^String url ^auth-info auth ]
-   (http-get (get-http-client) url auth))
+  ([^String url ^auth-info auth]
+   (http-get (:http-client @connection) url auth))
+
+  ([^String url ]
+   (http-get (:http-client @connection) url no-auth))
 
   ([^DefaultHttpClient client ^String url ^auth-info auth]
    (let [request (create-get-header url auth)
@@ -78,10 +94,25 @@
      {:status status
       :body   (slurp (.getContent (.getEntity response)) :encoding "Cp1251")})))
 
-(defn try-auth [^auth-info auth]
-  (let [{status :status } (http-get security-url (:login auth) (:password auth))]
-    (if (not= status 200)
-      (throw (Exception. (str status)))
+(defn get-http-client-try-auth
+  "Проверяет корректность аутентификации и если все успешно, то возвращает клиента"
+  [^auth-info auth]
+  (let [http-client (get-http-client)]
+    (if (:use-auth auth)
+      (let [{status :status} (http-get http-client security-url auth)]
+        (if (not= status 302)
+          (throw (Exception. (str status)))
+          http-client))
+      http-client)))
+
+(defn check-connection! [^auth-info auth-info]
+  (let [auth-info-str (make-str-auth-info auth-info)
+        current-info-str (:auth-info-str @connection)
+        ]
+    (if (not= current-info-str auth-info-str)
+      (reset! connection {:http-client   (get-http-client-try-auth auth-info)
+                          :auth-info-str current-info-str})
+
       )
     )
   )
@@ -89,8 +120,9 @@
 
 (defn download-html [^String url ^auth-info auth]
   "Скачивает данные для url, если ответ не равен 200 то возвращает nil"
+  (check-connection! auth)
   (log/d "try download html=" url)
-  (time (let [{status :status body :body} (http-get url auth)]
+  (time (let [{status :status body :body} (http-get url)]
           (log/d "status=" status)
           (if (= status 200)
             body

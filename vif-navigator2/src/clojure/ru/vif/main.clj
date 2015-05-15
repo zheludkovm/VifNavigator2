@@ -84,7 +84,6 @@
                     (get-stored-propery-string this LOGIN nil)
                     (get-stored-propery-string this PASSWORD nil)
                     )]
-    (log/d auth-info)
     auth-info
     )
   )
