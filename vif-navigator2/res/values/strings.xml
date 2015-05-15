@@ -9,6 +9,7 @@
   <string name="error_loading_message">Не удалось скачать сообщение!</string>
   <string name="process_loading_tree">Загрузка данных</string>
   <string name="error_loading_tree">Не удалось загрузить данные!</string>
+  <string name="error_auth">Неправильный логин/пароль!</string>
   <string name="process_tree">Обработка данных</string>
   <string name="error_process_tree">Не удалось загрузить данные!</string>
   <string name="init_tree">Инициализация</string>

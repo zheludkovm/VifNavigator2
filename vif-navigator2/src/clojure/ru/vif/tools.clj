@@ -110,6 +110,7 @@
   "Отображает диалог с сообщением пока идет обработка в фооне, в случае возникновения ошибки - выдает длинный toast"
   (let [^String message (str-res this message-res)
         ^String error-message (str-res this error-message-res)
+        ^String error-auth (str-res this R$string/error_auth)
         dialog (atom nil)]
     (on-ui (let [pb (neko.ui/make-ui this [:progress-dialog
                                            {:progress-style :spinner
@@ -131,7 +132,12 @@
         (log/d (str "caught exception: " (.getMessage e)))
         (on-ui
           (.hide @dialog)
-          (notify/toast this error-message :long)
+          (notify/toast this
+                        (if (= (.getMessage e) "401")
+                          error-auth
+                          error-message
+                          )
+                        :long)
           )
         (throw e)
         )

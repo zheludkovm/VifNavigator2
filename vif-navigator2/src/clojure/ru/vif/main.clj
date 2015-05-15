@@ -18,7 +18,8 @@
             [ru.vif.db-tools :refer :all]
             )
   (:import
-    (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)))
+    (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
+    (android.content SharedPreferences$OnSharedPreferenceChangeListener SharedPreferences)))
 
 (neko.resource/import-all)
 
@@ -297,14 +298,6 @@
     )
   )
 
-(defn refresh-tree-activity
-  "Обновить список веток на основной форме"
-  [this]
-  (refresh-adapter-data
-    (find-view this ::main-list-view)
-    root-tree-items-store
-    (calc-main-sub-tree))
-  )
 
 (defn show-next-nonvisited
   "Показать следующее непосещенное сообщение"
@@ -314,6 +307,27 @@
     )
   )
 
+(defn full-reset [this]
+  (clean-tree this)
+  (full-reload this)
+  )
+
+;(defn create-settings-change-listener [this]
+;  (proxy [SharedPreferences$OnSharedPreferenceChangeListener] []
+;    (onSharedPreferenceChanged [^SharedPreferences sharedPreferences ^String key]
+;      (if (not= key SETTINGS_DEPTH)
+;        (full-reset this)
+;        )
+;      )))
+;(def settings-change-listener (atom nil))
+
+(defn refresh-tree-activity
+  "Обновить список веток на основной форме"
+  [^Activity this]
+  (refresh-adapter-data
+    (find-view this ::main-list-view)
+    root-tree-items-store
+    (calc-main-sub-tree)))
 
 
 (defactivity ru.vif.TreeActivity
@@ -358,11 +372,7 @@
                                  :title          R$string/button_reset
                                  :show-as-action :never
                                  :on-click       (fn [_]
-                                                   (show-confirmation-dialog this (fn []
-                                                                                    (clean-tree this)
-                                                                                    (full-reload this)
-                                                                                    )
-                                                                             )
+                                                   (show-confirmation-dialog this #(full-reset this))
                                                    )
                                  }
                           ]
@@ -380,7 +390,6 @@
                )
              :on-resume
              refresh-tree-activity
-
              :on-stop
              (fn [this]
                (log/d "stop!")
