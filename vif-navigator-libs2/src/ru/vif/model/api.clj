@@ -55,3 +55,7 @@
 (defn has-non-visited [^vif-tree vif-tree, ^Long root]
   (some? (model-tools/find-first-non-visited-after vif-tree root root))
   )
+
+(def get-all-visited
+  model-tools/get-all-visited
+  )

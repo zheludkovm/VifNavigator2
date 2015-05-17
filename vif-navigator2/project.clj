@@ -15,7 +15,7 @@
                            [org.jsoup/jsoup "1.8.2" :use-resources true]
                            [vif-navigator-libs2 "0.1.0-SNAPSHOT" :use-resources true]
                            ]
-            :profiles {:default [:dev]
+            :profiles {:default [:release]
 
                        :dev
                                 [:android-common :android-user

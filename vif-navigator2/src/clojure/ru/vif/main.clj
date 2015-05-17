@@ -171,27 +171,31 @@
 
 (defn full-reload
   "Полная перегрузка всего дерева сообщений"
-  [this]
+  ([this]
+   (full-reload this true))
 
-  (future
-    (check-store-loaded! this)
-    (let [body (with-progress this
-                              R$string/process_loading_tree
-                              R$string/error_loading_tree
-                              #(load-tree this (:last-event @tree-data-store)))
-          ^vif-tree new-tree-data-store (with-progress this R$string/process_tree R$string/error_process_tree
-                                                       (fn []
-                                                         (let [xml-entries (model-api/parse-xml-entries body)
-                                                               merged-tree-store (model-api/merge-trees @tree-data-store xml-entries)]
-                                                           (store-persistant-data! this merged-tree-store xml-entries)
-                                                           merged-tree-store
-                                                           )))
-          ]
-      (on-ui
-        (reset! tree-data-store new-tree-data-store)
-        (reset! root-tree-items-store (calc-main-sub-tree))
-        )
-      )
+
+  ([this reload-tree]
+   (future
+     (check-store-loaded! this)
+     (let [body (with-progress this
+                               R$string/process_loading_tree
+                               R$string/error_loading_tree
+                               #(load-tree this (:last-event @tree-data-store)))
+           ^vif-tree new-tree-data-store (with-progress this R$string/process_tree R$string/error_process_tree
+                                                        (fn []
+                                                          (let [xml-entries (model-api/parse-xml-entries body)
+                                                                merged-tree-store (model-api/merge-trees @tree-data-store xml-entries)]
+                                                            (store-persistant-data! this merged-tree-store xml-entries)
+                                                            merged-tree-store
+                                                            )))
+           ]
+       (on-ui
+         (reset! tree-data-store new-tree-data-store)
+         (if reload-tree (reset! root-tree-items-store (calc-main-sub-tree)))
+         )
+       )
+     )
     )
   )
 
@@ -310,8 +314,15 @@
   )
 
 (defn full-reset [this]
-  (clean-tree this)
-  (full-reload this)
+  (let [visited-seq (model-api/get-all-visited @tree-data-store ROOT)]
+    (clean-tree this)
+    (future
+      @(full-reload this false)
+      (store-subtree-visited! this visited-seq)
+      (swap! tree-data-store model-api/set-all-visited! visited-seq)
+      (reset! root-tree-items-store (calc-main-sub-tree))
+      )
+    )
   )
 
 ;(defn create-settings-change-listener [this]
@@ -346,7 +357,6 @@
 
                  (setup-action-bar this {
                                          :title              (str-res-html this R$string/main_title)
-                                         :backgroundDrawable (.. this getResources (getDrawable R$color/odd))
                                          :display-options    :show-title
                                          })
                  )
@@ -467,7 +477,6 @@
 
                      (setup-action-bar this {
                                              :title              (res-format-html this R$string/title_format (:author tree-entry))
-                                             :backgroundDrawable (.. this getResources (getDrawable R$color/odd))
                                              :display-options    [:home-as-up :show-title]
                                              })
                      )

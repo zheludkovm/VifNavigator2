@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- the theme applied to the application or activity -->
+    <style name="VifColorTheme"
+           parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/VifActionBar</item>
+        <!--<item name="android:background">@color/odd</item>-->
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="VifActionBar"
+           parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/odd</item>
+    </style>
+</resources>

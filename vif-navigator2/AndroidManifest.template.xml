@@ -17,21 +17,22 @@
             </intent-filter>
         </activity>
         <activity android:name=".TreeActivity"
-                  android:theme="@android:style/Theme.Holo.Light">
+                  android:theme="@style/VifColorTheme">
             <intent-filter>
                 <action android:name='ru.vif.MAIN'/>
                 <category android:name='android.intent.category.DEFAULT'/>
             </intent-filter>
         </activity>
         <activity android:name=".MsgActivity"
-                  android:theme="@android:style/Theme.Holo.Light">
+                  android:theme="@style/VifColorTheme">
             <intent-filter>
                 <action android:name='ru.vif.MSG'/>
                 <category android:name='android.intent.category.DEFAULT'/>
             </intent-filter>
         </activity>
         <activity android:name=".AnswerActivity"
-                  android:theme="@android:style/Theme.Holo.Light">
+                  android:theme="@style/VifColorTheme"
+                >
             <intent-filter>
                 <action android:name='ru.vif.ANSWER'/>
                 <category android:name='android.intent.category.DEFAULT'/>

@@ -42,4 +42,11 @@
   <string name="settings_login_title" formatted="false">Логин</string>
   <string name="settings_password_title" formatted="false">Пароль</string>
 
+  <string name="hint_theme" formatted="false">Тема</string>
+  <string name="hint_msg" formatted="false">Сообщение</string>
+  <string name="check_box_to_root" formatted="false">Поместить в корень</string>
+  <string name="answer_title" formatted="false">Ответ</string>
+  <string name="preview_title" formatted="false">Просмотр</string>
+  <string name="button_clean" formatted="false">Чистить</string>
+
 </resources>

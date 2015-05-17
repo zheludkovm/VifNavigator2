@@ -75,6 +75,13 @@
   (tree-child-nodes (:parent-to-child-no-map vif-tree) no)
   )
 
+(defn get-all-visited
+  "список всех посещенных узлов"
+  [^vif-tree vif-tree, ^Long no]
+  (let [all-entries-map (:all-entries-map vif-tree)]
+    (->> (vif-tree-child-nodes vif-tree no)
+         (filter #(:is_visited (get all-entries-map %))))))
+
 (defn find-first-non-visited-after [^vif-tree vif-tree, ^Long root ^Long after]
   (let [all-entries-map (:all-entries-map vif-tree)]
     (->> (vif-tree-child-nodes vif-tree root)

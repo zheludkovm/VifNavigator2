@@ -42,6 +42,8 @@
 (def PARAM_PREVIEW_THEME "preview-theme")
 (def PARAM_PREVIEW_MSG "preview-msg")
 
+(def RE_PREFIX "Re: ")
+
 (defn get-textview-text [this id]
   (.toString (.getText (find-view this id))))
 
@@ -97,17 +99,20 @@
                    (set-content-view! this [:linear-layout {:orientation        :vertical
                                                             :backgroundDrawable odd-color}
                                             [:edit-text {:id                 ::theme
-                                                         :hint               "Тема"
+                                                         :hint               R$string/hint_theme
                                                          :layout-width       :fill
                                                          :backgroundDrawable even-color
-                                                         :text               (str "Re: " answer-to-title)
+                                                         :text               (str RE_PREFIX answer-to-title)
                                                          :min-lines          3
                                                          :gravity            Gravity/TOP
                                                          }]
-                                            [:check-box {:id   ::to-root
-                                                         :text "Поместить в корень"}]
+                                            [:check-box {:id                 ::to-root
+                                                         :text               R$string/check_box_to_root
+                                                         :layout-width       :fill
+                                                         :backgroundDrawable odd-color
+                                                         }]
                                             [:edit-text {:id                          ::msg
-                                                         :hint                        "Сообщение"
+                                                         :hint                        R$string/hint_msg
                                                          :text                        (prepare-answer answer-to-msg)
                                                          :min-lines                   8
                                                          :vertical-scroll-bar-enabled true
@@ -117,9 +122,8 @@
                                                          }]
                                             ])
                    (setup-action-bar this {
-                                           :title              "Ответ"
-                                           :backgroundDrawable odd-color
-                                           :display-options    :show-title
+                                           :title           R$string/answer_title
+                                           :display-options :show-title
                                            })
                    )
                  )
@@ -128,20 +132,28 @@
              (fn [this menu]
                (safe-for-ui
                  (menu/make-menu
-                   menu [[:item {:icon           R$drawable/magnifier
+                   menu [[:item {:icon           R$drawable/ok
                                  :show-as-action :always
-                                 :on-click       (fn [_] (launch-activity this 'ru.vif.PreviewActivity {
-                                                                                                        PARAM_ANSWER_TO_NO  (get-activity-param this PARAM_ANSWER_TO_NO)
-                                                                                                        PARAM_PREVIEW_THEME (get-textview-text this ::theme)
-                                                                                                        PARAM_PREVIEW_MSG   (get-textview-text this ::msg)})
-
-                                                   )}]
-                         [:item {:icon           R$drawable/ok
-                                 :show-as-action :always
-                                 :on-click       (fn [_] (send-answer this))}]
+                                 :on-click       (fn [_] (show-confirmation-dialog this #(send-answer this)))}]
                          [:item {:icon           R$drawable/cancel
                                  :show-as-action :always
                                  :on-click       (fn [_] (.finish this))}]
+
+                         [:item {
+                                 :title          R$string/preview_title
+                                 :show-as-action :never
+                                 :on-click       (fn [_] (launch-activity this 'ru.vif.PreviewActivity {
+                                                                                                        PARAM_ANSWER_TO_NO  (get-activity-param this PARAM_ANSWER_TO_NO)
+                                                                                                        PARAM_PREVIEW_THEME (get-textview-text this ::theme)
+                                                                                                        PARAM_PREVIEW_MSG   (get-textview-text this ::msg)}))}]
+                         [:item {
+                                 :title          R$string/button_clean
+                                 :show-as-action :never
+                                 :on-click       (fn [_]
+                                                   (let [msg-edit-text (find-view this ::msg)]
+                                                     (.setText msg-edit-text "")
+                                                     )
+                                                   )}]
                          ]
                    )
                  )
@@ -180,11 +192,11 @@
                  (on-ui
                    (set-content-view! this [:web-view {:id                 ::preview
                                                        :backgroundDrawable odd-color
-                                                       :web-view-client (simple-auth-client (:login auth) (:password auth))
+                                                       :web-view-client    (simple-auth-client (:login auth) (:password auth))
                                                        }
                                             ])
                    (setup-action-bar this {
-                                           :title              "Просмотр"
+                                           :title              R$string/preview_title
                                            :backgroundDrawable even-color
                                            :display-options    :show-title
                                            })
