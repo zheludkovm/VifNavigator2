@@ -21,22 +21,9 @@
           android:id="@+id/splash_droid"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:src="@drawable/splash_droid" >
+          android:src="@drawable/su85" >
       </ImageView>
 
-      <ImageView
-          android:id="@+id/splash_circles"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:src="@drawable/splash_circle" >
-      </ImageView>
-
-      <ImageView
-          android:id="@+id/splash_droid_hands"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:src="@drawable/splash_hands" >
-      </ImageView>
     </RelativeLayout>
 
     <TextView

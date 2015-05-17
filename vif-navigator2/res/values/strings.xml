@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">ВИФ Навигатор</string>
+  <string name="app_name"><![CDATA[<font color=\"#1E581E\"><b>ВИФ</b></font> <font color=\"black\">Навигатор</font>]]></string>
   <string name="format_bold_black"><![CDATA[<font color=\"#000000\"><b>:%s</b></font>]]></string>
   <string name="main_title"><![CDATA[<font color=\"#1E581E\"><b>ВИФ2NE</b></font>]]></string>
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -37,12 +38,8 @@ public class SplashActivity extends Activity {
     public void setupSplash() {
         setContentView(R.layout.splashscreen);
 
-        TextView appNameView = (TextView)findViewById(R.id.splash_app_name);
-        appNameView.setText(R.string.app_name);
-
-        Animation rotation = AnimationUtils.loadAnimation(this, R.anim.splash_rotation);
-        ImageView circleView = (ImageView)findViewById(R.id.splash_circles);
-        circleView.startAnimation(rotation);
+        TextView appNameView = (TextView) findViewById(R.id.splash_app_name);
+        appNameView.setText(Html.fromHtml(getText(R.string.app_name).toString()));
     }
 
     public void proceed() {
@@ -53,24 +50,24 @@ public class SplashActivity extends Activity {
     }
 
     public void loadClojure() {
-        new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    Symbol CLOJURE_MAIN = Symbol.intern("neko.init");
-                    Var REQUIRE = RT.var("clojure.core", "require");
-                    REQUIRE.invoke(CLOJURE_MAIN);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Symbol CLOJURE_MAIN = Symbol.intern("neko.init");
+                Var REQUIRE = RT.var("clojure.core", "require");
+                REQUIRE.invoke(CLOJURE_MAIN);
 
-                    Var INIT = RT.var("neko.init", "init");
-                    INIT.invoke(SplashActivity.this.getApplication());
+                Var INIT = RT.var("neko.init", "init");
+                INIT.invoke(SplashActivity.this.getApplication());
 
-                    try {
-                        Class.forName("ru.vif.TreeActivity");
-                    } catch (ClassNotFoundException e) {
-                        Log.e(TAG, "Failed loading TreeActivity", e);
-                    }
-
-                    proceed();
+                try {
+                    Class.forName("ru.vif.TreeActivity");
+                } catch (ClassNotFoundException e) {
+                    Log.e(TAG, "Failed loading TreeActivity", e);
                 }
-            }).start();
+
+                proceed();
+            }
+        }).start();
     }
 }
