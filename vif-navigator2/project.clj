@@ -59,8 +59,8 @@
                        }
 
             :android {;; Specify the path to the Android SDK directory.
-                      ;:sdk-path       "/media/mikl/storage/projects/android/android-sdk-linux"
-                      :sdk-path       "/home/mzheludkov/work/clojure/android-sdk-linux"
+                      :sdk-path       "/media/mikl/storage/projects/android/android-sdk-linux"
+                      ;:sdk-path       "/home/mzheludkov/work/clojure/android-sdk-linux"
 
                       ;; Try increasing this value if dexer fails with
                       ;; OutOfMemoryException. Set the value according to your

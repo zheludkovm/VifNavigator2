@@ -1,3 +1,6 @@
+(ns ru.vif.main)
+(declare full-reload)
+
 (ns ru.vif.answer
   (:require [neko.activity :refer [defactivity set-content-view!]]
             [neko.debug :refer [*a safe-for-ui]]
@@ -9,24 +12,74 @@
             [neko.ui.adapters :refer [ref-adapter]]
             [neko.find-view :refer [find-view find-views]]
             [neko.ui :refer [config make-ui-element]]
+            [neko.ui.mapping :as mapping :refer [set-classname!]]
             [neko.action-bar :refer [setup-action-bar]]
             [clojure.java.io :as io]
+            [clojure.string :as string]
 
             [ru.vif.model.api :as model-api :refer :all]
             [ru.vif.http-client :as http :refer :all]
             [ru.vif.tools :refer :all]
             [ru.vif.db-tools :refer :all]
+            [ru.vif.main :refer :all]
             )
   (:import
     (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
     (android.content SharedPreferences$OnSharedPreferenceChangeListener SharedPreferences)
-    (android.app Activity)))
+    (android.app Activity)
+    (android.view Gravity)
+    (android.text Html)
+    (android.widget TextView)
+
+    (android.webkit WebView WebViewClient HttpAuthHandler)))
 
 (neko.resource/import-all)
 
 (def PARAM_ANSWER_TO_NO "no")
 (def PARAM_ANSWER_TO_TITLE "title")
 (def PARAM_ANSWER_TO_MSG "msg")
+
+(def PARAM_PREVIEW_THEME "preview-theme")
+(def PARAM_PREVIEW_MSG "preview-msg")
+
+(defn get-textview-text [this id]
+  (.toString (.getText (find-view this id))))
+
+
+
+(defn send-answer [this]
+  (println "Answer!")
+  (future
+    (let [answer-to-no (get-activity-param this PARAM_ANSWER_TO_NO)
+          theme (get-textview-text this ::theme)
+          msg (get-textview-text this ::msg)
+          to-root (.isChecked (find-view this ::to-root))
+          auth (create-auth-info this)
+          ]
+      (http/send-answer-http auth answer-to-no theme to-root msg)
+      (on-ui
+        @(full-reload this)
+        (.finish this)))))
+
+(defn prepare-answer [^String msg]
+  (->> (Html/fromHtml msg)
+       .toString
+       string/split-lines
+       (map (fn [s]
+              (if (not (string/blank? s))
+                (str ">" s)
+                s
+                )
+              ))
+       (string/join "\n")
+       )
+  )
+
+(mapping/defelement :check-box
+                    :classname android.widget.CheckBox
+                    :traits [:id]
+                    :attributes {:text ""}
+                    )
 
 (defactivity ru.vif.AnswerActivity
              ;"Создает activity с ответом
@@ -36,21 +89,107 @@
                (let [answer-to-no (get-activity-param this PARAM_ANSWER_TO_NO)
                      answer-to-msg (get-activity-param this PARAM_ANSWER_TO_MSG)
                      answer-to-title (get-activity-param this PARAM_ANSWER_TO_TITLE)
+                     even-color (.. this getResources (getDrawable R$color/even))
+                     odd-color (.. this getResources (getDrawable R$color/odd))
                      ]
 
                  (on-ui
-                   (set-content-view! this [:list-view {:id                 ::msg-list-view
-                                                        ;:adapter            (make-adapter this state false)
-                                                        :backgroundResource R$color/even
-                                                        }
+                   (set-content-view! this [:linear-layout {:orientation        :vertical
+                                                            :backgroundDrawable odd-color}
+                                            [:edit-text {:id                 ::theme
+                                                         :hint               "Тема"
+                                                         :layout-width       :fill
+                                                         :backgroundDrawable even-color
+                                                         :text               (str "Re: " answer-to-title)
+                                                         :min-lines          3
+                                                         :gravity            Gravity/TOP
+                                                         }]
+                                            [:check-box {:id   ::to-root
+                                                         :text "Поместить в корень"}]
+                                            [:edit-text {:id                          ::msg
+                                                         :hint                        "Сообщение"
+                                                         :text                        (prepare-answer answer-to-msg)
+                                                         :min-lines                   8
+                                                         :vertical-scroll-bar-enabled true
+                                                         :layout-width                :fill
+                                                         :backgroundDrawable          even-color
+                                                         :gravity                     Gravity/TOP
+                                                         }]
                                             ])
                    (setup-action-bar this {
-                                           :title              "Ответ :"
-                                           :backgroundDrawable (.. this getResources (getDrawable R$color/odd))
-                                           :display-options    [:home-as-up :show-title]
+                                           :title              "Ответ"
+                                           :backgroundDrawable odd-color
+                                           :display-options    :show-title
                                            })
+                   )
+                 )
+               )
+             :on-create-options-menu
+             (fn [this menu]
+               (safe-for-ui
+                 (menu/make-menu
+                   menu [[:item {:icon           R$drawable/magnifier
+                                 :show-as-action :always
+                                 :on-click       (fn [_] (launch-activity this 'ru.vif.PreviewActivity {
+                                                                                                        PARAM_ANSWER_TO_NO  (get-activity-param this PARAM_ANSWER_TO_NO)
+                                                                                                        PARAM_PREVIEW_THEME (get-textview-text this ::theme)
+                                                                                                        PARAM_PREVIEW_MSG   (get-textview-text this ::msg)})
+
+                                                   )}]
+                         [:item {:icon           R$drawable/ok
+                                 :show-as-action :always
+                                 :on-click       (fn [_] (send-answer this))}]
+                         [:item {:icon           R$drawable/cancel
+                                 :show-as-action :always
+                                 :on-click       (fn [_] (.finish this))}]
+                         ]
                    )
                  )
                )
 
              )
+
+(defn simple-auth-client [^String login ^String password]
+  (proxy [WebViewClient] []
+    (onReceivedHttpAuthRequest [^WebView view
+                                ^HttpAuthHandler handler
+                                ^String host
+                                ^String realm
+                                ]
+      (.proceed handler login password)
+      )
+    (shouldOverrideUrlLoading [^WebView view, ^String url]
+      true
+      )
+    ))
+
+
+(defactivity ru.vif.PreviewActivity
+             ;"Создает activity с ответом
+             :key :preview
+             :on-create
+             (fn [^Activity this bundle]
+               (let [preview-theme (get-activity-param this PARAM_PREVIEW_THEME)
+                     preview-msg (get-activity-param this PARAM_PREVIEW_MSG)
+                     answer-to-no (get-activity-param this PARAM_ANSWER_TO_NO)
+                     even-color (.. this getResources (getDrawable R$color/even))
+                     odd-color (.. this getResources (getDrawable R$color/odd))
+                     auth (create-auth-info this)
+                     ]
+
+                 (on-ui
+                   (set-content-view! this [:web-view {:id                 ::preview
+                                                       :backgroundDrawable odd-color
+                                                       :web-view-client (simple-auth-client (:login auth) (:password auth))
+                                                       }
+                                            ])
+                   (setup-action-bar this {
+                                           :title              "Просмотр"
+                                           :backgroundDrawable even-color
+                                           :display-options    :show-title
+                                           })
+
+                   (let [^WebView web-view (find-view this ::preview)]
+                     (.postUrl web-view
+                               (str http/preview-url answer-to-no)
+                               (http/prepare-preview-request preview-theme preview-msg)))))))

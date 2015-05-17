@@ -37,10 +37,16 @@
 (import android.content.Context)
 (import ru.vif.R)
 (import android.preference.PreferenceManager)
+(import ru.vif.http_client.auth-info)
 
 (def NOT_DEFINED_START_EVENT "-1")
-
 (def LAST_EVENT "last-event")
+
+(def IS_REGISTERED "is_registered")
+(def LOGIN "login")
+(def PASSWORD "password")
+
+
 
 (defn str-res
   (^String [^Activity this ^Integer res]
@@ -246,3 +252,10 @@
                )
              )
 
+(defn create-auth-info [this]
+  (auth-info.
+    (get-stored-propery-boolean this IS_REGISTERED false)
+    (get-stored-propery-string this LOGIN nil)
+    (get-stored-propery-string this PASSWORD nil)
+    )
+  )

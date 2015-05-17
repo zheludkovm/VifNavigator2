@@ -30,6 +30,20 @@
                 <category android:name='android.intent.category.DEFAULT'/>
             </intent-filter>
         </activity>
+        <activity android:name=".AnswerActivity"
+                  android:theme="@android:style/Theme.Holo.Light">
+            <intent-filter>
+                <action android:name='ru.vif.ANSWER'/>
+                <category android:name='android.intent.category.DEFAULT'/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".PreviewActivity"
+                  android:theme="@android:style/Theme.Holo.Light">
+            <intent-filter>
+                <action android:name='ru.vif.PREVIEW'/>
+                <category android:name='android.intent.category.DEFAULT'/>
+            </intent-filter>
+        </activity>
         <activity android:name=".SettingsActivity"
                   android:theme="@android:style/Theme.Holo">
             <intent-filter>

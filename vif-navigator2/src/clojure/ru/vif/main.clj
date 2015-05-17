@@ -16,6 +16,7 @@
             [ru.vif.http-client :as http :refer :all]
             [ru.vif.tools :refer :all]
             [ru.vif.db-tools :refer :all]
+            [ru.vif.answer :refer :all]
             )
   (:import
     (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
@@ -41,10 +42,11 @@
 (def MAIN_DEPTH 1)
 (def PARAM_NO "no")
 (def PARAM_MSG "msg")
+(def PARAM_TITLE "title")
+(def PARAM_DATE "date")
+
 (def SETTINGS_DEPTH "settings_depth")
-(def IS_REGISTERED "is_registered")
-(def LOGIN "login")
-(def PASSWORD "password")
+
 
 
 
@@ -79,15 +81,7 @@
   (store-visited! this no)
   )
 
-(defn create-auth-info [this]
-  (let [auth-info (auth-info.
-                    (get-stored-propery-boolean this IS_REGISTERED false)
-                    (get-stored-propery-string this LOGIN nil)
-                    (get-stored-propery-string this PASSWORD nil)
-                    )]
-    auth-info
-    )
-  )
+
 
 (defn set-recursive-visited!
   "Помечает запись и все ее дочерние узлы как просмотренные"
@@ -118,9 +112,17 @@
   [^Activity activity ^Long no]
 
   (future
-    (let [msg (with-progress activity R$string/process_loading_message R$string/error_loading_message #(http/download-message no (create-auth-info activity)))]
+    (let [msg (with-progress activity R$string/process_loading_message R$string/error_loading_message #(http/download-message no (create-auth-info activity)))
+          tree-entry (get (:all-entries-map @tree-data-store) no)
+          title (:title tree-entry)
+          date (:date tree-entry)
+          ]
       (set-entry-visited! activity no)
-      (on-ui (launch-activity activity 'ru.vif.MsgActivity {PARAM_MSG msg PARAM_NO (str no)}))
+      (on-ui (launch-activity activity 'ru.vif.MsgActivity {PARAM_MSG   msg
+                                                            PARAM_NO    (str no)
+                                                            PARAM_TITLE title
+                                                            PARAM_DATE  date
+                                                            }))
       )
     )
   )
@@ -402,6 +404,8 @@
 (defn refresh-msg-activity
   "Обновить список веток на форме сообщения"
   [this]
+
+  ;(full-reload this)
   (refresh-adapter-data
     (find-view this ::msg-list-view)
     (.state this)
@@ -431,6 +435,8 @@
              (fn [^Activity this bundle]
                (let [no (get-param-no this)
                      msg (get-activity-param this PARAM_MSG)
+                     title (get-activity-param this PARAM_TITLE)
+                     date (get-activity-param this PARAM_DATE)
                      tree-entry (get (:all-entries-map @tree-data-store) no)
                      state (.state this)
                      ]
@@ -445,8 +451,8 @@
                        (set-content-view! this list-view-tree)
                        (let [list-view (find-view this ::msg-list-view)]
                          (.addHeaderView list-view (neko.ui/make-ui this [:text-view {:text               (res-format-html this R$string/message_format
-                                                                                                                           (:title tree-entry)
-                                                                                                                           (:date tree-entry)
+                                                                                                                           title
+                                                                                                                           date
                                                                                                                            msg
                                                                                                                            )
                                                                                       :max-lines          10000
@@ -471,30 +477,45 @@
 
              :on-create-options-menu
              (fn [this menu]
-               (let [has-not-visited (model-api/has-non-visited @tree-data-store (get-param-no this))]
+               (let [has-not-visited (model-api/has-non-visited @tree-data-store (get-param-no this))
+                     is-registered (get-stored-propery-boolean this IS_REGISTERED false)
+                     menu-items [[:item {
+                                         :icon           R$drawable/up
+                                         :show-as-action :always
+                                         :on-click       (fn [_] (show-up-message this (get-param-no this)))}]
+                                 [:item {
+                                         :icon           (if has-not-visited R$drawable/nonvisited R$drawable/nonvisited_disabled)
+                                         :show-as-action :always
+                                         :enabled        has-not-visited
+                                         :on-click       (fn [_] (show-next-nonvisited this (get-param-no this)))}]
+                                 [:item {
+                                         :title          R$string/button_set_all_visited
+                                         :show-as-action :never
+                                         :on-click       (fn [_]
+                                                           (future
+                                                             (set-recursive-visited! this (get-param-no this))
+                                                             (refresh-msg-activity this)
+                                                             )
+                                                           )}]
+
+                                 ]
+                     menu-items-updated (if is-registered
+                                          (concat menu-items [[:item {
+                                                                      :title          "Ответить"
+                                                                      :show-as-action :never
+                                                                      :on-click       (fn [_]
+                                                                                        (launch-activity this 'ru.vif.AnswerActivity {
+                                                                                                                                      PARAM_ANSWER_TO_NO    (get-activity-param this PARAM_NO)
+                                                                                                                                      PARAM_ANSWER_TO_MSG   (get-activity-param this PARAM_MSG)
+                                                                                                                                      PARAM_ANSWER_TO_TITLE (get-activity-param this PARAM_TITLE)
+                                                                                                                                      })
+                                                                                        )}]])
+                                          menu-items
+                                          )
+
+                     ]
                  (safe-for-ui
-                   (menu/make-menu
-                     menu [[:item {
-                                   :icon           R$drawable/up
-                                   :show-as-action :always
-                                   :on-click       (fn [_] (show-up-message this (get-param-no this)))}]
-                           [:item {
-                                   :icon           (if has-not-visited R$drawable/nonvisited R$drawable/nonvisited_disabled)
-                                   :show-as-action :always
-                                   :enabled        has-not-visited
-                                   :on-click       (fn [_] (show-next-nonvisited this (get-param-no this)))}]
-                           [:item {
-                                   :title          R$string/button_set_all_visited
-                                   :show-as-action :never
-                                   :on-click       (fn [_]
-                                                     (future
-                                                       (set-recursive-visited! this (get-param-no this))
-                                                       (refresh-msg-activity this)
-                                                       )
-                                                     )
-                                   }
-                            ]
-                           ])))
+                   (menu/make-menu menu menu-items-updated)))
                )
 
              :on-options-item-selected
