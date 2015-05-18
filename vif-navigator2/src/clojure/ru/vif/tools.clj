@@ -99,8 +99,7 @@
 (defn launch-root-activity [a launch-activity]
   "Запуск activity с набором параметров"
   (let [^Intent intent (Intent. a (resolve launch-activity))]
-    ;(.addFlags intent (bit-or Intent/FLAG_ACTIVITY_CLEAR_TOP Intent/FLAG_ACTIVITY_NEW_TASK)) ;
-    (.addFlags intent (bit-or Intent/FLAG_ACTIVITY_CLEAR_TOP Intent/FLAG_ACTIVITY_SINGLE_TOP)) ;
+    (.addFlags intent (bit-or Intent/FLAG_ACTIVITY_CLEAR_TOP Intent/FLAG_ACTIVITY_SINGLE_TOP))
     (.startActivity a intent)
     (.finish a)
     )

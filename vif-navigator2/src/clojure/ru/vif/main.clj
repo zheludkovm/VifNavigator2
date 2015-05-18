@@ -384,7 +384,7 @@
                                  :title          R$string/button_reset
                                  :show-as-action :never
                                  :on-click       (fn [_]
-                                                   (show-confirmation-dialog this #(full-reset this))
+                                                   (full-reset this)
                                                    )
                                  }
                           ]
