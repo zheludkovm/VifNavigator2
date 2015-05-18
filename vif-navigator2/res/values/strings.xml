@@ -49,4 +49,17 @@
   <string name="preview_title" formatted="false">Просмотр</string>
   <string name="button_clean" formatted="false">Чистить</string>
 
+  <string name="about_title" formatted="false">О программе</string>
+  <string name="about_text" formatted="false"><![CDATA[
+  <b>ВИФ Навигатор<br>
+  Андроид клиент для форума VIF2NE<br><br></b>
+
+  Версия 0.0.5 <br>
+  Автор : Михаил Желудков <br>
+  Лицензия : Apache License, Version 2.0 <br>
+  Проект на github : https://github.com/zheludkovm/VifNavigator2
+  ]]></string>
+
+
+
 </resources>

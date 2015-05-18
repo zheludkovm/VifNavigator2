@@ -396,6 +396,14 @@
                                                    )
                                  }
                           ]
+                         [:item {
+                                 :title          R$string/about_title
+                                 :show-as-action :never
+                                 :on-click       (fn [_]
+                                                   (launch-activity this 'ru.vif.AboutActivity {})
+                                                   )
+                                 }
+                          ]
                          ]
                    )
                  )

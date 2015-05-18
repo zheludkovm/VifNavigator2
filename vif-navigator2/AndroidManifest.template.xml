@@ -52,6 +52,13 @@
                 <category android:name='android.intent.category.DEFAULT'/>
             </intent-filter>
         </activity>
+        <activity android:name=".AboutActivity"
+                  android:theme="@style/VifColorTheme">
+            <intent-filter>
+                <action android:name='ru.vif.ABOUT'/>
+                <category android:name='android.intent.category.DEFAULT'/>
+            </intent-filter>
+        </activity>
     </application>
 
     {{#debug-build}}
