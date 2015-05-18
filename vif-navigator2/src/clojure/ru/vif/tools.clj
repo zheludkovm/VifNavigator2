@@ -247,8 +247,10 @@
              :extends android.preference.PreferenceActivity
              :on-create
              (fn [this bundle]
-               (.setTitle this ru.vif.R$string/settings_title)
                (.addPreferencesFromResource this ru.vif.R$xml/preferences) ;
+               (setup-action-bar this {:title           (str-res-html this R$string/settings_title)
+                                       :display-options :show-title
+                                       })
                )
              )
 
