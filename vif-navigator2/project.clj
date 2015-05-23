@@ -1,6 +1,6 @@
-(defproject vif-navigator/vif-navigator2 "0.0.1-SNAPSHOT"
+(defproject vif-navigator/vif-navigator2 "0.0.8-SNAPSHOT"
             :description "Vif navigator"
-            :url "http://example.com/FIXME"
+            :url "https://github.com/zheludkovm/VifNavigator2"
 
             :global-vars {*warn-on-reflection* true}
 
