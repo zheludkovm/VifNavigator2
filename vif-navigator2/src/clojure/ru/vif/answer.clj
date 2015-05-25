@@ -1,6 +1,3 @@
-(ns ru.vif.main)
-(declare full-reload)
-
 (ns ru.vif.answer
   (:require [neko.activity :refer [defactivity set-content-view!]]
             [neko.debug :refer [*a safe-for-ui]]
@@ -21,7 +18,7 @@
             [ru.vif.http-client :as http :refer :all]
             [ru.vif.tools :refer :all]
             [ru.vif.db-tools :refer :all]
-            [ru.vif.main :refer :all]
+            [ru.vif.client-data :refer :all]
             )
   (:import
     (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
