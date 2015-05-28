@@ -93,31 +93,33 @@
                      ]
 
                  (on-ui
-                   (set-content-view! this [:linear-layout {:orientation        :vertical
-                                                            :backgroundDrawable odd-color}
-                                            [:edit-text {:id                 ::theme
-                                                         :hint               R$string/hint_theme
-                                                         :layout-width       :fill
-                                                         :backgroundDrawable even-color
-                                                         :text               (str RE_PREFIX answer-to-title)
-                                                         :min-lines          3
-                                                         :gravity            Gravity/TOP
-                                                         }]
-                                            [:check-box {:id                 ::to-root
-                                                         :text               R$string/check_box_to_root
-                                                         :layout-width       :fill
-                                                         :backgroundDrawable odd-color
-                                                         }]
-                                            [:edit-text {:id                          ::msg
-                                                         :hint                        R$string/hint_msg
-                                                         :text                        (prepare-answer answer-to-msg)
-                                                         :min-lines                   8
-                                                         :vertical-scroll-bar-enabled true
-                                                         :layout-width                :fill
-                                                         :backgroundDrawable          even-color
-                                                         :gravity                     Gravity/TOP
-                                                         }]
-                                            ])
+                   (set-content-view! this [:scroll-view {}
+                                            [:linear-layout {:orientation        :vertical
+                                                             :backgroundDrawable odd-color}
+                                             [:edit-text {:id                 ::theme
+                                                          :hint               R$string/hint_theme
+                                                          :layout-width       :fill
+                                                          :backgroundDrawable even-color
+                                                          :text               (str RE_PREFIX answer-to-title)
+                                                          :min-lines          3
+                                                          :gravity            Gravity/TOP
+                                                          }]
+                                             [:check-box {:id                 ::to-root
+                                                          :text               R$string/check_box_to_root
+                                                          :layout-width       :fill
+                                                          :backgroundDrawable odd-color
+                                                          }]
+                                             [:edit-text {:id                          ::msg
+                                                          :hint                        R$string/hint_msg
+                                                          :text                        (prepare-answer answer-to-msg)
+                                                          :min-lines                   8
+                                                          :vertical-scroll-bar-enabled true
+                                                          :layout-width                :fill
+                                                          :layout-height               :fill
+                                                          :backgroundDrawable          even-color
+                                                          :gravity                     Gravity/TOP
+                                                          }]
+                                             ]])
                    (setup-action-bar this {
                                            :title           R$string/answer_title
                                            :display-options :show-title

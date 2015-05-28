@@ -32,6 +32,7 @@
         </activity>
         <activity android:name=".AnswerActivity"
                   android:theme="@style/VifColorTheme"
+                  android:windowSoftInputMode="adjustResize"
                 >
             <intent-filter>
                 <action android:name='ru.vif.ANSWER'/>
