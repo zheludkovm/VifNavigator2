@@ -280,6 +280,14 @@
                                                              (refresh-msg-activity this)
                                                              )
                                                            )}]
+                                 [:item {
+                                         :title          "Версия для печати"
+                                         :show-as-action :never
+                                         :on-click       (fn [_]
+                                                           (launch-activity this 'ru.vif.PrintActivity {
+                                                                                                        PARAM_PRINT_NO    (get-activity-param this PARAM_NO)
+                                                                                                        })
+                                                           )}]
 
                                  ]
                      menu-items-updated (if is-registered

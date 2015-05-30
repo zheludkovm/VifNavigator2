@@ -54,7 +54,7 @@
   <b>ВИФ Навигатор<br>
   Андроид клиент для форума VIF2NE<br><br></b>
 
-  Версия 0.0.5 <br>
+  Версия 0.0.9 <br>
   Автор : Михаил Желудков <br>
   Лицензия : Apache License, Version 2.0 <br>
   Проект на github : https://github.com/zheludkovm/VifNavigator2 <br>
@@ -62,5 +62,6 @@
   ]]></string>
 
 
+  <string name="print_title" formatted="false">Версия для печати</string>
 
 </resources>

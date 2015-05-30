@@ -27,6 +27,8 @@
 (def vif-message-prefix "http://vif2ne.ru/nvk/forum/0/co/")
 (def security-url "http://vif2ne.ru/nvk/forum/security")
 (def preview-url "http://vif2ne.ru/nvk/forum/0/security/preview/")
+(def print-url "http://vif2ne.ru/nvk/forum/0/print/")
+(def htm-suffix ".htm")
 
 (def TIMEOUT 10000)
 
@@ -73,14 +75,23 @@
          })
   )
 
+(defn calc-basic-auth-header[^auth-info auth]
+  (let [^String credentials (str (:login auth) ":" (:password auth))]
+    (str "Basic " (Base64/encodeToString (.getBytes credentials) Base64/NO_WRAP))))
+
 (defn add-basic-auth! [^HttpRequestBase request ^auth-info auth]
   (if (:use-auth auth)
-    (let [^String credentials (str (:login auth) ":" (:password auth))
-          base64EncodedCredentials (Base64/encodeToString (.getBytes credentials) Base64/NO_WRAP)
-          ]
+    (let [base64EncodedCredentials (calc-basic-auth-header auth)]
       (log/d "auth header=" base64EncodedCredentials)
-      (.addHeader request "Authorization" (str "Basic " base64EncodedCredentials))))
+      (.addHeader request "Authorization" base64EncodedCredentials)))
   request
+  )
+
+(defn auth-headers[^auth-info auth]
+  (if (:use-auth auth)
+    {"Authorization" (calc-basic-auth-header auth)}
+    {}
+    )
   )
 
 

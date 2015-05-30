@@ -60,6 +60,13 @@
                 <category android:name='android.intent.category.DEFAULT'/>
             </intent-filter>
         </activity>
+        <activity android:name=".PrintActivity"
+                  android:theme="@style/VifColorTheme">
+            <intent-filter>
+                <action android:name='ru.vif.PRINT'/>
+                <category android:name='android.intent.category.DEFAULT'/>
+            </intent-filter>
+        </activity>
     </application>
 
     {{#debug-build}}

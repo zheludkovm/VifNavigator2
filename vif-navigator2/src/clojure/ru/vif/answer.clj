@@ -22,17 +22,19 @@
             )
   (:import
     (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
-    (android.content SharedPreferences$OnSharedPreferenceChangeListener SharedPreferences)
+    (android.content SharedPreferences$OnSharedPreferenceChangeListener SharedPreferences Intent)
     (android.app Activity)
     (android.view Gravity)
     (android.text Html)
     (android.widget TextView)
 
-    (android.webkit WebView WebViewClient HttpAuthHandler)))
+    (android.webkit WebView WebViewClient HttpAuthHandler)
+    (android.net Uri)))
 
 (neko.resource/import-all)
 
 (def PARAM_ANSWER_TO_NO "no")
+(def PARAM_PRINT_NO "no")
 (def PARAM_ANSWER_TO_TITLE "title")
 (def PARAM_ANSWER_TO_MSG "msg")
 
@@ -93,7 +95,7 @@
                      ]
 
                  (on-ui
-                   (set-content-view! this [:scroll-view {}
+                   (set-content-view! this [:scroll-view {:fillViewport true}
                                             [:linear-layout {:orientation        :vertical
                                                              :backgroundDrawable odd-color}
                                              [:edit-text {:id                 ::theme
@@ -174,33 +176,68 @@
       )
     ))
 
+(defn external-web-client [^String login ^String password]
+  (proxy [WebViewClient] []
+    (onReceivedHttpAuthRequest [^WebView view
+                                ^HttpAuthHandler handler
+                                ^String host
+                                ^String realm
+                                ]
+      (.proceed handler login password)
+      )
+    (shouldOverrideUrlLoading [^WebView view, ^String url]
+      (.startActivity (.getContext view) (Intent. Intent/ACTION_VIEW, (Uri/parse url)))
+      true
+      )
+    ))
+
+
+(defn create-web-view [title call-http-func auth-client]
+  (fn create-web-view [^Activity this bundle]
+    (let [
+          even-color (.. this getResources (getDrawable R$color/even))
+          odd-color (.. this getResources (getDrawable R$color/odd))
+          auth (create-auth-info this)
+          ]
+
+      (on-ui
+        (set-content-view! this [:web-view {:id                 ::preview
+                                            :backgroundDrawable odd-color
+                                            :web-view-client    (auth-client (:login auth) (:password auth))}])
+        (setup-action-bar this {:title              title
+                                :backgroundDrawable even-color
+                                :display-options    :show-title})
+        (call-http-func this (find-view this ::preview))))))
+
 
 (defactivity ru.vif.PreviewActivity
              ;"Создает activity с ответом
              :key :preview
              :on-create
-             (fn [^Activity this bundle]
-               (let [preview-theme (get-activity-param this PARAM_PREVIEW_THEME)
-                     preview-msg (get-activity-param this PARAM_PREVIEW_MSG)
-                     answer-to-no (get-activity-param this PARAM_ANSWER_TO_NO)
-                     even-color (.. this getResources (getDrawable R$color/even))
-                     odd-color (.. this getResources (getDrawable R$color/odd))
-                     auth (create-auth-info this)
-                     ]
+             (create-web-view
+               R$string/preview_title
+               (fn [this web-view]
+                 (.postUrl web-view
+                           (str http/preview-url)
+                           (http/prepare-preview-request
+                             (get-activity-param this PARAM_ANSWER_TO_NO)
+                             (get-activity-param this PARAM_PREVIEW_MSG))
+                           )
+                 )
+               simple-auth-client
+               )
+             )
 
-                 (on-ui
-                   (set-content-view! this [:web-view {:id                 ::preview
-                                                       :backgroundDrawable odd-color
-                                                       :web-view-client    (simple-auth-client (:login auth) (:password auth))
-                                                       }
-                                            ])
-                   (setup-action-bar this {
-                                           :title              R$string/preview_title
-                                           :backgroundDrawable even-color
-                                           :display-options    :show-title
-                                           })
-
-                   (let [^WebView web-view (find-view this ::preview)]
-                     (.postUrl web-view
-                               (str http/preview-url answer-to-no)
-                               (http/prepare-preview-request preview-theme preview-msg)))))))
+(defactivity ru.vif.PrintActivity
+             ;"Создает activity с версией для печати
+             :key :pruint
+             :on-create
+             (create-web-view
+               R$string/print_title
+               (fn [this ^WebView web-view]
+                 (.loadUrl web-view
+                           (str http/print-url (get-activity-param this PARAM_PRINT_NO) http/htm-suffix)
+                           (http/auth-headers (create-auth-info this))
+                           ))
+               external-web-client
+               ))

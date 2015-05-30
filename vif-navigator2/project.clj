@@ -1,4 +1,4 @@
-(defproject vif-navigator/vif-navigator2 "0.0.8-SNAPSHOT"
+(defproject vif-navigator/vif-navigator2 "0.0.9-SNAPSHOT"
             :description "Vif navigator"
             :url "https://github.com/zheludkovm/VifNavigator2"
 
@@ -15,7 +15,7 @@
                            [org.jsoup/jsoup "1.8.2" :use-resources true]
                            [vif-navigator-libs2 "0.1.0-SNAPSHOT" :use-resources true]
                            ]
-            :profiles {:default [:dev]
+            :profiles {:default [:release]
 
                        :dev
                                 [:android-common :android-user
@@ -59,8 +59,8 @@
                        }
 
             :android {;; Specify the path to the Android SDK directory.
-                      ;:sdk-path       "/media/mikl/storage/projects/android/android-sdk-linux"
-                      :sdk-path       "/home/mzheludkov/work/clojure/android-sdk-linux"
+                      :sdk-path       "/media/mikl/storage/projects/android/android-sdk-linux"
+                      ;:sdk-path       "/home/mzheludkov/work/clojure/android-sdk-linux"
 
                       ;; Try increasing this value if dexer fails with
                       ;; OutOfMemoryException. Set the value according to your
