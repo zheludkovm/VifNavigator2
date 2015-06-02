@@ -56,30 +56,26 @@
         ]
     (ref-adapter
       (fn [_]
-        [:relative-layout {:id-holder true :layout-width :fill}
+        [:relative-layout {:id-holder     true
+                           :layout-width  :fill
+                           :layout-height :fill
+                           }
          [:text-view {:id                       ::depth
                       :layout-align-parent-left true
                       }]
-         ;[:button {:id                 ::expandMessage
-         ;          :layout-to-right-of  ::depth
-         ;          :layout-align-parent-top true
-         ;          :layout-align-bottom ::caption
-         ;          :layout-width       (calc-pixels activity 15)
-         ;          :minHeight 0
-         ;          :minWidth 0
-         ;          :on-click           expand-collapse
-         ;          :text ">"
-         ;          :backgroundResource R$drawable/expand_button
-         ;          }]
+
          [:text-view {:id                 ::caption
                       :layout-to-right-of ::depth
                       :layout-to-left-of  ::expandButton
                       :min-lines          2
-                      :on-click           expand-collapse
+                      :on-click           show-message
                       }]
          [:button {:id                        ::expandButton
                    :layout-align-parent-right true
                    :layout-height             :wrap
+                   :layout-width              :wrap
+                   :minWidth                  0
+                   :minHeight                 0
                    :on-click                  show-message
                    :backgroundResource        R$drawable/expand_button
                    :minimumHeight             1
@@ -93,7 +89,7 @@
                       :min-lines                 5
                       :on-click                  show-message
                       :text                      "test"
-                      :visibility                View/GONE
+                      ;:visibility                View/GONE
                       }]
          ]
         )
@@ -113,7 +109,7 @@
           (config view
                   :backgroundResource (if (color-function position) R$color/odd R$color/even))
 
-          (.setPadding expandButton 2 2 2 2)
+          (.setPadding view 0 0 5 5)
           (set-margins expandButton 5 5 5 5)
 
           ;отступы
@@ -139,19 +135,15 @@
                   )
           ;кнопка
           (config expandButton
-                  ;:visibility (if (> child-count 0)
-                  ;              View/VISIBLE
-                  ;              View/GONE
-                  ;              )
+                  :visibility (if (> child-count 0)
+                                View/VISIBLE
+                                View/GONE
+                                )
                   :text (Html/fromHtml
-                          (if (> child-count 0)
-                            (str (if (> non-visited-child-count 0)
-                                   (format not-visited-count-format non-visited-child-count)
-                                   )
-                                 (format child-count-format child-count)
+                          (str (if (> non-visited-child-count 0)
+                                 (format not-visited-count-format non-visited-child-count)
                                  )
-                            "..."
-                            ))
+                               (format child-count-format child-count)))
                   :tag (str no)
                   )
           )
@@ -177,6 +169,9 @@
                  (set-content-view! this [:list-view {:id                 :main-list-view
                                                       :adapter            (make-adapter this root-tree-items-store true)
                                                       :backgroundResource R$color/even
+                                                      :dividerHeight      0
+                                                      ;:divider (ColorDrawable. R$color/gray)
+
                                                       }])
 
                  (setup-action-bar this {
@@ -261,6 +256,7 @@
                      (let [list-view-tree [:list-view {:id                 :msg-list-view
                                                        ;:adapter            (make-adapter this state false)
                                                        :backgroundResource R$color/even
+                                                       :dividerHeight      0
                                                        }
                                            ]]
                        (set-content-view! this list-view-tree)

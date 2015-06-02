@@ -22,7 +22,10 @@
                                  {:dependencies [[org.clojure-android/tools.nrepl "0.2.6"]]
                                   :target-path  "target/debug"
                                   :android      {:aot                     :all-with-unused
-                                                 :manifest-options        {:app-name "VifNavigator - debug"}}}]
+                                                 :manifest-options        {:app-name "VifNavigator - debug"}
+                                                 :target-version "21"
+                                                 }
+                                  }]
                        :release
                                 [:android-common
                                  {:target-path "target/release"
@@ -60,13 +63,13 @@
 
             :android {;; Specify the path to the Android SDK directory.
                       ;:sdk-path       "/media/mikl/storage/projects/android/android-sdk-linux"
-                      :sdk-path       "/home/mzheludkov/work/clojure/android-sdk-linux"
-                      ;:sdk-path       "/media/mikl/fast/android/android-sdk-linux"
+                      ;:sdk-path       "/home/mzheludkov/work/clojure/android-sdk-linux"
+                      :sdk-path       "/media/mikl/fast/android/android-sdk-linux"
 
                       ;; Try increasing this value if dexer fails with
                       ;; OutOfMemoryException. Set the value according to your
                       ;; available RAM.
-                      :dex-opts       ["-JXmx4096M"]
+                      :dex-opts       ["-JXmx4096M" "--num-threads=4" "--incremental"]
 
                       ;; If previous option didn't work, uncomment this as well.
                       ;; :force-dex-optimize true

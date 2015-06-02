@@ -48,8 +48,6 @@
 (def SETTINGS_DEPTH "settings_depth")
 
 
-(def expanded-items
-  (atom #{}))
 
 (def tree-data-store
   (atom void-tree))
@@ -277,38 +275,4 @@
       (show-message-by-no this parent-no)
       )
     )
-  )
-
-(defn collapse-item [^String no]
-  (swap! expanded-items disj no)
-  )
-
-(defn expand-item [^String no]
-  (swap! expanded-items conj no)
-  )
-
-(defn expanded? [^String no]
-  (contains? @expanded-items no))
-
-(defn expand-collapse
-  "Клик на кнопку развернуть/сжать"
-  [^Button button]
-
-  (let [str-no (.getTag button)
-        layout (.getParent button)
-        msg-view (find-view layout :msg)
-        ]
-
-    (if (expanded? str-no)
-      (do (collapse-item str-no)
-          (config msg-view :visibility View/GONE))
-      (do (expand-item str-no)
-          (config msg-view :visibility View/VISIBLE))
-      )
-
-    (.invalidate (.getParent layout))
-
-
-    )
-
   )
