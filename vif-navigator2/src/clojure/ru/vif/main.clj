@@ -21,7 +21,8 @@
             )
   (:import
     (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
-    (android.content SharedPreferences$OnSharedPreferenceChangeListener SharedPreferences)))
+    (android.content SharedPreferences$OnSharedPreferenceChangeListener SharedPreferences)
+    (android.widget Button)))
 
 (neko.resource/import-all)
 
@@ -59,27 +60,29 @@
          [:text-view {:id                       ::depth
                       :layout-align-parent-left true
                       }]
-         [:button {:id                 ::expandMessage
-                   :layout-to-right-of  ::depth
-                   :layout-align-parent-top true
-                   :layout-align-bottom ::caption
-                   :layout-width       (calc-pixels activity 15)
-                   :minHeight 0
-                   :minWidth 0
-                   :on-click           expand-collapse
-                   :text ">"
-                   :backgroundResource R$drawable/expand_button
-                   }]
+         ;[:button {:id                 ::expandMessage
+         ;          :layout-to-right-of  ::depth
+         ;          :layout-align-parent-top true
+         ;          :layout-align-bottom ::caption
+         ;          :layout-width       (calc-pixels activity 15)
+         ;          :minHeight 0
+         ;          :minWidth 0
+         ;          :on-click           expand-collapse
+         ;          :text ">"
+         ;          :backgroundResource R$drawable/expand_button
+         ;          }]
          [:text-view {:id                 ::caption
-                      :layout-to-right-of ::expandMessage
+                      :layout-to-right-of ::depth
                       :layout-to-left-of  ::expandButton
                       :min-lines          2
-                      :on-click           show-message
+                      :on-click           expand-collapse
                       }]
          [:button {:id                        ::expandButton
                    :layout-align-parent-right true
                    :layout-height             :wrap
                    :on-click                  show-message
+                   :backgroundResource        R$drawable/expand_button
+                   :minimumHeight             1
                    }]
 
 
@@ -96,9 +99,8 @@
         )
       (fn [position view _ ^vif-display-entry data]
         (let [color-function (if is-root odd? even?)
-              caption (find-view view ::caption)
-              expandButton (find-view view ::expandButton)
-              expandMessage (find-view view ::expandMessage)
+              ^TextView caption (find-view view ::caption)
+              ^Button expandButton (find-view view ::expandButton)
 
               child-count (:child-count data)
               no (:no data)
@@ -111,9 +113,9 @@
           (config view
                   :backgroundResource (if (color-function position) R$color/odd R$color/even))
 
-          (.setPadding expandMessage 0 0 0 0)
-          (config expandMessage
-                  :tag (str no))
+          (.setPadding expandButton 2 2 2 2)
+          (set-margins expandButton 5 5 5 5)
+
           ;отступы
           (if (> depth-value 0)
             (config (find-view view ::depth) :text (repeat_void (:depth data)))
@@ -137,17 +139,19 @@
                   )
           ;кнопка
           (config expandButton
-                  :visibility (if (> child-count 0)
-                                View/VISIBLE
-                                View/GONE
-                                )
+                  ;:visibility (if (> child-count 0)
+                  ;              View/VISIBLE
+                  ;              View/GONE
+                  ;              )
                   :text (Html/fromHtml
-                          (str (if (> non-visited-child-count 0)
-                                 (format not-visited-count-format non-visited-child-count)
+                          (if (> child-count 0)
+                            (str (if (> non-visited-child-count 0)
+                                   (format not-visited-count-format non-visited-child-count)
+                                   )
+                                 (format child-count-format child-count)
                                  )
-                               (format child-count-format child-count)
-                               )
-                          )
+                            "..."
+                            ))
                   :tag (str no)
                   )
           )

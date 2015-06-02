@@ -300,11 +300,9 @@
         ]
 
     (if (expanded? str-no)
-      (do (config button :text ">")
-          (collapse-item str-no)
+      (do (collapse-item str-no)
           (config msg-view :visibility View/GONE))
-      (do (config button :text "^")
-          (expand-item str-no)
+      (do (expand-item str-no)
           (config msg-view :visibility View/VISIBLE))
       )
 

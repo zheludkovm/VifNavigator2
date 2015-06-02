@@ -280,3 +280,7 @@
 (defn calc-pixels [^Activity this dip]
   (TypedValue/applyDimension TypedValue/COMPLEX_UNIT_DIP dip (.. this getResources getDisplayMetrics));
   )
+
+(defn set-margins [^View view left top right bottom]
+  (.. view getLayoutParams (setMargins left top right bottom))
+  )
