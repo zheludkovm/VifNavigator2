@@ -19,7 +19,8 @@
             )
   (:import
     (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
-    (android.content SharedPreferences$OnSharedPreferenceChangeListener SharedPreferences)))
+    (android.content SharedPreferences$OnSharedPreferenceChangeListener SharedPreferences)
+    (android.widget Button)))
 
 (neko.resource/import-all)
 
@@ -47,7 +48,8 @@
 (def SETTINGS_DEPTH "settings_depth")
 
 
-
+(def expanded-items
+  (atom #{}))
 
 (def tree-data-store
   (atom void-tree))
@@ -275,4 +277,40 @@
       (show-message-by-no this parent-no)
       )
     )
+  )
+
+(defn collapse-item [^String no]
+  (swap! expanded-items disj no)
+  )
+
+(defn expand-item [^String no]
+  (swap! expanded-items conj no)
+  )
+
+(defn expanded? [^String no]
+  (contains? @expanded-items no))
+
+(defn expand-collapse
+  "Клик на кнопку развернуть/сжать"
+  [^Button button]
+
+  (let [str-no (.getTag button)
+        layout (.getParent button)
+        msg-view (find-view layout :msg)
+        ]
+
+    (if (expanded? str-no)
+      (do (config button :text ">")
+          (collapse-item str-no)
+          (config msg-view :visibility View/GONE))
+      (do (config button :text "^")
+          (expand-item str-no)
+          (config msg-view :visibility View/VISIBLE))
+      )
+
+    (.invalidate (.getParent layout))
+
+
+    )
+
   )

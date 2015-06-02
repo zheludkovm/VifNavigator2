@@ -21,7 +21,7 @@
     (ru.vif.model.records vif-display-entry)
     (android.app AlertDialog$Builder)
     (android.content DialogInterface$OnClickListener SharedPreferences)
-    )
+    (android.util TypedValue))
   )
 
 (neko.resource/import-all)
@@ -275,4 +275,8 @@
     (get-stored-propery-string this LOGIN nil)
     (get-stored-propery-string this PASSWORD nil)
     )
+  )
+
+(defn calc-pixels [^Activity this dip]
+  (TypedValue/applyDimension TypedValue/COMPLEX_UNIT_DIP dip (.. this getResources getDisplayMetrics));
   )

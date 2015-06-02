@@ -105,6 +105,7 @@
     (get value-map "author")
     (get value-map "date")
     (safe-parse-long (get value-map "size"))
+    nil
     false
     )
   )

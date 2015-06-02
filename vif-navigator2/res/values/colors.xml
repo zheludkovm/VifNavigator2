@@ -2,4 +2,5 @@
 <resources>
     <color name="odd">#eee9cf</color>
     <color name="even">#eae3c0</color>
+    <color name="transparent">#0000</color>
 </resources>

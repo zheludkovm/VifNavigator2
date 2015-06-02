@@ -13,6 +13,7 @@
                           ^String author
                           ^String date
                           ^Long size
+                          ^String message
                           ;восстанавливается из базы, по умолчанию false
                           ^Boolean is_visited
                           ])
@@ -34,6 +35,7 @@
                               ^String author,
                               ^String date
                               ^Long size
+                              ^String message
                               ;calc fields
                               ^Boolean is_visited           ; просматривали ли запись
                               ^Boolean is-top-fixed         ;является ли запись закрепленной вверху

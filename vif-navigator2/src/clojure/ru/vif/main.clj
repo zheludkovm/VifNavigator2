@@ -59,8 +59,19 @@
          [:text-view {:id                       ::depth
                       :layout-align-parent-left true
                       }]
+         [:button {:id                 ::expandMessage
+                   :layout-to-right-of  ::depth
+                   :layout-align-parent-top true
+                   :layout-align-bottom ::caption
+                   :layout-width       (calc-pixels activity 15)
+                   :minHeight 0
+                   :minWidth 0
+                   :on-click           expand-collapse
+                   :text ">"
+                   :backgroundResource R$drawable/expand_button
+                   }]
          [:text-view {:id                 ::caption
-                      :layout-to-right-of ::depth
+                      :layout-to-right-of ::expandMessage
                       :layout-to-left-of  ::expandButton
                       :min-lines          2
                       :on-click           show-message
@@ -70,12 +81,24 @@
                    :layout-height             :wrap
                    :on-click                  show-message
                    }]
+
+
+         [:text-view {:id                        :msg
+                      :layout-below              ::caption
+                      :layout-to-right-of        ::depth
+                      :layout-align-parent-right true
+                      :min-lines                 5
+                      :on-click                  show-message
+                      :text                      "test"
+                      :visibility                View/GONE
+                      }]
          ]
         )
       (fn [position view _ ^vif-display-entry data]
         (let [color-function (if is-root odd? even?)
               caption (find-view view ::caption)
               expandButton (find-view view ::expandButton)
+              expandMessage (find-view view ::expandMessage)
 
               child-count (:child-count data)
               no (:no data)
@@ -87,6 +110,10 @@
           ;фон, четный и нечетный
           (config view
                   :backgroundResource (if (color-function position) R$color/odd R$color/even))
+
+          (.setPadding expandMessage 0 0 0 0)
+          (config expandMessage
+                  :tag (str no))
           ;отступы
           (if (> depth-value 0)
             (config (find-view view ::depth) :text (repeat_void (:depth data)))
@@ -149,8 +176,8 @@
                                                       }])
 
                  (setup-action-bar this {
-                                         :title              (str-res-html this R$string/main_title)
-                                         :display-options    :show-title
+                                         :title           (str-res-html this R$string/main_title)
+                                         :display-options :show-title
                                          })
                  )
                (full-reload this)
@@ -250,8 +277,8 @@
                        )
 
                      (setup-action-bar this {
-                                             :title              (res-format-html this R$string/title_format (:author tree-entry))
-                                             :display-options    [:home-as-up :show-title]
+                                             :title           (res-format-html this R$string/title_format (:author tree-entry))
+                                             :display-options [:home-as-up :show-title]
                                              })
                      )
                    )
@@ -285,7 +312,7 @@
                                          :show-as-action :never
                                          :on-click       (fn [_]
                                                            (launch-activity this 'ru.vif.PrintActivity {
-                                                                                                        PARAM_PRINT_NO    (get-activity-param this PARAM_NO)
+                                                                                                        PARAM_PRINT_NO (get-activity-param this PARAM_NO)
                                                                                                         })
                                                            )}]
 

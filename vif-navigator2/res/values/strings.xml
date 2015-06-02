@@ -11,7 +11,7 @@
   <string name="error_loading_tree">Не удалось загрузить данные!</string>
   <string name="error_auth">Неправильный логин/пароль!</string>
   <string name="process_tree">Обработка данных</string>
-  <string name="error_process_tree">Не удалось загрузить данные!</string>
+  <string name="error_process_tree">Не удалось обработать данные!</string>
   <string name="init_tree">Инициализация</string>
   <string name="error_init_tree">Не удалось инициализировать данные!</string>
 
