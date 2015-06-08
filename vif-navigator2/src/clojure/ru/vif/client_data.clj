@@ -11,6 +11,7 @@
             [neko.ui :refer [config make-ui-element]]
             [neko.action-bar :refer [setup-action-bar]]
             [clojure.java.io :as io]
+            [clojure.core.async :as a]
 
             [ru.vif.model.api :as model-api :refer :all]
             [ru.vif.http-client :as http :refer :all]
@@ -55,6 +56,15 @@
 (def root-tree-items-store
   (atom []))
 
+(def download-channel (a/chan 5000))
+
+(defn add-async-download-msg [seq-no]
+  (doseq [no seq-no]
+    (a/>!! download-channel (str no))
+    (log/d "add to download-queue" no)
+    )
+  )
+
 
 (defn calc-sub-tree
   "Отрезает от дерева листья глубже чем EXPAND_DEPTH/MAIN_DEPTH а также считает количество дочерних сообщений"
@@ -78,6 +88,11 @@
 
   (swap! tree-data-store model-api/set-entry-visited no)
   (store-visited! this no)
+  )
+
+(defn set-entry-message! [this ^Long no ^String message]
+  (swap! tree-data-store model-api/set-entry-message no message)
+  (store-message! this no message)
   )
 
 
@@ -117,6 +132,8 @@
           date (:date tree-entry)
           ]
       (set-entry-visited! activity no)
+      (set-entry-message! activity no msg)
+
       (on-ui (launch-activity activity 'ru.vif.MsgActivity {PARAM_MSG   msg
                                                             PARAM_NO    (str no)
                                                             PARAM_TITLE title
@@ -167,6 +184,14 @@
         ))))
 
 
+(defn add-non-loaded-messages [visible-items]
+  (let [non-loaded-seq-no (->> visible-items
+                               (filter #(nil? (:message %)))
+                               (map #(:no %))
+                               )]
+    (add-async-download-msg non-loaded-seq-no)
+    )
+  )
 
 (defn full-reload
   "Полная перегрузка всего дерева сообщений"
@@ -189,14 +214,13 @@
                                                             merged-tree-store
                                                             )))
            ]
+
        (on-ui
          (reset! tree-data-store new-tree-data-store)
-         (if reload-tree (reset! root-tree-items-store (calc-main-sub-tree)))
-         )
-       )
-     )
-    )
-  )
+         (if reload-tree
+           (let [visible-items (calc-main-sub-tree)]
+             (reset! root-tree-items-store visible-items)
+             (add-non-loaded-messages visible-items))))))))
 
 (defn refresh-adapter-data
   "перегружает данные адаптера listview и по возможности восстанавлиает положение скролбара"
@@ -256,10 +280,13 @@
   [this]
 
   ;(full-reload this)
-  (refresh-adapter-data
-    (find-view this :msg-list-view)
-    (.state this)
-    (calc-sub-tree (get-param-no this) (get-stored-propery-long this SETTINGS_DEPTH EXPAND_DEPTH))
+  (let [visible-items (calc-sub-tree (get-param-no this) (get-stored-propery-long this SETTINGS_DEPTH EXPAND_DEPTH))]
+    (refresh-adapter-data
+      (find-view this :msg-list-view)
+      (.state this)
+      visible-items
+      )
+    (add-non-loaded-messages visible-items)
     )
   )
 
@@ -276,3 +303,20 @@
       )
     )
   )
+
+;async download messages
+
+
+
+(defn download-loop []
+  (a/go
+    (loop []
+      (let [no (a/<! download-channel)]
+        (println "try download!" no)
+        )
+      (recur)
+      )
+    )
+  )
+
+(download-loop)

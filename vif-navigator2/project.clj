@@ -14,6 +14,7 @@
                            [neko/neko "3.2.0"]
                            [org.jsoup/jsoup "1.8.2" :use-resources true]
                            [vif-navigator-libs2 "0.1.0-SNAPSHOT" :use-resources true]
+                           [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                            ]
             :profiles {:default [:dev]
 
@@ -24,6 +25,10 @@
                                   :android      {:aot                     :all-with-unused
                                                  :manifest-options        {:app-name "VifNavigator - debug"}
                                                  :target-version "21"
+                                                 :aot-exclude-ns [cljs.core.async.macros
+                                                                  cljs.core.impl-ioc-macros
+                                                                  cljs.core.async.impl.ioc-macros
+                                                                  clojure.core.async.lab]
                                                  }
                                   }]
                        :release
@@ -62,9 +67,8 @@
                        }
 
             :android {;; Specify the path to the Android SDK directory.
-                      ;:sdk-path       "/media/mikl/storage/projects/android/android-sdk-linux"
                       ;:sdk-path       "/home/mzheludkov/work/clojure/android-sdk-linux"
-                      :sdk-path       "/media/mikl/fast/android/android-sdk-linux"
+                      :sdk-path       "/home/mikl/distr/android-sdk-linux"
 
                       ;; Try increasing this value if dexer fails with
                       ;; OutOfMemoryException. Set the value according to your

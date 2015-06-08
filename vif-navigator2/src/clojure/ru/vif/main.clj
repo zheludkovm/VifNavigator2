@@ -22,7 +22,8 @@
   (:import
     (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
     (android.content SharedPreferences$OnSharedPreferenceChangeListener SharedPreferences)
-    (android.widget Button)))
+    (android.widget Button)
+    (android.text TextUtils TextUtils$TruncateAt)))
 
 (neko.resource/import-all)
 
@@ -82,20 +83,21 @@
                    }]
 
 
-         [:text-view {:id                        :msg
+         [:text-view {:id                        ::messageView
                       :layout-below              ::caption
                       :layout-to-right-of        ::depth
                       :layout-align-parent-right true
-                      :min-lines                 5
+                      :max-lines                 5
                       :on-click                  show-message
                       :text                      "test"
-                      ;:visibility                View/GONE
+                      :ellipsize                 TextUtils$TruncateAt/END
                       }]
          ]
         )
       (fn [position view _ ^vif-display-entry data]
         (let [color-function (if is-root odd? even?)
               ^TextView caption (find-view view ::caption)
+              ^TextView messageView (find-view view ::messageView)
               ^Button expandButton (find-view view ::expandButton)
 
               child-count (:child-count data)
@@ -104,6 +106,7 @@
               is-visited (:is_visited data)
               size (:size data)
               non-visited-child-count (:non-visited-child-count data)
+              msg (:message data)
               ]
           ;фон, четный и нечетный
           (config view
@@ -146,9 +149,13 @@
                                (format child-count-format child-count)))
                   :tag (str no)
                   )
-          )
-
-        )
+          (config messageView :tag (str no))
+          (if (nil? msg)
+            (config messageView
+                    :visibility View/GONE)
+            (config messageView
+                    :visibility View/VISIBLE
+                    :text (Html/fromHtml msg)))))
       data-store
       identity
       )

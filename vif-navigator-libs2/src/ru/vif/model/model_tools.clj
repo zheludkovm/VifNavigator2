@@ -158,6 +158,13 @@
   (update-in current-tree [:all-entries-map no :is_visited] (constantly true))
   )
 
+(defn set-entry-message
+  [^vif-tree current-tree
+   ^Long no
+   ^String message
+   ]
+  (update-in current-tree [:all-entries-map no :message] (constantly message))
+  )
 
 (defn merge-trees
   "Производит merge списка изменений vif в дерево"

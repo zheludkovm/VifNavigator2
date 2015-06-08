@@ -59,3 +59,5 @@
 (def get-all-visited
   model-tools/get-all-visited
   )
+
+(def set-entry-message model-tools/set-entry-message)

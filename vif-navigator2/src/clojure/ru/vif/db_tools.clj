@@ -24,7 +24,7 @@
 (def schema
   (db/make-schema
     :name "local.db"
-    :version 1
+    :version 2
     :tables {:tree_entries
              {:columns {:id         "integer primary key AUTOINCREMENT"
                         :no         "long"
@@ -36,6 +36,7 @@
                         :date       "text"
                         :size       "long"
                         :is_visited "boolean"
+                        :message    "text"
                         }}}))
 
 (def get-db-helper
@@ -147,4 +148,7 @@
 
   )
 
+(defn store-message! [this ^Long no ^String message]
+  (tools/with-try #(db/update (get-db this) :tree_entries {:message message} {:no no}))
+  )
 

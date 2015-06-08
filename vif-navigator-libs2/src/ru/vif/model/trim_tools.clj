@@ -46,7 +46,7 @@
       (:author xml-entry)
       (:date xml-entry)
       (:size xml-entry)
-      nil
+      (:message xml-entry)
       (:is_visited xml-entry)
       (= (:mode xml-entry) :mode-fixed)
       (contains? #{:mode-fixed :mode-unfixed} (:mode xml-entry))
