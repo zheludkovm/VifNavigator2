@@ -18,6 +18,7 @@
             [ru.vif.db-tools :refer :all]
             [ru.vif.answer :refer :all]
             [ru.vif.client-data :refer :all]
+            [ru.vif.background :refer :all]
             )
   (:import
     (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
@@ -233,12 +234,15 @@
                          ]
                    )
                  )
+               (set-root-activity! this)
                )
              :on-resume
              refresh-tree-activity
-             :on-stop
+
+             :on-destroy
              (fn [this]
-               (log/d "stop!")
+               (log/d "destroy!")
+               (set-root-activity! nil)
                )
              )
 
@@ -311,7 +315,7 @@
                                          :on-click       (fn [_]
                                                            (future
                                                              (set-recursive-visited! this (get-param-no this))
-                                                             (refresh-msg-activity this)
+                                                             (refresh-msg-activity this true)
                                                              )
                                                            )}]
                                  [:item {
@@ -349,7 +353,16 @@
                (go-top this)
                )
              :on-resume
-             refresh-msg-activity
+             (fn [this]
+               (refresh-msg-activity this true)
+               (set-msg-activity! this)
+               )
+
+             :on-pause
+             (fn [this]
+               (set-msg-activity! nil)
+               )
+
 
              :on-restart
              (fn [^Activity this]

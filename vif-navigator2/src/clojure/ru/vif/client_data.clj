@@ -226,6 +226,7 @@
   "перегружает данные адаптера listview и по возможности восстанавлиает положение скролбара"
   [list-view tree-items-atom-store tree-data]
 
+  (log/d "refresh adapter data!" list-view)
   (let [visible-position (.getFirstVisiblePosition list-view)]
     (on-ui
       (reset! tree-items-atom-store tree-data)
@@ -267,6 +268,7 @@
 (defn refresh-tree-activity
   "Обновить список веток на основной форме"
   [^Activity this]
+  (log/d "refresh tree-activity!")
   (refresh-adapter-data
     (find-view this :main-list-view)
     root-tree-items-store
@@ -277,16 +279,19 @@
 
 (defn refresh-msg-activity
   "Обновить список веток на форме сообщения"
-  [this]
+  [this check-non-load-messages]
 
   ;(full-reload this)
+  (log/d "refresh msg activity!!!!!")
   (let [visible-items (calc-sub-tree (get-param-no this) (get-stored-propery-long this SETTINGS_DEPTH EXPAND_DEPTH))]
     (refresh-adapter-data
       (find-view this :msg-list-view)
       (.state this)
       visible-items
       )
-    (add-non-loaded-messages visible-items)
+    (if check-non-load-messages
+      (add-non-loaded-messages visible-items)
+      )
     )
   )
 
@@ -308,15 +313,3 @@
 
 
 
-(defn download-loop []
-  (a/go
-    (loop []
-      (let [no (a/<! download-channel)]
-        (println "try download!" no)
-        )
-      (recur)
-      )
-    )
-  )
-
-(download-loop)
