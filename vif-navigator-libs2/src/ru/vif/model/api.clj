@@ -61,3 +61,5 @@
   )
 
 (def set-entry-message model-tools/set-entry-message)
+
+(def get-entry-message model-tools/get-entry-message)

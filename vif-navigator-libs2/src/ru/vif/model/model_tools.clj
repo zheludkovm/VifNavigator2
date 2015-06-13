@@ -166,6 +166,10 @@
   (update-in current-tree [:all-entries-map no :message] (constantly message))
   )
 
+(defn get-entry-message[^vif-tree current-tree ^Long no]
+  (:message (get (:all-entries-map current-tree) no))
+  )
+
 (defn merge-trees
   "Производит merge списка изменений vif в дерево"
   [^vif-tree current-tree, ^parse-data new-parsed-data]

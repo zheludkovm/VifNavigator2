@@ -91,6 +91,7 @@
   )
 
 (defn set-entry-message! [this ^Long no ^String message]
+  (log/d "set entry message" no message)
   (swap! tree-data-store model-api/set-entry-message no message)
   (store-message! this no message)
   )
@@ -189,8 +190,10 @@
                                (filter #(nil? (:message %)))
                                (map #(:no %))
                                )]
-    (add-async-download-msg non-loaded-seq-no)
-    )
+    (future
+      (do
+        (Thread/sleep 1000)
+        (add-async-download-msg non-loaded-seq-no))))
   )
 
 (defn full-reload
@@ -224,7 +227,7 @@
 
 (defn refresh-adapter-data
   "перегружает данные адаптера listview и по возможности восстанавлиает положение скролбара"
-  [list-view tree-items-atom-store tree-data]
+  [^ListView list-view tree-items-atom-store tree-data]
 
   (log/d "refresh adapter data!" list-view)
   (let [visible-position (.getFirstVisiblePosition list-view)]

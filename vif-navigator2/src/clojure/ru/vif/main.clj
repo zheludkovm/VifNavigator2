@@ -84,7 +84,7 @@
                    }]
 
 
-         [:text-view {:id                        ::messageView
+         [:text-view {:id                        :messageView
                       :layout-below              ::caption
                       :layout-to-right-of        ::depth
                       :layout-align-parent-right true
@@ -92,13 +92,14 @@
                       :on-click                  show-message
                       :text                      "test"
                       :ellipsize                 TextUtils$TruncateAt/END
+                      :movement-method    (LinkMovementMethod.)
                       }]
          ]
         )
       (fn [position view _ ^vif-display-entry data]
         (let [color-function (if is-root odd? even?)
               ^TextView caption (find-view view ::caption)
-              ^TextView messageView (find-view view ::messageView)
+              ^TextView messageView (find-view view :messageView)
               ^Button expandButton (find-view view ::expandButton)
 
               child-count (:child-count data)
@@ -107,7 +108,7 @@
               is-visited (:is_visited data)
               size (:size data)
               non-visited-child-count (:non-visited-child-count data)
-              msg (:message data)
+              msg (get-entry-message @tree-data-store no)
               ]
           ;фон, четный и нечетный
           (config view
@@ -177,7 +178,7 @@
                  (set-content-view! this [:list-view {:id                 :main-list-view
                                                       :adapter            (make-adapter this root-tree-items-store true)
                                                       :backgroundResource R$color/even
-                                                      :dividerHeight      0
+                                                      ;:dividerHeight      0
                                                       ;:divider (ColorDrawable. R$color/gray)
 
                                                       }])
@@ -267,7 +268,7 @@
                      (let [list-view-tree [:list-view {:id                 :msg-list-view
                                                        ;:adapter            (make-adapter this state false)
                                                        :backgroundResource R$color/even
-                                                       :dividerHeight      0
+                                                       ;:dividerHeight      0
                                                        }
                                            ]]
                        (set-content-view! this list-view-tree)
