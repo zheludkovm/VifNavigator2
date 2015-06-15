@@ -43,6 +43,8 @@
 (def LAST_EVENT "last-event")
 
 (def IS_REGISTERED "is_registered")
+(def MAIN_TREE_MESSAGE_SIZE "main_tree_message_size")
+(def SUB_TREE_MESSAGE_SIZE "sub_tree_message_size")
 (def LOGIN "login")
 (def PASSWORD "password")
 

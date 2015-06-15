@@ -8,6 +8,22 @@
             android:entryValues="@array/depthList"
             android:defaultValue="@string/settings_default_depth"/>
 
+    <ListPreference
+            android:key="main_tree_message_size"
+            android:title="@string/main_tree_message_size"
+            android:dialogTitle="@string/main_tree_message_size"
+            android:entries="@array/messageSizeList"
+            android:entryValues="@array/messageSizeList"
+            android:defaultValue="0"/>
+
+    <ListPreference
+            android:key="sub_tree_message_size"
+            android:title="@string/sub_tree_message_size"
+            android:dialogTitle="@string/sub_tree_message_size"
+            android:entries="@array/messageSizeList"
+            android:entryValues="@array/messageSizeList"
+            android:defaultValue="10"/>
+
     <CheckBoxPreference
             android:key="is_registered"
             android:summary="@string/settings_is_registered_summary"

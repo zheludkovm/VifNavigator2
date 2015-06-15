@@ -11,12 +11,14 @@
             [neko.ui :refer [config make-ui-element]]
             [neko.action-bar :refer [setup-action-bar]]
             [clojure.java.io :as io]
-            [clojure.core.async :as a]
 
             [ru.vif.model.api :as model-api :refer :all]
             [ru.vif.http-client :as http :refer :all]
             [ru.vif.tools :refer :all]
             [ru.vif.db-tools :refer :all]
+            [ru.vif.client-data-store :refer :all]
+
+            [ru.vif.background :as background :refer [add-async-download-msg]]
             )
   (:import
     (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
@@ -38,79 +40,6 @@
 (import android.widget.ListView)
 (import ru.vif.http_client.auth-info)
 
-
-(def EXPAND_DEPTH 5)
-(def MAIN_DEPTH 1)
-(def PARAM_NO "no")
-(def PARAM_MSG "msg")
-(def PARAM_TITLE "title")
-(def PARAM_DATE "date")
-
-(def SETTINGS_DEPTH "settings_depth")
-
-
-
-(def tree-data-store
-  (atom void-tree))
-
-(def root-tree-items-store
-  (atom []))
-
-(def download-channel (a/chan 5000))
-
-(defn add-async-download-msg [seq-no]
-  (doseq [no seq-no]
-    (a/>!! download-channel (str no))
-    (log/d "add to download-queue" no)
-    )
-  )
-
-
-(defn calc-sub-tree
-  "Отрезает от дерева листья глубже чем EXPAND_DEPTH/MAIN_DEPTH а также считает количество дочерних сообщений"
-  [^Long no ^Long depth]
-
-  (log/d "show " no)
-  (if (some? no)
-    (model-api/trim-tree-by-depth @tree-data-store no depth)
-    )
-  )
-
-(defn calc-main-sub-tree
-  "Собирает список веток и сортирует"
-  []
-  (sort-tree (calc-sub-tree 0 MAIN_DEPTH))
-  )
-
-(defn set-entry-visited!
-  "Помечает запись как просмотренную"
-  [this ^Long no]
-
-  (swap! tree-data-store model-api/set-entry-visited no)
-  (store-visited! this no)
-  )
-
-(defn set-entry-message! [this ^Long no ^String message]
-  (log/d "set entry message" no message)
-  (swap! tree-data-store model-api/set-entry-message no message)
-  (store-message! this no message)
-  )
-
-
-
-(defn set-recursive-visited!
-  "Помечает запись и все ее дочерние узлы как просмотренные"
-  [this ^Long no]
-  (with-progress this R$string/process_tree R$string/error_process_tree
-                 (fn []
-                   (let [no-seq (vif-tree-child-nodes @tree-data-store no)]
-                     (if (= 0 no)
-                       (store-all-visited! this)
-                       (store-subtree-visited! this no-seq)
-                       )
-                     (swap! tree-data-store model-api/set-all-visited! no-seq)
-                     )))
-  )
 
 (defn check-store-loaded!
   "Проверяет были ли загружены записи из базы и если нет, то загружает"
@@ -190,11 +119,8 @@
                                (filter #(nil? (:message %)))
                                (map #(:no %))
                                )]
-    (future
-      (do
-        (Thread/sleep 1000)
-        (add-async-download-msg non-loaded-seq-no))))
-  )
+    (background/add-async-download-msg non-loaded-seq-no)))
+
 
 (defn full-reload
   "Полная перегрузка всего дерева сообщений"
@@ -255,6 +181,7 @@
       (store-subtree-visited! this visited-seq)
       (swap! tree-data-store model-api/set-all-visited! visited-seq)
       (reset! root-tree-items-store (calc-main-sub-tree))
+      (add-non-loaded-messages @root-tree-items-store)
       )
     )
   )

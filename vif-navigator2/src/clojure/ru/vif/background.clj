@@ -11,13 +11,12 @@
             [neko.ui :refer [config make-ui-element]]
             [neko.action-bar :refer [setup-action-bar]]
             [clojure.java.io :as io]
-            [clojure.core.async :as a]
 
             [ru.vif.model.api :as model-api :refer :all]
             [ru.vif.http-client :as http :refer :all]
             [ru.vif.tools :refer :all]
             [ru.vif.db-tools :refer :all]
-            [ru.vif.client-data :refer :all]
+            [ru.vif.client-data-store :refer :all]
             )
   (:import
     (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
@@ -37,6 +36,8 @@
 (defn set-msg-activity! [^Activity activity]
   (log/d "set msg activity" activity)
   (reset! msg-activity activity))
+
+
 
 (defn first-index [pred coll]
   (first (keep-indexed #(when (pred %2) %1) coll)))
@@ -66,26 +67,60 @@
             (log/d "list item is nil!!! index=" index "size=" (.getChildCount list-view))))))))
 
 
-(defn download-loop []
-  (a/go
-    (loop []
-      (let [no (a/<! download-channel)
-            cur-root-activity @root-activity
-            long-no (Long. no)
-            ]
-        (println "try download!" no)
+(defn add-async-download-msg [seq-no]
+  (future
+    (Thread/sleep 1000)
+    (doseq [long-no seq-no]
+      (let [cur-root-activity @root-activity]
+        (println "try download!" long-no)
         (if (some? cur-root-activity)
-          (do
-            (let [msg-text (http/download-message no (create-auth-info cur-root-activity))]
+          (try
+            (let [msg-text (http/download-message long-no (create-auth-info cur-root-activity))]
               (set-entry-message! cur-root-activity long-no msg-text)
               (set-message-text-in-tree! long-no msg-text)
               )
+            (catch Exception e
+              (log/d "error on download!" e)
+              )
             )
           )
-        )
-      (recur)
-      )
-    )
-  )
 
-(download-loop)
+        )
+      )
+    ))
+
+  ;(def download-channel (a/chan 5000))
+
+  ;(defn add-async-download-msg [seq-no]
+  ;  (doseq [no seq-no]
+  ;    (a/>!! download-channel (str no))
+  ;    (log/d "add to download-queue" no)
+  ;    )
+  ;  )
+  ;
+  ;(defn download-loop []
+  ;  (a/go
+  ;    (loop []
+  ;      (let [no (a/<! download-channel)
+  ;            cur-root-activity @root-activity
+  ;            long-no (Long. no)
+  ;            ]
+  ;        (println "try download!" no)
+  ;        (if (some? cur-root-activity)
+  ;          (try
+  ;            (let [msg-text (http/download-message no (create-auth-info cur-root-activity))]
+  ;              (set-entry-message! cur-root-activity long-no msg-text)
+  ;              (set-message-text-in-tree! long-no msg-text)
+  ;              )
+  ;            (catch Exception e
+  ;              (log/d "error on download!" e)
+  ;              )
+  ;            )
+  ;          )
+  ;        )
+  ;      (recur)
+  ;      )
+  ;    )
+  ;  )
+  ;
+  ;(download-loop)

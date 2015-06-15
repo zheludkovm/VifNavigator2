@@ -9,6 +9,7 @@
             [neko.ui.adapters :refer [ref-adapter]]
             [neko.find-view :refer [find-view find-views]]
             [neko.ui :refer [config make-ui-element]]
+            [neko.ui.mapping :refer [defelement]]
             [neko.action-bar :refer [setup-action-bar]]
             [clojure.java.io :as io]
 
@@ -18,13 +19,16 @@
             [ru.vif.db-tools :refer :all]
             [ru.vif.answer :refer :all]
             [ru.vif.client-data :refer :all]
+            [ru.vif.client-data-store :refer :all]
             [ru.vif.background :refer :all]
             )
   (:import
     (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
     (android.content SharedPreferences$OnSharedPreferenceChangeListener SharedPreferences)
     (android.widget Button)
-    (android.text TextUtils TextUtils$TruncateAt)))
+    (android.text TextUtils TextUtils$TruncateAt)
+    (android.text.util Linkify)
+    (ru.vif EllipsizingTextView)))
 
 (neko.resource/import-all)
 
@@ -44,17 +48,35 @@
 
 ;------------gui creation-----------------
 
+(defn max-message-size [^Activity activity ^Boolean is-root]
+  (get-stored-propery-long activity (if is-root MAIN_TREE_MESSAGE_SIZE SUB_TREE_MESSAGE_SIZE) (if is-root 0 10))
+  )
+
+(defelement  :ellipsizing-text-view
+             :classname ru.vif.EllipsizingTextView
+             :inherits  :text-view
+             )
+
+(defn check-expand[^Activity activity ^EllipsizingTextView text-view]
+  (if (.isEllipsized text-view)
+    (config text-view :max-lines 10000)
+    (show-message activity text-view)
+    )
+  )
+
 (defn make-adapter
   "Создает адаптер для listview со списком сообщений"
   [activity data-store ^Boolean is-root]
 
   (let [show-message (partial show-message activity)
+        check-expand (partial check-expand activity)
         ^String format-bold-black (str-res activity R$string/format_bold_black)
         ^String visited-mark (str-res activity R$string/visited_mark)
         ^String not-visited-mark (str-res activity R$string/not_visited_mark)
         ^String not-visited-count-format (str-res activity R$string/not_visited_count)
         ^String not_visited_mark_zero (str-res activity R$string/not_visited_mark_zero)
         ^String child-count-format (str-res activity R$string/child_count_format)
+        ^Long max-tree-message-size (max-message-size activity is-root)
         ]
     (ref-adapter
       (fn [_]
@@ -84,15 +106,19 @@
                    }]
 
 
-         [:text-view {:id                        :messageView
+         [:ellipsizing-text-view {:id                        :messageView
                       :layout-below              ::caption
                       :layout-to-right-of        ::depth
                       :layout-align-parent-right true
-                      :max-lines                 5
-                      :on-click                  show-message
-                      :text                      "test"
-                      :ellipsize                 TextUtils$TruncateAt/END
-                      :movement-method    (LinkMovementMethod.)
+                      :layout-height             :fill
+                      :layout-width              :fill
+                      :max-lines                 max-tree-message-size
+                      :on-click                  check-expand
+                      :linksClickable            true
+                      :autoLinkMask              Linkify/WEB_URLS
+                      :singleLine                false
+                      :horizontallyScrolling     false
+                      :verticalScrollBarEnabled  false
                       }]
          ]
         )
@@ -157,7 +183,9 @@
                     :visibility View/GONE)
             (config messageView
                     :visibility View/VISIBLE
-                    :text (Html/fromHtml msg)))))
+                    :text (Html/fromHtml (.replace msg "<BR><BR>" "<BR>")))
+            ;(trim-ellipsize messageView msg (max-message-size activity is-root))
+            )))
       data-store
       identity
       )

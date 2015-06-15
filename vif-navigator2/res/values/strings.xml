@@ -63,5 +63,7 @@
 
 
   <string name="print_title" formatted="false">Версия для печати</string>
+  <string name="main_tree_message_size" formatted="false">Max строк в дереве</string>
+  <string name="sub_tree_message_size" formatted="true">Max строк в дереве сообщ.</string>
 
 </resources>

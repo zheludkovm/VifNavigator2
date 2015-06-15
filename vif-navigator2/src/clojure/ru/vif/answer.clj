@@ -1,7 +1,7 @@
 (ns ru.vif.answer
   (:require [neko.activity :refer [defactivity set-content-view!]]
-            [neko.debug :refer [*a safe-for-ui]]
-            [neko.threading :refer [on-ui on-ui*]]
+            [neko.debug :refer [safe-for-ui]]
+            [neko.threading :refer [on-ui]]
             [neko.resource :refer [import-all get-resource]]
             [neko.ui.menu :as menu]
             [neko.log :as log]
@@ -21,13 +21,10 @@
             [ru.vif.client-data :refer :all]
             )
   (:import
-    (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
-    (android.content SharedPreferences$OnSharedPreferenceChangeListener SharedPreferences Intent)
+    (android.content Intent)
     (android.app Activity)
     (android.view Gravity)
     (android.text Html)
-    (android.widget TextView)
-
     (android.webkit WebView WebViewClient HttpAuthHandler)
     (android.net Uri)))
 
