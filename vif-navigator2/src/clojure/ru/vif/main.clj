@@ -52,12 +52,12 @@
   (get-stored-propery-long activity (if is-root MAIN_TREE_MESSAGE_SIZE SUB_TREE_MESSAGE_SIZE) (if is-root 0 10))
   )
 
-(defelement  :ellipsizing-text-view
-             :classname ru.vif.EllipsizingTextView
-             :inherits  :text-view
-             )
+(defelement :ellipsizing-text-view
+            :classname ru.vif.EllipsizingTextView
+            :inherits :text-view
+            )
 
-(defn check-expand[^Activity activity ^EllipsizingTextView text-view]
+(defn check-expand [^Activity activity ^EllipsizingTextView text-view]
   (if (.isEllipsized text-view)
     (config text-view :max-lines 10000)
     (show-message activity text-view)
@@ -106,20 +106,22 @@
                    }]
 
 
+         ;[:ellipsizing-text-view {:id                        :messageView
          [:ellipsizing-text-view {:id                        :messageView
-                      :layout-below              ::caption
-                      :layout-to-right-of        ::depth
-                      :layout-align-parent-right true
-                      :layout-height             :fill
-                      :layout-width              :fill
-                      :max-lines                 max-tree-message-size
-                      :on-click                  check-expand
-                      :linksClickable            true
-                      :autoLinkMask              Linkify/WEB_URLS
-                      :singleLine                false
-                      :horizontallyScrolling     false
-                      :verticalScrollBarEnabled  false
-                      }]
+                                  :layout-below              ::caption
+                                  :layout-to-right-of        ::depth
+                                  :layout-align-parent-right true
+                                  :layout-height             :fill
+                                  :layout-width              :fill
+                                  :max-lines                 max-tree-message-size
+                                  :on-click                  check-expand
+                                  :linksClickable            true
+                                  ;:autoLinkMask              Linkify/WEB_URLS
+                                  :movementMethod            (LinkMovementMethod/getInstance)
+                                  :singleLine                false
+                                  :horizontallyScrolling     false
+                                  :verticalScrollBarEnabled  false
+                                  }]
          ]
         )
       (fn [position view _ ^vif-display-entry data]
@@ -183,7 +185,9 @@
                     :visibility View/GONE)
             (config messageView
                     :visibility View/VISIBLE
-                    :text (Html/fromHtml (.replace msg "<BR><BR>" "<BR>")))
+                    :text (Html/fromHtml (.replace msg "<BR><BR>" "<BR>"))
+                    :max-lines max-tree-message-size
+                    )
             ;(trim-ellipsize messageView msg (max-message-size activity is-root))
             )))
       data-store

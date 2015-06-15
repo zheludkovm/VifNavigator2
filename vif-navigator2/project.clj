@@ -28,7 +28,8 @@
                                                  :aot-exclude-ns [cljs.core.async.macros
                                                                   cljs.core.impl-ioc-macros
                                                                   cljs.core.async.impl.ioc-macros
-                                                                  clojure.core.async.lab]
+                                                                  clojure.core.async.lab
+                                                                  clojure.core.async]
                                                  }
                                   }]
                        :release
@@ -67,8 +68,8 @@
                        }
 
             :android {;; Specify the path to the Android SDK directory.
-                      ;:sdk-path       "/home/mzheludkov/work/clojure/android-sdk-linux"
-                      :sdk-path       "/home/mikl/distr/android-sdk-linux"
+                      :sdk-path       "/home/mzheludkov/work/clojure/android-sdk-linux"
+                      ;:sdk-path       "/home/mikl/distr/android-sdk-linux"
 
                       ;; Try increasing this value if dexer fails with
                       ;; OutOfMemoryException. Set the value according to your
