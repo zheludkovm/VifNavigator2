@@ -1,4 +1,4 @@
-(defproject vif-navigator/vif-navigator2 "0.0.9-SNAPSHOT"
+(defproject vif-navigator/vif-navigator2 "0.0.10-SNAPSHOT"
             :description "Vif navigator"
             :url "https://github.com/zheludkovm/VifNavigator2"
 
@@ -14,7 +14,7 @@
                            [neko/neko "3.2.0"]
                            [org.jsoup/jsoup "1.8.2" :use-resources true]
                            [vif-navigator-libs2 "0.1.0-SNAPSHOT" :use-resources true]
-                           [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+                           ;[org.clojure/core.async "0.1.346.0-17112a-alpha"]
                            ]
             :profiles {:default [:dev]
 
@@ -24,7 +24,7 @@
                                   :target-path  "target/debug"
                                   :android      {:aot                     :all-with-unused
                                                  :manifest-options        {:app-name "VifNavigator - debug"}
-                                                 :target-version "21"
+                                                 :target-version "15"
                                                  :aot-exclude-ns [cljs.core.async.macros
                                                                   cljs.core.impl-ioc-macros
                                                                   cljs.core.async.impl.ioc-macros
@@ -68,13 +68,14 @@
                        }
 
             :android {;; Specify the path to the Android SDK directory.
-                      :sdk-path       "/home/mzheludkov/work/clojure/android-sdk-linux"
-                      ;:sdk-path       "/home/mikl/distr/android-sdk-linux"
+                      ;:sdk-path       "/home/mzheludkov/work/clojure/android-sdk-linux"
+                      :sdk-path       "/home/mikl/distr/android-sdk-linux"
 
                       ;; Try increasing this value if dexer fails with
                       ;; OutOfMemoryException. Set the value according to your
                       ;; available RAM.
                       :dex-opts       ["-JXmx4096M" "--num-threads=4" "--incremental"]
+                      ;:dex-opts       ["-JXmx4096M" "--num-threads=4" ]
 
                       ;; If previous option didn't work, uncomment this as well.
                       ;; :force-dex-optimize true
