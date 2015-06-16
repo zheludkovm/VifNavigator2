@@ -74,60 +74,60 @@
         ]
     (ref-adapter
       (fn [_]
-        [:relative-layout {:id-holder     true
-                           :layout-width  :fill
-                           :layout-height :fill
-                           }
-         [:text-view {:id                       ::depth
-                      :layout-align-parent-left true
-                      }]
+        (keep identity [:relative-layout {:id-holder     true
+                                          :layout-width  :fill
+                                          :layout-height :fill
+                                          }
+                        [:text-view {:id                       ::depth
+                                     :layout-align-parent-left true
+                                     }]
 
-         [:text-view {:id                 ::caption
-                      :layout-to-right-of ::depth
-                      :layout-to-left-of  ::expandButton
-                      :min-lines          2
-                      :on-click           show-message
-                      }]
-         [:button {:id                        ::expandButton
-                   :layout-align-parent-right true
-                   :layout-height             :wrap
-                   :layout-width              :wrap
-                   :minWidth                  0
-                   :minHeight                 0
-                   :on-click                  show-message
-                   :backgroundResource        R$drawable/expand_button
-                   :minimumHeight             1
-                   }]
-
-         [:ellipsizing-text-view {:id                        :messageView
-                                  :layout-below              ::caption
-                                  :layout-to-right-of        ::depth
+                        [:text-view {:id                 ::caption
+                                     :layout-to-right-of ::depth
+                                     :layout-to-left-of  ::expandButton
+                                     :min-lines          2
+                                     :on-click           show-message
+                                     }]
+                        [:button {:id                        ::expandButton
                                   :layout-align-parent-right true
-                                  :layout-height             :fill
-                                  :layout-width              :fill
-                                  :max-lines                 max-tree-message-size
-                                  :on-click                  check-expand
-                                  :linksClickable            true
-                                  :movementMethod            (LinkMovementMethod/getInstance)
-                                  :singleLine                false
-                                  :horizontallyScrolling     false
-                                  :verticalScrollBarEnabled  false
-                                  :visibility                View/GONE
+                                  :layout-height             :wrap
+                                  :layout-width              :wrap
+                                  :minWidth                  0
+                                  :minHeight                 0
+                                  :on-click                  show-message
+                                  :backgroundResource        R$drawable/expand_button
+                                  :minimumHeight             1
                                   }]
-         ]
+                        (if (not= max-tree-message-size 0)
+                          [:ellipsizing-text-view {:id                        :messageView
+                                                   :layout-below              ::caption
+                                                   :layout-to-right-of        ::depth
+                                                   :layout-align-parent-right true
+                                                   :layout-height             :fill
+                                                   :layout-width              :fill
+                                                   :max-lines                 max-tree-message-size
+                                                   :on-click                  check-expand
+                                                   :linksClickable            true
+                                                   :movementMethod            (LinkMovementMethod/getInstance)
+                                                   :singleLine                false
+                                                   :horizontallyScrolling     false
+                                                   :verticalScrollBarEnabled  false
+                                                   :visibility                View/GONE
+                                                   }]
+                          )
+                        ])
         )
-      (fn [position view _ ^vif-display-entry data]
+      (fn [^Long position ^View view _ ^vif-display-entry data]
         (let [color-function (if is-root odd? even?)
               ^TextView caption (find-view view ::caption)
-              ^TextView messageView (find-view view :messageView)
               ^Button expandButton (find-view view ::expandButton)
 
-              child-count (:child-count data)
-              no (:no data)
-              depth-value (:depth data)
-              is-visited (:is_visited data)
-              size (:size data)
-              non-visited-child-count (:non-visited-child-count data)
+              ^Long child-count (:child-count data)
+              ^Long no (:no data)
+              ^Long depth-value (:depth data)
+              ^Boolean is-visited (:is_visited data)
+              ^Long size (:size data)
+              ^Long non-visited-child-count (:non-visited-child-count data)
               ]
           ;фон, четный и нечетный
           (config view
@@ -170,16 +170,18 @@
                                (format child-count-format child-count)))
                   :tag (str no)
                   )
-          (config messageView :tag (str no))
           (if (not= 0 max-tree-message-size)
-            (if-let [msg (get-entry-message @tree-data-store no)]
-              (config messageView
-                      :visibility View/VISIBLE
-                      :text (Html/fromHtml (.replace msg "<BR><BR>" "<BR>"))
-                      :max-lines max-tree-message-size
-                      )
-              (config messageView
-                      :visibility View/GONE)
+            (let [^TextView messageView (find-view view :messageView)]
+              (config messageView :tag (str no))
+              (if-let [^String msg (get-entry-message @tree-data-store no)]
+                (config messageView
+                        :visibility View/VISIBLE
+                        :text (Html/fromHtml (.replace msg "<BR><BR>" "<BR>"))
+                        :max-lines max-tree-message-size
+                        )
+                (config messageView
+                        :visibility View/GONE)
+                )
               )
             )
           ))

@@ -24,7 +24,8 @@
     (android.widget Button ListView)
     (android.app Activity)
     (android.view View)
-    (android.text Html)))
+    (android.text Html)
+    (ru.vif EllipsizingTextView)))
 
 (def root-activity (atom nil))
 (def msg-activity (atom nil))
@@ -45,25 +46,22 @@
 (defn set-message-text-in-tree!
   [^Long long-no ^String msg-text]
 
-  (let [cur-root-activity @root-activity
-        cur-msg-activity @msg-activity
+  (let [^Activity cur-root-activity @root-activity
+        ^Activity cur-msg-activity @msg-activity
         [^ListView list-view items] (if (some? cur-msg-activity)
                                       [(find-view cur-msg-activity :msg-list-view) @(.state cur-msg-activity)]
                                       [(find-view cur-root-activity :main-list-view) @root-tree-items-store]
                                       )
-        index (first-index #(= (:no %) long-no) items)
+        ^Long index (first-index #(= (:no %) long-no) items)
         ]
     (on-ui
       (if (some? index)
-        (let [list-item (.getChildAt list-view (+ index (.getHeaderViewsCount list-view)))]
+        (let [^View list-item (.getChildAt list-view (+ index (.getHeaderViewsCount list-view)))]
           (if (some? list-item)
-            (do
-              (log/d "list-item=" list-item)
-              (config (find-view list-item :messageView)
+            (if-let [^EllipsizingTextView message-view (find-view list-item :messageView)]
+              (config message-view
                       :text (Html/fromHtml msg-text)
-                      :visibility View/VISIBLE
-                      )
-              )
+                      :visibility View/VISIBLE))
             (log/d "list item is nil!!! index=" index "size=" (.getChildCount list-view))))))))
 
 
@@ -75,7 +73,7 @@
         (println "try download!" long-no)
         (if (some? cur-root-activity)
           (try
-            (let [msg-text (http/download-message long-no (create-auth-info cur-root-activity))]
+            (let [^String msg-text (http/download-message long-no (create-auth-info cur-root-activity))]
               (set-entry-message! cur-root-activity long-no msg-text)
               (set-message-text-in-tree! long-no msg-text)
               )
