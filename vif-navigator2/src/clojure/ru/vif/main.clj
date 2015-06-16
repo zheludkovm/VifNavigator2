@@ -57,12 +57,6 @@
             :inherits :text-view
             )
 
-(defn check-expand [^Activity activity ^EllipsizingTextView text-view]
-  (if (.isEllipsized text-view)
-    (config text-view :max-lines 10000)
-    (show-message activity text-view)
-    )
-  )
 
 (defn make-adapter
   "Создает адаптер для listview со списком сообщений"
@@ -105,8 +99,6 @@
                    :minimumHeight             1
                    }]
 
-
-         ;[:ellipsizing-text-view {:id                        :messageView
          [:ellipsizing-text-view {:id                        :messageView
                                   :layout-below              ::caption
                                   :layout-to-right-of        ::depth
@@ -116,11 +108,11 @@
                                   :max-lines                 max-tree-message-size
                                   :on-click                  check-expand
                                   :linksClickable            true
-                                  ;:autoLinkMask              Linkify/WEB_URLS
                                   :movementMethod            (LinkMovementMethod/getInstance)
                                   :singleLine                false
                                   :horizontallyScrolling     false
                                   :verticalScrollBarEnabled  false
+                                  :visibility                View/GONE
                                   }]
          ]
         )
@@ -136,7 +128,6 @@
               is-visited (:is_visited data)
               size (:size data)
               non-visited-child-count (:non-visited-child-count data)
-              msg (get-entry-message @tree-data-store no)
               ]
           ;фон, четный и нечетный
           (config view
@@ -180,16 +171,18 @@
                   :tag (str no)
                   )
           (config messageView :tag (str no))
-          (if (nil? msg)
-            (config messageView
-                    :visibility View/GONE)
-            (config messageView
-                    :visibility View/VISIBLE
-                    :text (Html/fromHtml (.replace msg "<BR><BR>" "<BR>"))
-                    :max-lines max-tree-message-size
-                    )
-            ;(trim-ellipsize messageView msg (max-message-size activity is-root))
-            )))
+          (if (not= 0 max-tree-message-size)
+            (if-let [msg (get-entry-message @tree-data-store no)]
+              (config messageView
+                      :visibility View/VISIBLE
+                      :text (Html/fromHtml (.replace msg "<BR><BR>" "<BR>"))
+                      :max-lines max-tree-message-size
+                      )
+              (config messageView
+                      :visibility View/GONE)
+              )
+            )
+          ))
       data-store
       identity
       )

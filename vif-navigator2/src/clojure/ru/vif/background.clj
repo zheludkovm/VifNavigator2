@@ -87,7 +87,8 @@
 
         )
       )
-    ))
+    )
+  )
 
   ;(def download-channel (a/chan 5000))
 

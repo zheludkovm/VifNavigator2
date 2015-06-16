@@ -86,6 +86,7 @@
   (log/d "set entry message" no message)
   (swap! tree-data-store model-api/set-entry-message no message)
   (store-message! this no message)
+  message
   )
 
 

@@ -23,7 +23,8 @@
   (:import
     (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
     (android.content SharedPreferences$OnSharedPreferenceChangeListener SharedPreferences)
-    (android.widget Button)))
+    (android.widget Button)
+    (ru.vif EllipsizingTextView)))
 
 (neko.resource/import-all)
 
@@ -56,14 +57,16 @@
   [^Activity activity ^Long no]
 
   (future
-    (let [msg (with-progress activity R$string/process_loading_message R$string/error_loading_message #(http/download-message no (create-auth-info activity)))
+    (let [msg (if-let [check-msg (get-entry-message @tree-data-store no)]
+                  check-msg
+                  (set-entry-message! activity no
+                                      (with-progress activity R$string/process_loading_message R$string/error_loading_message #(http/download-message no (create-auth-info activity))))
+                )
           tree-entry (get (:all-entries-map @tree-data-store) no)
           title (:title tree-entry)
           date (:date tree-entry)
           ]
       (set-entry-visited! activity no)
-      (set-entry-message! activity no msg)
-
       (on-ui (launch-activity activity 'ru.vif.MsgActivity {PARAM_MSG   msg
                                                             PARAM_NO    (str no)
                                                             PARAM_TITLE title
@@ -239,7 +242,14 @@
     )
   )
 
-;async download messages
+(defn check-expand [^Activity activity ^EllipsizingTextView text-view]
+  (if (.isEllipsized text-view)
+    (do
+      (set-entry-visited! activity (Long. (.getTag text-view)))
+      (config text-view :max-lines 10000))
+    (show-message activity text-view)
+    )
+  )
 
 
 
