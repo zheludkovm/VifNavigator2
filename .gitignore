@@ -3,3 +3,5 @@ target
 .idea
 pom.xml
 .lein-failures
+.lein-repl-history
+.nrepl-port
