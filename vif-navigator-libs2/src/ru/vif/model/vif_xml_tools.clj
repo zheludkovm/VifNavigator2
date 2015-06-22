@@ -22,7 +22,7 @@
 (t/defalias NillableString (t/U nil String))
 (t/defalias NillableLong (t/U nil Long))
 (t/ann clojure.core/some? [t/Any -> Boolean :filters {:then (! nil 0), :else (is nil 0)}])
-(t/non-nil-return java.text.SimpleDateFormat/parse :all)
+(t/non-nil-return java.text.DateFormat/parse :all)
 
 (t/ann safe-parse-date [NillableString -> NillableLong])
 (defn safe-parse-date [^String str]
@@ -32,12 +32,15 @@
     )
   )
 
+(t/ann safe-parse-long [NillableString -> NillableLong])
 (defn safe-parse-long [^String str]
   (if (some? str)
     (Long/parseLong str 16)
     nil
     )
   )
+
+(t/non-nil-return org.xmlpull.v1.XmlPullParserFactory/newInstance :all)
 
 (defn create-parser
   "Создает XmlPullParser"
@@ -56,7 +59,7 @@
   [current-result, ^XmlPullParser parser, ^String tag-name]
 
   (->> (range 0 (.getAttributeCount parser))
-       (reduce (fn [result counter]
+       (reduce (fn [result ^Integer counter]
                  (assoc result (.getAttributeName parser counter)
                                (.getAttributeValue parser counter)))
                current-result
