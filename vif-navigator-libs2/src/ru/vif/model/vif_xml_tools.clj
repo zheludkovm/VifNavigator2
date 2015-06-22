@@ -1,6 +1,7 @@
 (ns ru.vif.model.vif-xml-tools
   (:require [clojure.string :refer [blank?]]
             [ru.vif.model.records :refer :all]
+            [clojure.core.typed :as t]
             )
   (:import (java.util Date)
            (clojure.lang Keyword IPersistentMap)
@@ -18,7 +19,12 @@
                      nil   :mode-not-unfixed}
   )
 
+(t/defalias NillableString (t/U nil String))
+(t/defalias NillableLong (t/U nil Long))
+(t/ann clojure.core/some? [t/Any -> Boolean :filters {:then (! nil 0), :else (is nil 0)}])
+(t/non-nil-return java.text.SimpleDateFormat/parse :all)
 
+(t/ann safe-parse-date [NillableString -> NillableLong])
 (defn safe-parse-date [^String str]
   (if (some? str)
     (.getTime (.parse TIME_FORMAT str))
