@@ -1,13 +1,35 @@
 (ns ru.vif.model.records
+  (:require [clojure.core.typed :as t]
+            )
   (:import (java.util Date)
-           (clojure.lang Keyword IPersistentMap)
+           (clojure.lang Keyword IPersistentMap IPersistentSet)
            )
   )
 
+(t/defalias NillableString (t/U nil String))
+(t/defalias NillableLong (t/U nil Long))
+(t/defalias NillableBoolean (t/U nil Boolean))
+(t/defalias NillableKeyword (t/U nil Keyword))
+(t/defalias AttrMap (IPersistentMap String NillableString))
+(t/defalias NillableAttrMap (t/U AttrMap nil))
+(t/defalias StringSet (IPersistentSet String))
 
+
+(t/ann-record vif-xml-entry [no :- NillableLong
+                             type :- NillableKeyword
+                             mode :- NillableKeyword
+                             parent :- NillableLong
+                             title :- NillableString
+                             author :- NillableString
+                             date :- NillableString
+                             size :- NillableLong
+                             message :- NillableString
+                             ;восстанавливается из базы, по умолчанию false
+                             is_visited :- Boolean
+                             ])
 (defrecord vif-xml-entry [^Long no
-                          ^Keyword type                    ; :add :del :parent :fix
-                          ^Keyword mode                    ; mode-constants
+                          ^Keyword type                     ; :add :del :parent :fix
+                          ^Keyword mode                     ; mode-constants
                           ^Long parent
                           ^String title
                           ^String author
@@ -18,6 +40,9 @@
                           ^Boolean is_visited
                           ])
 
+(t/ann-record parse-data [last-event :- NillableString
+                          entries :- Seq
+                          ] )
 (defrecord parse-data [^String last-event
                        entries
                        ])

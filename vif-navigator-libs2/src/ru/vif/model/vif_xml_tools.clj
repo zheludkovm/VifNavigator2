@@ -4,7 +4,7 @@
             [clojure.core.typed :as t]
             )
   (:import (java.util Date)
-           (clojure.lang Keyword IPersistentMap)
+           (clojure.lang Keyword IPersistentMap IPersistentSet)
            (org.xmlpull.v1 XmlPullParser XmlPullParserFactory)
            (java.io StringReader)
            (java.text SimpleDateFormat)
@@ -19,8 +19,8 @@
                      nil   :mode-not-unfixed}
   )
 
-(t/defalias NillableString (t/U nil String))
-(t/defalias NillableLong (t/U nil Long))
+
+
 (t/ann clojure.core/some? [t/Any -> Boolean :filters {:then (! nil 0), :else (is nil 0)}])
 (t/non-nil-return java.text.DateFormat/parse :all)
 
@@ -40,6 +40,14 @@
     )
   )
 
+(t/ann safe-keyword [NillableString -> (t/U Keyword nil)])
+(defn safe-keyword [^String str]
+  (if (some? str)
+    (keyword str)
+    nil
+    )
+  )
+
 (t/non-nil-return org.xmlpull.v1.XmlPullParserFactory/newInstance :all)
 
 (defn create-parser
@@ -53,31 +61,36 @@
      )
     ))
 
+
+(t/non-nil-return org.xmlpull.v1.XmlPullParser/getAttributeName :all)
+(t/ann add-attributes [AttrMap XmlPullParser -> AttrMap])
 (defn add-attributes
   "Добавляет в map аттрибуты тега"
   ^{:private true}
-  [current-result, ^XmlPullParser parser, ^String tag-name]
+  [current-result, ^XmlPullParser parser]
 
   (->> (range 0 (.getAttributeCount parser))
-       (reduce (fn [result ^Integer counter]
-                 (assoc result (.getAttributeName parser counter)
-                               (.getAttributeValue parser counter)))
+       (reduce (t/fn [result :- AttrMap
+                      ^Integer counter :- t/AnyInteger] :- AttrMap
+                 (assoc result (.getAttributeName parser (int counter))
+                               (.getAttributeValue parser (int counter))))
                current-result
                )
        )
   )
 
+(t/ann parse-one-simple-entry [XmlPullParser StringSet -> NillableAttrMap])
 (defn parse-one-simple-entry
   "Обрабатывает одно сообщение XMlPull парсера"
   ^{:private true}
   [^XmlPullParser parser, stop-tags]
 
-  (loop [event (.next parser)
-         ^String current-tag nil
-         result {}]
+  (t/loop [event :- Integer (.next parser)
+           ^String current-tag :- NillableString nil
+           ^IPersistentMap result :- AttrMap {}]
     (cond
       (= event XmlPullParser/START_TAG) (let [tag-name (.getName parser)
-                                              updated-result (add-attributes result parser tag-name)]
+                                              updated-result (add-attributes result parser)]
                                           (recur (.next parser) tag-name updated-result)
                                           )
 
@@ -97,7 +110,7 @@
       :other (recur (.next parser) current-tag result))))
 
 
-
+(t/ann create-vif-xml-entry [AttrMap -> vif-xml-entry])
 (defn create-vif-xml-entry
   "Создает экземпляр record с информацией об одном событии vif xml"
   ^{:private true}
@@ -106,7 +119,7 @@
   (vif-xml-entry.
     (safe-parse-long (get value-map "no"))
     ;(get value-map "no")
-    (keyword (get value-map "type"))
+    (safe-keyword (get value-map "type"))
     (get mode-constants (get value-map "mode"))
     (safe-parse-long (get value-map "parent"))
     ;(get value-map "parent")
