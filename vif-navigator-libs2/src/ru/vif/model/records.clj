@@ -41,20 +41,40 @@
                           ])
 
 (t/ann-record parse-data [last-event :- NillableString
-                          entries :- Seq
-                          ] )
+                          entries :- (t/Seq vif-xml-entry)
+                          ])
 (defrecord parse-data [^String last-event
                        entries
                        ])
 
-
+(t/ann-record vif-tree [
+                        last-event :- String
+                        parent-to-child-no-map :- (IPersistentMap Long (IPersistentSet Long))
+                        all-entries-map :- (IPersistentMap Long vif-xml-entry)
+                        entries-to-delete :- (t/Seq vif-xml-entry)
+                        ])
 (defrecord vif-tree [^String last-event
                      ^IPersistentMap parent-to-child-no-map ; parent-no -> #{child-no1, child-no2 ...}
                      ^IPersistentMap all-entries-map        ; no -> vif-xml-entry
                      entries-to-delete
                      ]
   )
-
+(t/ann-record vif-display-entry [
+                                 no :- NillableLong
+                                 title :- NillableString
+                                 author :- NillableString
+                                 date :- NillableString
+                                 size :- NillableLong
+                                 message :- NillableString
+                                 ;calc fields
+                                 is_visited :- Boolean      ; просматривали ли запись
+                                 is-top-fixed :- Boolean    ;является ли запись закрепленной вверху
+                                 is-marked :- Boolean       ; является ли запись отмеченной (mode-fixed или mode-unfixed)
+                                 non-visited-child-count :- NillableLong    ; количество не посещенных дочерних записей
+                                 child-count :- NillableLong ; количество дочерних записей
+                                 max-child-no :- NillableLong ; максимальный номер дочерней записи (нужен для сортировки)
+                                 depth :- NillableLong
+                                 ])
 (defrecord vif-display-entry [^Long no
                               ^String title,
                               ^String author,

@@ -49,7 +49,9 @@
   )
 
 (t/non-nil-return org.xmlpull.v1.XmlPullParserFactory/newInstance :all)
+(t/non-nil-return org.xmlpull.v1.XmlPullParserFactory/newPullParser :all)
 
+(t/ann create-parser [ -> XmlPullParser])
 (defn create-parser
   "Создает XmlPullParser"
   ^{:private true}
@@ -132,7 +134,7 @@
     )
   )
 
-
+(t/ann parse-xml-entries [String -> parse-data])
 (defn parse-xml-entries
   "Разбирает xml и возврщает sequence записей vif-xml"
   [^String xml]
