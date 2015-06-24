@@ -4,7 +4,7 @@
             [clojure.core.typed :as t]
             )
   (:import (java.util Date)
-           (clojure.lang Keyword IPersistentMap IPersistentSet)
+           (clojure.lang Keyword IPersistentMap IPersistentSet ISeq ASeq)
            (org.xmlpull.v1 XmlPullParser XmlPullParserFactory)
            (java.io StringReader)
            (java.text SimpleDateFormat)
@@ -51,7 +51,7 @@
 (t/non-nil-return org.xmlpull.v1.XmlPullParserFactory/newInstance :all)
 (t/non-nil-return org.xmlpull.v1.XmlPullParserFactory/newPullParser :all)
 
-(t/ann create-parser [ -> XmlPullParser])
+(t/ann create-parser [-> XmlPullParser])
 (defn create-parser
   "Создает XmlPullParser"
   ^{:private true}
@@ -134,18 +134,25 @@
     )
   )
 
+(t/ann ^:no-check take-while-some  (t/All [x]
+                              (t/IFn [(t/ASeq (t/U x nil))  -> (t/ASeq x )])
+                              ))
+(defn take-while-some [^ISeq seq]
+  (take-while some? seq)
+  )
+
 (t/ann parse-xml-entries [String -> parse-data])
 (defn parse-xml-entries
   "Разбирает xml и возврщает sequence записей vif-xml"
   [^String xml]
 
-  (let [^XmlPullParser parser (create-parser)
-        ^StringReader reader (StringReader. xml)
-        tmp (.setInput parser reader)
-        [event-entry & all-antries] (->> (repeatedly #(parse-one-simple-entry parser #{"event" "lastEvent"}))
-                                         (take-while some?)
-                                         )
-        ]
+  (t/let [^XmlPullParser parser :- XmlPullParser (create-parser)
+          ^StringReader reader :- StringReader (StringReader. xml)
+          tmp (.setInput parser reader)
+          [event-entry & all-antries] (->> (repeatedly (fn [] (parse-one-simple-entry parser #{"event" "lastEvent"})))
+                                           (take-while-some)
+                                           )
+          ]
     (parse-data.
       (get event-entry "lastEvent")
       (map create-vif-xml-entry all-antries)
