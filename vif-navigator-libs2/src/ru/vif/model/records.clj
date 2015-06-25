@@ -2,7 +2,7 @@
   (:require [clojure.core.typed :as t]
             )
   (:import (java.util Date)
-           (clojure.lang Keyword IPersistentMap IPersistentSet)
+           (clojure.lang Keyword IPersistentMap IPersistentSet Seqable ASeq IPersistentCollection)
            )
   )
 
@@ -13,6 +13,11 @@
 (t/defalias AttrMap (IPersistentMap String NillableString))
 (t/defalias NillableAttrMap (t/U AttrMap nil))
 (t/defalias StringSet (IPersistentSet String))
+(t/defalias LongSet (IPersistentSet Long))
+(t/defalias NillableLongSet (t/U LongSet nil))
+
+(t/defalias Zipper (Object))
+(t/defalias LongLongMap (IPersistentMap Long Long))
 
 
 (t/ann-record vif-xml-entry [no :- NillableLong
@@ -49,7 +54,7 @@
 
 (t/ann-record vif-tree [
                         last-event :- String
-                        parent-to-child-no-map :- (IPersistentMap Long (IPersistentSet Long))
+                        parent-to-child-no-map :- (IPersistentMap Long LongSet)
                         all-entries-map :- (IPersistentMap Long vif-xml-entry)
                         entries-to-delete :- (t/Seq vif-xml-entry)
                         ])

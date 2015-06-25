@@ -5,6 +5,7 @@
     [clojure.set :as set]
     [ru.vif.model.vif-xml-tools :refer :all]
     [ru.vif.model.records :refer :all]
+    [clojure.core.typed :as t]
     )
   (:import (clojure.lang Keyword IPersistentMap)
            (ru.vif.model.records vif-xml-entry parse-data vif-tree)
@@ -14,22 +15,27 @@
 
 
 
-
+(t/ann remove-fn [Long -> [NillableLongSet -> NillableLongSet]])
 (defn remove-fn
   "Возвращает функцию которая удаляет элементы равные no"
   ^{:private true}
-  [no]
+  [^Long no]
 
-  #(remove (fn [value] (= no value)) %)
+  (t/fn [s :- NillableLongSet]
+    (set (remove
+           (t/fn [^Long value :- Long] :- Boolean (= no value))
+           s))
+    )
   )
 
+(t/ann add-fn [Long -> [NillableLongSet -> NillableLongSet]])
 (defn add-fn
   "Возвращает функцию которая добавляет в вектор no"
   ^{:private true}
-  [no]
+  [^Long no]
 
   ;#(conj (sorted-set %) no)
-  (fn [v]
+  (t/fn [v :- NillableLongSet]
     (if (nil? v)
       (sorted-set no)
       (conj v no)
@@ -37,6 +43,7 @@
     )
   )
 
+(t/ann make-zipper [LongLongMap Long -> Zipper])
 (defn make-zipper
   "создает zipper по map parent -> child и номеру корневого узла"
   [^IPersistentMap parent-to-child-no-map, ^Long root-no]
@@ -44,8 +51,7 @@
   (zip/zipper
     (fn [_] true)
     (fn [^Long no]
-      (not-empty (seq (get parent-to-child-no-map no)))
-      )
+      (not-empty (seq (get parent-to-child-no-map no))))
     nil
     root-no
     )
@@ -100,7 +106,7 @@
   [^String last-event, ^vif-tree current-tree, ^vif-xml-entry vif-xml-entry]
 
   (let [
-        ^String no (:no vif-xml-entry)
+        ^Long no (:no vif-xml-entry)
         ^String parent (:parent vif-xml-entry)
 
         parent-to-child-no-map (:parent-to-child-no-map current-tree)
@@ -166,7 +172,7 @@
   (update-in current-tree [:all-entries-map no :message] (constantly message))
   )
 
-(defn get-entry-message[^vif-tree current-tree ^Long no]
+(defn get-entry-message [^vif-tree current-tree ^Long no]
   (:message (get (:all-entries-map current-tree) no))
   )
 
