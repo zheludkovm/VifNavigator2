@@ -16,8 +16,8 @@
 (t/defalias LongSet (IPersistentSet Long))
 (t/defalias NillableLongSet (t/U LongSet nil))
 
-(t/defalias Zipper (Object))
-(t/defalias LongLongMap (IPersistentMap Long Long))
+(t/defalias LongZipper (t/ASeq Long))
+(t/defalias LongLongMap (IPersistentMap Long NillableLongSet))
 
 
 (t/ann-record vif-xml-entry [no :- NillableLong

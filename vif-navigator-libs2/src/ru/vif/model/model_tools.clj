@@ -1,11 +1,11 @@
 (ns ru.vif.model.model-tools
   (:require
+    [clojure.core.typed :as t]
     [clojure.string :refer [blank?]]
     [clojure.zip :as zip]
     [clojure.set :as set]
     [ru.vif.model.vif-xml-tools :refer :all]
     [ru.vif.model.records :refer :all]
-    [clojure.core.typed :as t]
     )
   (:import (clojure.lang Keyword IPersistentMap)
            (ru.vif.model.records vif-xml-entry parse-data vif-tree)
@@ -43,14 +43,27 @@
     )
   )
 
-(t/ann make-zipper [LongLongMap Long -> Zipper])
+(t/ann clojure.core/not-empty (t/All [x]
+                                     (t/IFn [t/Any -> (t/Option (t/Seq x))])
+                                     ))
+
+(t/ann clojure.zip/zipper (t/All [x]
+                                 (t/IFn [
+                                         [x -> Boolean]
+                                         [x -> (t/U (t/Seq x) nil)]
+                                         (t/Option [x (t/Seq x) -> x])
+                                         x
+                                         ->
+                                         (t/ASeq x )
+                                         ])))
+(t/ann make-zipper [LongLongMap Long -> LongZipper])
 (defn make-zipper
   "создает zipper по map parent -> child и номеру корневого узла"
   [^IPersistentMap parent-to-child-no-map, ^Long root-no]
 
   (zip/zipper
-    (fn [_] true)
-    (fn [^Long no]
+    (t/fn [_ :- Long] :-Boolean true)
+    (t/fn [^Long no :- Long] :- (t/Option (t/Seq Long))
       (not-empty (seq (get parent-to-child-no-map no))))
     nil
     root-no
