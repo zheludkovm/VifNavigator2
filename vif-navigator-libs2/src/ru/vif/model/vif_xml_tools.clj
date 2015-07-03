@@ -1,6 +1,7 @@
 (ns ru.vif.model.vif-xml-tools
   (:require [clojure.string :refer [blank?]]
             [ru.vif.model.records :refer :all]
+            [ru.vif.model.typed-libs :refer :all]
             [clojure.core.typed :as t]
             )
   (:import (java.util Date)

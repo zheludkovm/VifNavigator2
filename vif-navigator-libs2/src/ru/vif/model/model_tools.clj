@@ -16,13 +16,13 @@
 
 
 
-(t/ann remove-fn [Long -> [NillableLongSet -> NillableLongSet]])
+(t/ann remove-fn [Long -> [LongSet -> LongSet]])
 (defn remove-fn
   "Возвращает функцию которая удаляет элементы равные no"
   ^{:private true}
   [^Long no]
 
-  (t/fn [s :- NillableLongSet]
+  (t/fn [s :- LongSet]
     (set (remove
            (t/fn [^Long value :- Long] :- Boolean (= no value))
            s))
@@ -58,27 +58,32 @@
     )
   )
 
+(t/ann long-zipper-next [LongZipper -> LongZipper])
+(def long-zipper-next zip/next)
+
 (t/ann child-nodes [LongZipper -> (t/ASeq LongZipper)])
 (defn child-nodes
   "Итератор по всем узлам зиппера"
   ^{:private true}
   [loc]
-
-  (take-while (complement zip/end?)
-              (iterate zip/next loc))
+  (take-while (t/fn  [zipper :- LongZipper] (not (zip/end? zipper)))
+              (iterate long-zipper-next loc))
   )
 
-(t/ann tree-child-nodes [LongLongMap -> (t/ASeq Long)])
+(t/ann long-zipper-node [LongZipper -> Long])
+(def long-zipper-node zip/node)
+
+(t/ann tree-child-nodes [LongLongMap Long -> (t/ASeq Long)])
 (defn tree-child-nodes
   "sequence по всем узлам дерева"
   [^IPersistentMap parent-to-child-no-map, ^Long no]
   (->> (make-zipper parent-to-child-no-map no)
-        child-nodes
-       (map zip/node)
+       child-nodes
+       (map long-zipper-node)
        )
   )
 
-(t/ann tree-child-nodes [vif-tree Long -> (t/ASeq Long)])
+(t/ann vif-tree-child-nodes [vif-tree Long -> (t/ASeq Long)])
 (defn vif-tree-child-nodes
   "sequence по всем узлам дерева"
   [^vif-tree vif-tree, ^Long no]
@@ -136,7 +141,7 @@
                last-event
                (update-in parent-to-child-no-map [parent] (remove-fn no))
                (dissoc all-entries-map no)
-               (set/union entries-to-delete child-delete-entries)
+               (seq (set/union (set entries-to-delete) (set child-delete-entries)))
                )
              )
 

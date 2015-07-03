@@ -22,7 +22,7 @@
                                                  ]}
                        :repl     {:dependencies   [[reply/reply "0.1.0-beta9"]
                                                    [org.clojure/tools.nrepl "0.2.6"]
-                                                   [org.clojure/core.typed "0.3.0-alpha5"]
+                                                   [org.clojure/core.typed "0.3.0"]
                                                    ]
                                   :resource-paths ["test-resources"]
                                   }
