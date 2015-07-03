@@ -1,6 +1,8 @@
 (ns ru.vif.model.records
-  (:require [clojure.core.typed :as t]
-            )
+  (:require
+    [clojure.core.typed :as t]
+    [ru.vif.model.typed-libs :refer :all]
+    )
   (:import (java.util Date)
            (clojure.lang Keyword IPersistentMap IPersistentSet Seqable ASeq IPersistentCollection)
            )
@@ -20,7 +22,9 @@
 (t/defalias LongLongMap (IPersistentMap Long NillableLongSet))
 
 
-(t/ann-record vif-xml-entry [no :- NillableLong
+
+
+(t/ann-record vif-xml-entry [no :- Long
                              type :- NillableKeyword
                              mode :- NillableKeyword
                              parent :- NillableLong
@@ -52,10 +56,12 @@
                        entries
                        ])
 
+(t/defalias LongVifXmlEntryMap (IPersistentMap Long vif-xml-entry))
+
 (t/ann-record vif-tree [
                         last-event :- String
-                        parent-to-child-no-map :- (IPersistentMap Long LongSet)
-                        all-entries-map :- (IPersistentMap Long vif-xml-entry)
+                        parent-to-child-no-map :- (t/Map Long LongSet)
+                        all-entries-map :- LongVifXmlEntryMap
                         entries-to-delete :- (t/Seq vif-xml-entry)
                         ])
 (defrecord vif-tree [^String last-event
@@ -75,7 +81,7 @@
                                  is_visited :- Boolean      ; просматривали ли запись
                                  is-top-fixed :- Boolean    ;является ли запись закрепленной вверху
                                  is-marked :- Boolean       ; является ли запись отмеченной (mode-fixed или mode-unfixed)
-                                 non-visited-child-count :- NillableLong    ; количество не посещенных дочерних записей
+                                 non-visited-child-count :- NillableLong ; количество не посещенных дочерних записей
                                  child-count :- NillableLong ; количество дочерних записей
                                  max-child-no :- NillableLong ; максимальный номер дочерней записи (нужен для сортировки)
                                  depth :- NillableLong

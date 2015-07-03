@@ -21,9 +21,6 @@
 
 
 
-(t/ann clojure.core/some? [t/Any -> Boolean :filters {:then (! nil 0), :else (is nil 0)}])
-(t/non-nil-return java.text.DateFormat/parse :all)
-
 (t/ann safe-parse-date [NillableString -> NillableLong])
 (defn safe-parse-date [^String str]
   (if (some? str)
@@ -40,6 +37,14 @@
     )
   )
 
+(t/ann non-safe-parse-long [NillableString -> Long])
+(defn non-safe-parse-long [^String str]
+  (if (some? str)
+    (Long/parseLong str 16)
+    0
+    )
+  )
+
 (t/ann safe-keyword [NillableString -> (t/U Keyword nil)])
 (defn safe-keyword [^String str]
   (if (some? str)
@@ -48,8 +53,6 @@
     )
   )
 
-(t/non-nil-return org.xmlpull.v1.XmlPullParserFactory/newInstance :all)
-(t/non-nil-return org.xmlpull.v1.XmlPullParserFactory/newPullParser :all)
 
 (t/ann create-parser [-> XmlPullParser])
 (defn create-parser
@@ -63,8 +66,6 @@
      )
     ))
 
-
-(t/non-nil-return org.xmlpull.v1.XmlPullParser/getAttributeName :all)
 (t/ann add-attributes [AttrMap XmlPullParser -> AttrMap])
 (defn add-attributes
   "Добавляет в map аттрибуты тега"
@@ -119,7 +120,7 @@
   [^IPersistentMap value-map]
 
   (vif-xml-entry.
-    (safe-parse-long (get value-map "no"))
+    (non-safe-parse-long (get value-map "no"))
     ;(get value-map "no")
     (safe-keyword (get value-map "type"))
     (get mode-constants (get value-map "mode"))

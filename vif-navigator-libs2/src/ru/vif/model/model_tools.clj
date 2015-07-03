@@ -6,6 +6,7 @@
     [clojure.set :as set]
     [ru.vif.model.vif-xml-tools :refer :all]
     [ru.vif.model.records :refer :all]
+    [ru.vif.model.typed-libs :refer :all]
     )
   (:import (clojure.lang Keyword IPersistentMap)
            (ru.vif.model.records vif-xml-entry parse-data vif-tree)
@@ -28,7 +29,7 @@
     )
   )
 
-(t/ann add-fn [Long -> [NillableLongSet -> NillableLongSet]])
+(t/ann add-fn [Long -> [LongSet -> LongSet]])
 (defn add-fn
   "Возвращает функцию которая добавляет в вектор no"
   ^{:private true}
@@ -43,19 +44,6 @@
     )
   )
 
-(t/ann clojure.core/not-empty (t/All [x]
-                                     (t/IFn [t/Any -> (t/Option (t/Seq x))])
-                                     ))
-
-(t/ann clojure.zip/zipper (t/All [x]
-                                 (t/IFn [
-                                         [x -> Boolean]
-                                         [x -> (t/U (t/Seq x) nil)]
-                                         (t/Option [x (t/Seq x) -> x])
-                                         x
-                                         ->
-                                         (t/ASeq x )
-                                         ])))
 (t/ann make-zipper [LongLongMap Long -> LongZipper])
 (defn make-zipper
   "создает zipper по map parent -> child и номеру корневого узла"
@@ -70,6 +58,7 @@
     )
   )
 
+(t/ann child-nodes [LongZipper -> (t/ASeq LongZipper)])
 (defn child-nodes
   "Итератор по всем узлам зиппера"
   ^{:private true}
@@ -79,28 +68,33 @@
               (iterate zip/next loc))
   )
 
+(t/ann tree-child-nodes [LongLongMap -> (t/ASeq Long)])
 (defn tree-child-nodes
   "sequence по всем узлам дерева"
   [^IPersistentMap parent-to-child-no-map, ^Long no]
   (->> (make-zipper parent-to-child-no-map no)
-       child-nodes
+        child-nodes
        (map zip/node)
        )
   )
 
+(t/ann tree-child-nodes [vif-tree Long -> (t/ASeq Long)])
 (defn vif-tree-child-nodes
   "sequence по всем узлам дерева"
   [^vif-tree vif-tree, ^Long no]
   (tree-child-nodes (:parent-to-child-no-map vif-tree) no)
   )
 
+(t/ann get-all-visited [vif-tree Long -> (t/ASeq Long)])
 (defn get-all-visited
   "список всех посещенных узлов"
   [^vif-tree vif-tree, ^Long no]
-  (let [all-entries-map (:all-entries-map vif-tree)]
+  (t/let [all-entries-map :- LongVifXmlEntryMap (:all-entries-map vif-tree)]
     (->> (vif-tree-child-nodes vif-tree no)
-         (filter #(:is_visited (get all-entries-map %))))))
+         (filter (fn [^Long no] (:is_visited (get all-entries-map no)))
+                 ))))
 
+(t/ann find-first-non-visited-after [vif-tree Long Long -> (t/Option Long)])
 (defn find-first-non-visited-after [^vif-tree vif-tree, ^Long root ^Long after]
   (let [all-entries-map (:all-entries-map vif-tree)]
     (->> (vif-tree-child-nodes vif-tree root)
@@ -112,7 +106,7 @@
   )
 
 
-
+(t/ann merge-one-entry [String vif-tree vif-xml-entry -> vif-tree])
 (defn merge-one-entry
   "Производит Merge одной записи с логом изменений дерева в итоговое дерево"
   ^{:private true}

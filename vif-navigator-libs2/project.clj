@@ -30,7 +30,7 @@
 
 
             :source-paths ["src/clojure" "src"]
-            :main ^:skip-aot ru.vif.model.vif-xml-tools
+            :main ^:skip-aot ru.vif.model.api
             :target-path "target/%s"
             :aliases {"build" ["install"]}
             )
