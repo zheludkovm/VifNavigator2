@@ -49,3 +49,7 @@
                                 (t/IFn [(t/ASeq x) (t/Vec t/Any) [x -> x] -> (t/ASeq x)]
                                        [(t/Map y x) (t/Vec t/Any) [x -> x] -> (t/Map y x)]
                                        )))
+
+(t/ann clojure.core/assoc-in (t/All [x y]
+                                     (t/IFn [(t/Map y x) (t/Vec t/Any) t/Any -> (t/Map y x)]
+                                            )))

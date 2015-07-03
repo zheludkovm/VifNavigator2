@@ -166,10 +166,12 @@
     )
   )
 
+(t/ann merge-one-entry-p [String -> [vif-tree vif-xml-entry -> vif-tree]])
 (defn merge-one-entry-p [^String last-event]
   (partial merge-one-entry last-event)
   )
 
+(t/ann set-entry-visited [vif-tree Long -> vif-tree])
 (defn set-entry-visited
   [^vif-tree current-tree
    ^Long no]
