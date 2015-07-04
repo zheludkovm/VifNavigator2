@@ -38,7 +38,7 @@
                           ^Boolean is_visited
                           ])
 
-(t/ann-record parse-data [last-event :- NillableString
+(t/ann-record parse-data [last-event :- String
                           entries :- (t/Seq vif-xml-entry)
                           ])
 (defrecord parse-data [^String last-event

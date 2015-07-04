@@ -178,6 +178,7 @@
   (update-in current-tree [:all-entries-map no :is_visited] (constantly true))
   )
 
+(t/ann set-entry-message [vif-tree Long String -> vif-tree])
 (defn set-entry-message
   [^vif-tree current-tree
    ^Long no
@@ -186,15 +187,23 @@
   (update-in current-tree [:all-entries-map no :message] (constantly message))
   )
 
+(t/ann get-entry-message [vif-tree Long -> NillableString])
 (defn get-entry-message [^vif-tree current-tree ^Long no]
   (:message (get (:all-entries-map current-tree) no))
   )
 
+(t/ann ^:no-check clean-entriies-to-delete [vif-tree -> vif-tree ])
+(defn clean-entriies-to-delete [^vif-tree tree]
+  (assoc tree :entries-to-delete #{})
+  )
+
+
+(t/ann merge-trees [vif-tree parse-data -> vif-tree])
 (defn merge-trees
   "Производит merge списка изменений vif в дерево"
   [^vif-tree current-tree, ^parse-data new-parsed-data]
 
-  (let [current-tree-prepared (assoc current-tree :entries-to-delete #{})]
+  (let [current-tree-prepared (clean-entriies-to-delete current-tree)]
     (reduce (merge-one-entry-p (:last-event new-parsed-data)) current-tree-prepared (:entries new-parsed-data))
     )
   )

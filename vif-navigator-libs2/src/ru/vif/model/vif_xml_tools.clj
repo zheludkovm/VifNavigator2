@@ -154,9 +154,10 @@
           [event-entry & all-antries] (->> (repeatedly (fn [] (parse-one-simple-entry parser #{"event" "lastEvent"})))
                                            (take-while-some)
                                            )
+          last-event (get event-entry "lastEvent")
           ]
     (parse-data.
-      (get event-entry "lastEvent")
+      (if (nil? last-event) "-1" last-event)
       (map create-vif-xml-entry all-antries)
       )
     )

@@ -33,7 +33,7 @@
 (t/ann clojure.zip/end? (t/All [x]
                                (t/IFn [(t/ASeq x) -> Boolean])))
 (t/ann clojure.zip/next (t/All [x]
-                                (t/IFn [(t/ASeq x) -> (t/ASeq x)])))
+                               (t/IFn [(t/ASeq x) -> (t/ASeq x)])))
 (t/ann clojure.zip/node (t/All [x]
                                (t/IFn [(t/ASeq x) -> x])))
 
@@ -46,10 +46,17 @@
 (t/non-nil-return org.xmlpull.v1.XmlPullParser/getAttributeName :all)
 
 (t/ann clojure.core/update-in (t/All [x y]
-                                (t/IFn [(t/ASeq x) (t/Vec t/Any) [x -> x] -> (t/ASeq x)]
-                                       [(t/Map y x) (t/Vec t/Any) [x -> x] -> (t/Map y x)]
-                                       )))
+                                     (t/IFn [(t/ASeq x) (t/Vec t/Any) [x -> x] -> (t/ASeq x)]
+                                            [(t/Map y x) (t/Vec t/Any) [x -> x] -> (t/Map y x)]
+                                            [y (t/Vec t/Any) [x -> x] -> y]
+                                            )))
 
 (t/ann clojure.core/assoc-in (t/All [x y]
-                                     (t/IFn [(t/Map y x) (t/Vec t/Any) t/Any -> (t/Map y x)]
-                                            )))
+                                    (t/IFn [(t/Map y x) (t/Vec t/Any) t/Any -> (t/Map y x)]
+                                           )))
+
+(t/ann clojure.core/assoc (t/All [b c d]
+                                 (t/IFn [(t/Map b c) b c -> (t/Map b c)]
+                                        [(t/Vec d) t/AnyInteger d -> (t/Vec d)]
+                                        [d t/Any t/Any -> d]
+                                        )))
