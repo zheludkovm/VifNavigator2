@@ -128,6 +128,10 @@
               ^Boolean is-visited (:is_visited data)
               ^Long size (:size data)
               ^Long non-visited-child-count (:non-visited-child-count data)
+              ^String msg (if (not= 0 max-tree-message-size)
+                            (get-entry-message @tree-data-store no)
+                            nil
+                            )
               ]
           ;фон, четный и нечетный
           (config view
@@ -146,7 +150,7 @@
                                             (format format-bold-black (:author data))
                                             (if is-visited
                                               visited-mark
-                                              (if (= size 0)
+                                              (if (or (= size 0) (some? msg))
                                                 (do
                                                   (set-entry-visited! activity no)
                                                   not_visited_mark_zero
@@ -173,7 +177,7 @@
           (if (not= 0 max-tree-message-size)
             (let [^TextView messageView (find-view view :messageView)]
               (config messageView :tag (str no))
-              (if-let [^String msg (get-entry-message @tree-data-store no)]
+              (if (some? msg)
                 (config messageView
                         :visibility View/VISIBLE
                         :text (Html/fromHtml (.replace msg "<BR><BR>" "<BR>"))

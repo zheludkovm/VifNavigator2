@@ -59,9 +59,11 @@
         (let [^View list-item (.getChildAt list-view (+ index (.getHeaderViewsCount list-view)))]
           (if (some? list-item)
             (if-let [^EllipsizingTextView message-view (find-view list-item :messageView)]
-              (config message-view
+              (do
+                (set-entry-visited! cur-root-activity long-no)
+                (config message-view
                       :text (Html/fromHtml msg-text)
-                      :visibility View/VISIBLE))
+                      :visibility View/VISIBLE)))
             (log/d "list item is nil!!! index=" index "size=" (.getChildCount list-view))))))))
 
 
