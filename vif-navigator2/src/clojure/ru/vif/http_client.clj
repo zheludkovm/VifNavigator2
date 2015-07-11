@@ -172,9 +172,9 @@
   ([^auth-info auth, call-func]
    "Скачивает данные для url, если ответ не равен 200 то возвращает nil"
    (check-connection! auth)
-   (log/d "try call!")
+   ;(log/d "try call!")
    (time (let [{status :status body :body} (call-func)]
-           (log/d "status=" status)
+           ;(log/d "status=" status)
            (if (= status 200)
              body
              (throw (Exception. (str status)))

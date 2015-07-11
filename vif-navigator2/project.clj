@@ -17,7 +17,7 @@
                            [org.clojure/core.typed.rt "0.3.0-alpha5"]
                            ;[org.clojure/core.async "0.1.346.0-17112a-alpha"]
                            ]
-            :profiles {:default [:dev]
+            :profiles {:default [:release]
 
                        :dev
                                 [:android-common :android-user
@@ -38,17 +38,22 @@
                                   }]
                        :release
                                 [:android-common
-                                 {:target-path "target/release"
+                                 {:target-path  "target/release"
                                   :android
-                                               {;; Specify the path to your private keystore
-                                                ;; and the the alias of the key you want to
-                                                ;; sign APKs with.
-                                                :keystore-path       "/home/mikl/.android/release-keysore"
-                                                :key-alias           "vif-alias"
+                                                {;; Specify the path to your private keystore
+                                                 ;; and the the alias of the key you want to
+                                                 ;; sign APKs with.
+                                                 :keystore-path       "/home/mikl/.android/release-keysore"
+                                                 :key-alias           "vif-alias"
 
-                                                :ignore-log-priority [:debug :verbose]
-                                                :aot                 :all-with-unused
-                                                :build-type          :release}}]
+                                                 :ignore-log-priority [:debug :verbose]
+                                                 :aot                 :all-with-unused
+                                                 :build-type          :release
+                                                 :aot-exclude-ns      [cljs.core.typed.async
+                                                                       clojure.core.typed.async
+                                                                       clojure.core.typed.all-envs
+                                                                       ]
+                                                 }}]
 
                        :lean
                                 [:release
@@ -72,14 +77,14 @@
                        }
 
             :android {;; Specify the path to the Android SDK directory.
-                      :sdk-path          "/home/mzheludkov/work/clojure/android-sdk-linux"
-                      ;:sdk-path       "/home/mikl/distr/android-sdk-linux"
+                      ;:sdk-path          "/home/mzheludkov/work/clojure/android-sdk-linux"
+                      :sdk-path          "/home/mikl/distr/android-sdk-linux"
 
                       ;; Try increasing this value if dexer fails with
                       ;; OutOfMemoryException. Set the value according to your
                       ;; available RAM.
-                      :dex-opts          ["-JXmx4096M" "--num-threads=4" "--incremental"]
-                      ;:dex-opts       ["-JXmx4096M" "--num-threads=4" ]
+                      ;:dex-opts          ["-JXmx4096M" "--num-threads=4" "--incremental"]
+                      :dex-opts          ["-JXmx4096M" "--num-threads=4"]
 
                       ;; If previous option didn't work, uncomment this as well.
                       ;; :force-dex-optimize true

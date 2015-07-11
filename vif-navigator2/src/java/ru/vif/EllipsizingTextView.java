@@ -153,7 +153,7 @@ public class EllipsizingTextView extends TextView {
         boolean ellipsized = false;
         Layout layout = createWorkingLayout(workingText);
         int linesCount = getLinesCount();
-        System.out.println("layout.getLineCount()="+layout.getLineCount());
+//        System.out.println("layout.getLineCount()="+layout.getLineCount());
         if (layout.getLineCount() > linesCount) {
             // We have more lines of text than we are allowed to display.
             workingText = fullText.subSequence(0, layout.getLineEnd(linesCount - 1));

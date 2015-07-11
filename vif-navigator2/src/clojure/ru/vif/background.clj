@@ -72,7 +72,7 @@
     (Thread/sleep 1000)
     (doseq [long-no seq-no]
       (let [cur-root-activity @root-activity]
-        (println "try download!" long-no)
+        ;(println "try download!" long-no)
         (if (some? cur-root-activity)
           (try
             (let [^String msg-text (http/download-message long-no (create-auth-info cur-root-activity))]

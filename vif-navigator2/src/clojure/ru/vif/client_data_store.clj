@@ -83,7 +83,7 @@
   )
 
 (defn set-entry-message! [this ^Long no ^String message]
-  (log/d "set entry message" no message)
+  (log/d "set entry message" no)
   (swap! tree-data-store model-api/set-entry-message no message)
   (store-message! this no message)
   message
