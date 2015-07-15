@@ -52,6 +52,7 @@
                                                  :aot-exclude-ns      [cljs.core.typed.async
                                                                        clojure.core.typed.async
                                                                        clojure.core.typed.all-envs
+                                                                       clojure.core.typed.contract-utils
                                                                        ]
                                                  }}]
 
