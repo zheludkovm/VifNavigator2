@@ -14,7 +14,7 @@
                            [neko/neko "3.2.0"]
                            [org.jsoup/jsoup "1.8.2" :use-resources true]
                            [vif-navigator-libs2 "0.1.0-SNAPSHOT" :use-resources true]
-                           [org.clojure/core.typed.rt "0.3.0-alpha5"]
+                           ;[org.clojure/core.typed.rt "0.3.0-alpha5"]
                            ;[org.clojure/core.async "0.1.346.0-17112a-alpha"]
                            ]
             :profiles {:default [:release]

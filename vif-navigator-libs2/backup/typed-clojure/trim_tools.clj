@@ -6,13 +6,15 @@
     [ru.vif.model.vif-xml-tools :refer :all]
     [ru.vif.model.model-tools :refer :all]
     [ru.vif.model.records :refer :all]
+    [clojure.core.typed :as t]
+    [ru.vif.model.typed-libs :refer :all]
     )
   (:import (clojure.lang Keyword IPersistentMap Counted IFn)
            (ru.vif.model.records vif-xml-entry parse-data vif-tree vif-display-entry)
            ))
 
-(def long-count count)
 
+(t/ann child-nodes-with-depth [LongLongMap Long -> (t/ASeq NoWithDepth)])
 (defn child-nodes-with-depth
   "Возвращает sequence дочерних элементов узла элементов с глубиной"
   ^{:private true}
@@ -21,19 +23,20 @@
   (->> (make-zipper parent-to-child-no-map no)
        child-nodes
        (map
-         (fn [loc]
+         (t/fn [loc :- LongZipper] :- NoWithDepth
            [(long-zipper-node loc) (long-count (zip/path loc))]
            )
          )
        )
   )
 
-
+(t/ann find-entry-in-tree [Long vif-tree -> (t/Option vif-xml-entry)])
 (defn find-entry-in-tree
   [^Long no, ^vif-tree current-vif-tree]
   (get (:all-entries-map current-vif-tree) no)
   )
 
+(t/ann init-display-entry [Long vif-tree Long -> (t/Option vif-display-entry)])
 (defn init-display-entry
   "создает record с данными одного изменения vif дерева"
   ^{:private true}
@@ -58,7 +61,9 @@
     )
   )
 
-
+(t/ann update-in-if (t/All [y]
+                           (t/IFn [y Boolean (t/Vec t/Any) IFn -> y])
+                           ))
 (defn update-in-if
   "update-in с условием"
   ^{:private true}
@@ -70,7 +75,7 @@
     )
   )
 
-
+(t/ann update-prev-entry [vif-display-entry Long vif-tree -> vif-display-entry])
 (defn update-prev-entry
   "Изменяет предыдущую запись в линейном списке записей, увеличивает количество дочерних записей, не посещенных, максимальный номер дочерней записи"
   ^{:private true}
@@ -78,9 +83,9 @@
    ^Long no
    ^vif-tree current-vif-tree]
 
-  (let [^vif-xml-entry xml-entry (find-entry-in-tree no current-vif-tree)
-        ^Boolean is-visited (:is_visited xml-entry)
-        ]
+  (t/let [^vif-xml-entry xml-entry :- (t/Option vif-xml-entry) (find-entry-in-tree no current-vif-tree)
+          ^Boolean is-visited :- (t/Option Boolean) (:is_visited xml-entry)
+          ]
     (-> update-entry
         (update-in [:child-count] inc)
         (update-in-if (not is-visited) [:non-visited-child-count] inc)
@@ -90,26 +95,27 @@
   )
 
 
+(t/ann trim-tree-by-depth [vif-tree Long Long -> (t/AVec vif-display-entry)])
 (defn trim-tree-by-depth
   "Обрезает дерево до заданной глубины"
   [^vif-tree current-vif-tree, ^Long root-no, ^long max-depth]
 
-  (let [nodes-with-depth  (child-nodes-with-depth (:parent-to-child-no-map current-vif-tree) root-no)
-          drop1-nodes  (drop 1 nodes-with-depth) ; убираем первый узел
+  (t/let [nodes-with-depth :- (t/ASeq NoWithDepth) (child-nodes-with-depth (:parent-to-child-no-map current-vif-tree) root-no)
+          drop1-nodes :- (t/ASeq NoWithDepth) (drop 1 nodes-with-depth) ; убираем первый узел
           ]
-         (drop 1 (reverse (reduce
-                            (fn [[^vif-display-entry prev-entry & rest]
-                                   [^Long no ^Long current-depth]
-                                   ]
-                                  ;(println no current-depth max-depth)
-                                  (if (> current-depth max-depth)
-                                    (conj rest (update-prev-entry prev-entry no current-vif-tree))
-                                    (conj rest prev-entry (init-display-entry no current-vif-tree current-depth))
-                                    )
-                                  )
-                            [nil]
-                            drop1-nodes
-                            )
-                          ))
-         )
+    (drop 1 (reverse (reduce
+                       (t/fn [[^vif-display-entry prev-entry & rest] :- (t/Vec vif-display-entry)
+                              [^Long no ^Long current-depth] :- NoWithDepth
+                              ]
+                         ;(println no current-depth max-depth)
+                         (if (> current-depth max-depth)
+                           (conj rest (update-prev-entry prev-entry no current-vif-tree))
+                           (conj rest prev-entry (init-display-entry no current-vif-tree current-depth))
+                           )
+                         )
+                       [nil]
+                       drop1-nodes
+                       )
+                     ))
+    )
   )
