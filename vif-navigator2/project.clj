@@ -1,4 +1,4 @@
-(defproject vif-navigator/vif-navigator2 "0.0.12-SNAPSHOT"
+(defproject vif-navigator/vif-navigator2 "0.1.00-SNAPSHOT"
             :description "Vif navigator"
             :url "https://github.com/zheludkovm/VifNavigator2"
 

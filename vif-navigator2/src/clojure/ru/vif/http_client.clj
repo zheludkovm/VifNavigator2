@@ -23,11 +23,11 @@
            (android.util Base64))
   )
 
-(def vif-url "http://vif2ne.ru/nvk/forum/0/co/tree?xml=")
-(def vif-message-prefix "http://vif2ne.ru/nvk/forum/0/co/")
-(def security-url "http://vif2ne.ru/nvk/forum/security")
-(def preview-url "http://vif2ne.ru/nvk/forum/0/security/preview/")
-(def print-url "http://vif2ne.ru/nvk/forum/0/print/")
+(def vif-url "http://vif2ne.org/nvk/forum/0/co/tree?xml=")
+(def vif-message-prefix "http://vif2ne.org/nvk/forum/0/co/")
+(def security-url "http://vif2ne.org/nvk/forum/security")
+(def preview-url "http://vif2ne.org/nvk/forum/0/security/preview/")
+(def print-url "http://vif2ne.org/nvk/forum/0/print/")
 (def htm-suffix ".htm")
 
 (def TIMEOUT 10000)
@@ -236,7 +236,7 @@
                         ^Boolean to-root
                         ^String msg]
   (let [params (create-params theme to-root msg)]
-    (send-post (str "http://vif2ne.ru/nvk/forum/0/security/reply/" answer-to-no) auth params)
+    (send-post (str "http://vif2ne.org/nvk/forum/0/security/reply/" answer-to-no) auth params)
     )
   )
 
